@@ -76,13 +76,8 @@ class OrderController extends Controller
             $order->orderDate = $data['orderDate'];
             foreach($all_product as $dataaa)
             {
-                $name = $dataaa->productId . "_restock_qty";
-                $restock->$name = $data[$name];
-                $total_price += $dataaa->$search * $data[$name];
+                
             }
-            $restock->restockPrice = $total_price;
-            $restock->employeeId = Auth::id();
-            $restock->save();
 
             return view('OrderModule.add_order')->with(['user'=> $user, 'product'=> $product]);
         }
