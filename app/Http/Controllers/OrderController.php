@@ -17,9 +17,22 @@ class OrderController extends Controller
         {
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
-            $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
+            $order = OrderInformation::where('employeeId', Auth::id())->get();
+
+            //count total items
+            $total_items = array();
+            foreach($order as $o)
+            {
+                $total = 0;
+                foreach($product as $data)
+                {
+                    $col = $data->productId . "_order_qty";
+                    $total += $o->$col;
+                }
+                array_push($total_items , $total);
+            }
             
-            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $product]);
+            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $product, 'order'=> $order, 'total_items' => $total_items]);
         }
         return redirect('login');
     }
@@ -102,7 +115,7 @@ class OrderController extends Controller
             }
             $product_qty_user->save();
 
-            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $all_product, 'success'=>'New order successfully added!']);
+            return redirect()->route('view_order_list')->with(['user'=> $user, 'product'=> $all_product, 'success'=>'New order successfully added!']);
         }
         return redirect('login');
     }

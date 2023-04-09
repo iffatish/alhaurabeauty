@@ -91,7 +91,7 @@
                 margin-left: 0.938rem;
             }
             .content{
-                width: 50%;
+                width: 60%;
                 margin: auto;
                 margin-top: 3.75rem;
                 margin-bottom: 6.25rem;
@@ -103,90 +103,27 @@
                 border-collapse: collapse;
             }
             td{
-                padding-top: 1.25rem;
-                padding-bottom: 1.25rem;
+                padding-top: 0.625rem;
+                padding-bottom: 0.625rem;
                 background-color: white;
-                vertical-align:top;
             }
             th{
-                padding: 1.875rem 0 0.625rem 0.625rem;
-                font-size: 1.5rem;
-                font-weight: bold;
-                color: #FF2667;
-                background-color: white;
-                vertical-align:top;
-            }
-            .create-button{
-                text-align: center;
-                background-color: #FF2667;
-                border-bottom-right-radius: 1.875rem;
-                font-size: 0.875rem;
-            }
-            th:first-of-type {
-                border-top-left-radius: 1.875rem;
-            }
-            tr:first-of-type td:last-of-type{
-                border-top-right-radius: 1.875rem;
-            }
-            tr:last-of-type td:first-of-type {
-                border-bottom-left-radius: 1.875rem;
-            }
-            .input-title{
-                padding-left: 3.125rem;
-                font-weight: bold;
-                font-size: 0.875rem;
-            }
-            input[type=text]{
-                width: 17.5rem;
-                height: 1.875rem;
-                padding: 0.313rem 0.313rem;
-                display: inline-block;
-                border: 0.063rem solid #ccc;
-                border-radius: 0.25rem;
-                box-sizing: border-box;
-            }
-            textarea{
-                font-family: 'Open Sans', sans-serif;
-                width: 17.5rem;
-                padding: 0.313rem 0.313rem;
-                display: inline-block;
-                border: 0.063rem solid #ccc;
-                border-radius: 0.25rem;
-                box-sizing: border-box;
-            }
-            input[type=submit]{
-                font-family: 'Open Sans', sans-serif;
-                color: #FF2667;
-                background-color: white;
-                border: none;
-                padding: 0.625rem 1.25rem;
-                font-size: 1.125rem;
-                border-radius: 1.875rem;
-                font-weight: bold;
-                box-shadow: 0 0.125rem 0.063rem black;
-                cursor: pointer;
-                font-size: 0.875rem;
-            }
-            a{
                 color: white;
+                background-color: #FF2667;
+                padding: 0.938rem 0.938rem;
             }
-            a:link{
+            .view a{
+                color: #FF2667;
+            }
+            .view a:link{
                 text-decoration:none;
+                font-weight: bold;
             }
-            a:active{
-                text-decoration:none;
-            }
-            a:hover{
+            .view a:hover{
                 text-decoration: underline;
             }
-            a:active {
-                text-decoration: underline;
-            }
-            .error{
-                background-color: #ffdbdb;
-                color: red;
-                padding: 0.313rem;
-                border-radius: 0.938rem;
+            .view a:active {
+                text-decoration: #FF2667;
             }
             .message{
                 position:fixed;
@@ -196,6 +133,12 @@
                 box-shadow: 0 0.125rem 0.063rem black;
             }
             .message a:hover{cursor:pointer;}
+            .message a{
+                color: black;
+            }
+            .order td{
+                vertical-align: top;
+            }
         </style>
     </head>
     <body>
@@ -237,7 +180,32 @@
         </div>
 
         <div class="content">
-            
+            <table width="100%">
+                <tr>
+                    <th width="10%" style="border-right: 0.063rem solid white">No.</th>
+                    <th width="20%" style="border-right: 0.063rem solid white">Customer Name</th>
+                    <th width="20%" style="border-right: 0.063rem solid white">Order Date</th>
+                    <th width="20%" style="border-right: 0.063rem solid white">No. of items</th>
+                    <th width="20%" style="border-right: 0.063rem solid white">Order Price (RM)</th>
+                    <th width="20%">Details</th>
+                </tr>
+                @if($order->count() > 0)
+                    @foreach($order as $i => $data)
+                    <tr class="order">
+                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
+                        <td style="border-right: 0.063rem solid #E8E8E8;padding-left:0.5rem;">{{$data->custName}}</td>
+                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{date('d-m-Y', strtotime($data->orderDate))}}</td>
+                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$total_items[$i]}}</td>
+                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->orderPrice}}</td>
+                        <td class="view center"><a href="">view</a></td>
+                    </tr>
+                    @endforeach
+                @else
+                <tr class="center">
+                    <td colspan="6" style="color:Dimgrey;">No results found</td>
+                </tr>
+                @endif
+            </table>
         </div>
 
         <script>

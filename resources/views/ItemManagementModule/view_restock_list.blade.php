@@ -108,6 +108,7 @@
                 padding-top: 0.625rem;
                 padding-bottom: 0.625rem;
                 background-color: white;
+                vertical-align: top;
             }
             th{
                 color: white;
@@ -169,8 +170,8 @@
                     <th width="10%" style="border-right: 0.063rem solid white">No.</th>
                     <th width="20%" style="border-right: 0.063rem solid white">Batch No.</th>
                     <th width="20%" style="border-right: 0.063rem solid white">Restock Date</th>
-                    <th style="border-right: 0.063rem solid white">No. of items</th>
-                    <th style="border-right: 0.063rem solid white">Total Price (RM)</th>
+                    <th width="20%" style="border-right: 0.063rem solid white">No. of items</th>
+                    <th width="20%" style="border-right: 0.063rem solid white">Total Price (RM)</th>
                     <th width="20%">Details</th>
                 </tr>
                 @if($restock->count() > 0)
@@ -181,7 +182,7 @@
                         <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{date('d-m-Y', strtotime($data->restockDate))}}</td>
                         <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$total_items[$i]}}</td>
                         <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->restockPrice}}</td>
-                        <td class="view center" style="padding: 0;"><a href="{{route('view_restock_details', ['restockId' => $data->restockId])}}">view</a></td>
+                        <td class="view center"><a href="{{route('view_restock_details', ['restockId' => $data->restockId])}}">view</a></td>
                     </tr>
                     @endforeach
                 @else
