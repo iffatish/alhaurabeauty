@@ -105,6 +105,7 @@
             .details{
                 display: flex;
                 flex-direction: row;
+                justify-content: space-between;
             }
             .center{
                 text-align: center;
@@ -126,8 +127,11 @@
             .first td{
                 padding-bottom: 0.938rem;
                 padding-right: 2.5rem;
-                border-right: 1px solid #C8C8C8;
                 vertical-align: top;
+            }
+            .second td{
+                vertical-align: top;
+                padding-bottom: 1rem;
             }
             .error{
                 background-color: #ffdbdb;
@@ -213,7 +217,7 @@
             
         </div>
 
-        <form action="post" action="{{route('add_order_save')}}" id="form_update">
+        <form id="form_update" method="post" action="{{route('add_order_save')}}">
         @csrf
         <div class="content">
             <div class="details">
@@ -265,18 +269,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="input-title">Additional Cost (RM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 11rem;" type="number" name="additionalCost" placeholder="Postage or COD fee"></td>
+                            <td class="input-title">Additional Cost (RM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 11rem;" type="number" name="additionalCost" placeholder="Postage or COD fee" value="0"></td>
                         </tr>
                     </table>
                 </div>
+                <div height="auto" width="0.063rem" style="border-left:1px solid #C8C8C8;"></div>
                 <div style="padding-top:2.5rem;">
-                    <table class="second" width="100%">
+                    <table class="second">
                         <tr>
-                            <td class="input-title" style="padding-bottom:1rem;">Item</td><td class="input-title" style="padding-bottom:1rem;">Quantity</td>
+                            <td class="input-title" style="padding-bottom:1rem;padding-left:1rem;">Item</td><td class="input-title center second-right" style="padding-bottom:1rem;">Quantity</td>
                         </tr>
                         @if($product->count() < 1)
                         <tr>
-                            <td colspan="2" class="center" style="color:Dimgrey;">No products found</td>
+                            <td colspan="2" class="center second-right" style="color:Dimgrey;padding:1rem;">No products found</td>
                         </tr>
                         @endif
                         @foreach($product as $i => $product)
@@ -284,14 +289,14 @@
                             @php
                                 $product_qty_col = $product->productId . "_order_qty";
                             @endphp
-                            <td style="padding-right:9rem;">{{$i +1}}) {{$product->productName}}</td><td><input style="width:6.25rem;" required type="number" name="{{$product_qty_col}}" value="0"></td>
+                            <td style="padding-right:5rem;padding-left:1rem;">{{$i +1}}) {{$product->productName}}</td><td class="second-right"><input style="width:6.25rem;" required type="number" name="{{$product_qty_col}}" value="0"></td>
                         </tr>
                         @endforeach
                     </table>   
                 </div>
             </div>
-            <div class="center back">
-                <button class="save" type="submit" form="form_update" value="Save">+&nbsp;&nbsp;Add</button>
+            <div class="center back" style="margin-top: auto;">
+                <button class="save" type="submit" form="form_update" value="Add">+&nbsp;&nbsp;Add</button>
                 <br><br>
                 <a href="{{route('view_order_list')}}">Cancel</a>
             </div>

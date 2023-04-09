@@ -50,7 +50,7 @@ class OrderController extends Controller
         return redirect('login');
     }
 
-    public function addOrder()
+    public function addOrder(Request $request)
     {
         if(Auth::check())
         {
@@ -64,22 +64,45 @@ class OrderController extends Controller
                 'orderDate' => 'required'
             ]);
             
+            $user = User::where('id', Auth::id())->first();
             $data = $request->all();
             $all_product = Product::get();
+            $total_price = 0;
+
             //add row in Order Information
             $order = new OrderInformation;
             $order->custName = $data['custName'];
             $order->custPhoneNum = $data['custPhoneNum'];
             $order->deliveryAddress = $data['deliveryAddress'];
+            $order->deliveryMethod = $data['deliveryMethod'];
             $order->paymentMethod = $data['paymentMethod'];
             $order->additionalCost = $data['additionalCost'];
             $order->orderDate = $data['orderDate'];
-            foreach($all_product as $dataaa)
+            foreach($all_product as $d)
             {
+                $name = $d->productId . "_order_qty";
+                $order->$name = $data[$name];
+                $total_price += $d->productSellPrice * $data[$name];
+            }
+            $order->orderPrice = $total_price + $data['additionalCost'];
+            $order->employeeId = Auth::id();
+            $order->save();
+
+            //update product_quantity table
+            $product_qty_user = ProductQuantity::where('employeeId', Auth::id())->first();
+            foreach($all_product as $dt)
+            {
+                $name = $dt->productId . "_order_qty";
+                $column = $dt->productId . "_qty";
+                $product_quantity = ProductQuantity::where('employeeId', Auth::id())->value($column);
+                $total = $product_quantity - $data[$name];
+
+                $product_qty_user->$column = $total;
                 
             }
+            $product_qty_user->save();
 
-            return view('OrderModule.add_order')->with(['user'=> $user, 'product'=> $product]);
+            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $all_product, 'success'=>'New order successfully added!']);
         }
         return redirect('login');
     }
