@@ -130,8 +130,16 @@
                 vertical-align: top;
             }
             .second td{
+                padding: 0.625rem 0.938rem;
+                background-color: white;
+                border: 0.063rem solid #C8C8C8;
                 vertical-align: top;
-                padding-bottom: 1rem;
+            }
+            .second th{
+                color: white;
+                background-color: #FF2667;
+                padding: 0.938rem 0.938rem;
+                font-size: 0.875rem;
             }
             .error{
                 background-color: #ffdbdb;
@@ -274,22 +282,23 @@
                     </table>
                 </div>
                 <div height="auto" width="0.063rem" style="border-left:1px solid #C8C8C8;"></div>
-                <div style="padding-top:2.5rem;">
-                    <table class="second">
+                <div style="padding-top:2.5rem;margin-left:30px;">
+                    <table class="second" border="1">
                         <tr>
-                            <td class="input-title" style="padding-bottom:1rem;padding-left:1rem;">Item</td><td class="input-title center second-right" style="padding-bottom:1rem;">Quantity</td>
+                        <th style="border-right: 0.063rem solid white">No.</th><th style="border-right: 0.063rem solid white">Item</th><th>Quantity</th>
                         </tr>
                         @if($product->count() < 1)
                         <tr>
-                            <td colspan="2" class="center second-right" style="color:Dimgrey;padding:1rem;">No products found</td>
+                            <td colspan="3" class="center" style="color:Dimgrey;padding:1rem;">No products found</td>
                         </tr>
                         @endif
                         @foreach($product as $i => $product)
                         <tr>
+                            <td class="center">{{$i +1}}</td>
                             @php
                                 $product_qty_col = $product->productId . "_order_qty";
                             @endphp
-                            <td style="padding-right:5rem;padding-left:1rem;">{{$i +1}}) {{$product->productName}}</td><td class="second-right"><input style="width:6.25rem;" required type="number" name="{{$product_qty_col}}" value="0"></td>
+                            <td>{{$product->productName}}</td><td><input style="width:6.25rem;" required type="number" name="{{$product_qty_col}}" value="0" onchange="validateStock('{{$product->productId}}')"></td>
                         </tr>
                         @endforeach
                     </table>   
@@ -319,7 +328,34 @@
                             window.location.href = link;
                         }
                     });
-            });                  
+            });
+            
+            function validateStock(id){
+                
+                var name = id + "_order_qty";
+
+                $.ajax({
+                    data: {
+                        id_ : id
+                    },
+                    url: "{{route('ajaxValidateQuantityStock')}}",
+                    type: "POST",
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function (data) {
+                        
+                        if($('input[name='+ name + ']').val() > data)
+                        {
+                            alert("The product is out of stock!");
+                            $('input[name='+ name + ']').val('0');
+                            $('input[name='+ name + ']').focus();
+                        }
+
+                    },
+                });
+            }
         </script>
 
 

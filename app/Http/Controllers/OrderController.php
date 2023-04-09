@@ -108,15 +108,26 @@ class OrderController extends Controller
                 $name = $dt->productId . "_order_qty";
                 $column = $dt->productId . "_qty";
                 $product_quantity = ProductQuantity::where('employeeId', Auth::id())->value($column);
-                $total = $product_quantity - $data[$name];
-
-                $product_qty_user->$column = $total;
                 
+                $total = $product_quantity - $data[$name];
+                $product_qty_user->$column = $total;              
             }
             $product_qty_user->save();
 
             return redirect()->route('view_order_list')->with(['user'=> $user, 'product'=> $all_product, 'success'=>'New order successfully added!']);
         }
         return redirect('login');
+    }
+
+    //AJAX
+
+    public function validateQuantityStock(Request $request) {
+       
+        $id = $request->id_;
+        $col = $id . "_qty";
+       
+        $product_qty = ProductQuantity::where('employeeId',Auth::id())->first();
+
+        return response()->json($product_qty->$col);
     }
 }
