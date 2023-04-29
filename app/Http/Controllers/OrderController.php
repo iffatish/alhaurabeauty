@@ -93,8 +93,10 @@ class OrderController extends Controller
             $order->orderDate = $data['orderDate'];
             foreach($all_product as $d)
             {
-                $name = $d->productId . "_order_qty";
-                $order->$name = $data[$name];
+                $product_qty = $d->productId . "_order_qty";
+                $product_price = $d->productId . "_order_price";
+                $order->$product_qty = $data[$name];
+                $order->$product_price = $d->productSellPrice;
                 $total_price += $d->productSellPrice * $data[$name];
             }
             $order->orderPrice = $total_price + $data['additionalCost'];

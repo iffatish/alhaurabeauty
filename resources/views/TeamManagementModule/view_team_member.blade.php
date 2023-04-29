@@ -232,24 +232,26 @@
         <div class="content">
             <table width="100%">
                 <tr>
-                    <th style="border-right: 0.063rem solid white">No.</th>
+                    <th width="10%" style="border-right: 0.063rem solid white">No.</th>
                     <th style="border-right: 0.063rem solid white">Name</th>
                     <th style="border-right: 0.063rem solid white">Position</th>
                     @if(Auth::id() == $team->teamLeader)
                         <th width="17%" style="border-right: 0.063rem solid white">Sales Report</th>
+                        <th width="12%">Remove</th>
                     @endif
-                    <th width="12%">Remove</th>
                 </tr>
                 @if($teamMember)
                     @foreach($teamMember as $i=> $teamMember)
                     <tr class="team">
                         <td style="padding: 0;text-align:center; border-right: 0.063rem solid #E8E8E8">{{$i + 1}}</td>
                         <td style="border-right: 0.063rem solid #E8E8E8">{{$teamMember->userName}} @if($i == 0)<span style="color: #FF2667">(LEADER)</span>@endif</td>
-                        <td style="border-right: 0.063rem solid #E8E8E8">{{$teamMember->userPosition}}</td>
                         @if(Auth::id() == $team->teamLeader)
+                            <td style="border-right: 0.063rem solid #E8E8E8">{{$teamMember->userPosition}}</td>
                             <td class="view" style="padding: 0;text-align:center; border-right: 0.063rem solid #E8E8E8"><a href="">view</a></td>
+                            <td class="view" style="padding: 0;text-align:center;"><a href=""><i class="fa fa-user-minus"></i></a></td>
+                        @else
+                            <td style="padding: 0;text-align:center;">{{$teamMember->userPosition}}</td>
                         @endif
-                        <td class="view" style="padding: 0;text-align:center;"><a href=""><i class="fa fa-user-minus"></i></a></td>
                     </tr>
                     @endforeach
                 @else

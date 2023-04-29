@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('priceMasterAgent', 8, 2);
             $table->decimal('priceAgent', 8, 2);
             $table->decimal('priceDropship', 8, 2);
+            $table->integer('status_data')->default(1);
         });
     }
 

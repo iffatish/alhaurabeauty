@@ -207,11 +207,14 @@ class TeamController extends Controller
             $data = $request->all();
 
             $teamMember = Team::where('teamId', $request->teamId)->value('teamMember');
+            $memberNum = Team::where('teamId', $request->teamId)->value('memberNum');
             $updated_teamMember = $teamMember .",".$data['teamMemberId'];
+            $memberNum += 1;
 
             $saved = Team::where('teamId', $request->teamId)
                         ->update([
-                            'teamMember' => $updated_teamMember
+                            'teamMember' => $updated_teamMember,
+                            'memberNum' => $memberNum
                         ]);
 
             $user = User::where('id', Auth::id())->first();

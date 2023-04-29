@@ -19,7 +19,7 @@ class ItemController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
+            $product = Product::where('status_data', 1)->get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
             
             return view('ItemManagementModule.view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock]);
@@ -82,10 +82,14 @@ class ItemController extends Controller
             //Add column in restock_information table
             $statementt = "ALTER TABLE restock_information ADD ".$new_product->productId."_restock_qty INT DEFAULT 0";
             DB::statement($statementt);
+            $statementt_1 = "ALTER TABLE restock_information ADD ".$new_product->productId."_restock_price DOUBLE DEFAULT 0";
+            DB::statement($statementt_1);
 
             //Add column in order table
             $statementtt = "ALTER TABLE order_information ADD ".$new_product->productId."_order_qty INT DEFAULT 0";
             DB::statement($statementtt);
+            $statementtt_1 = "ALTER TABLE order_information ADD ".$new_product->productId."_order_price DOUBLE DEFAULT 0";
+            DB::statement($statementtt_1);
 
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
@@ -229,9 +233,11 @@ class ItemController extends Controller
             $restock->restockDate = $request->restockDate;
             foreach($all_product as $dataaa)
             {
-                $name = $dataaa->productId . "_restock_qty";
-                $restock->$name = $data[$name];
-                $total_price += $dataaa->$search * $data[$name];
+                $product_qty = $dataaa->productId . "_restock_qty";
+                $product_price = $dataaa->productId . "_restock_price";
+                $restock->$product_qty = $data[$product_qty];
+                $restock->$product_price = $dataaa->$search;
+                $total_price += $dataaa->$search * $data[$product_qty];
             }
             $restock->restockPrice = $total_price;
             $restock->employeeId = Auth::id();
@@ -305,27 +311,12 @@ class ItemController extends Controller
                     $product_restock->push($data);
                 }
             }
-            
-            $split_position = preg_split("/[\s,]+/", $user->userPosition);
-            $capitalize_word = array();
-            foreach($split_position as $dataa)
-            {
-                array_push($capitalize_word,ucfirst($dataa));
-            }
-
-            $searchPrice = "price";
-
-            foreach($capitalize_word as $d)
-            {
-                $searchPrice .= $d; 
-            }
 
             return view('ItemManagementModule.view_restock_details')->with([
                 'user'=> $user, 
                 'restock'=> $restock, 
                 'total_items' => $total_items,
-                'product_restock' => $product_restock,
-                'searchPrice' => $searchPrice
+                'product_restock' => $product_restock
             ]);
         }
         return redirect('login');

@@ -205,10 +205,11 @@
                         <tr>
                             <td style="text-align:center;border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
                             <td style="border-right: 0.063rem solid #E8E8E8">{{$data->productName}}</td>
-                            <td style="text-align:right;border-right: 0.063rem solid #E8E8E8">{{$data->$searchPrice}}</td>
+                            @php $col_price = $data->productId . "_restock_price"; @endphp
+                            <td style="text-align:right;border-right: 0.063rem solid #E8E8E8">{{number_format($restock->$col_price, 2, '.', '')}}</td>
                             @php $col = $data->productId . "_restock_qty"; @endphp
                             <td style="text-align:center;border-right: 0.063rem solid #E8E8E8">{{$restock->$col}}</td>
-                            @php $cost = $restock->$col * $data->$searchPrice @endphp
+                            @php $cost = $restock->$col * $restock->$col_price @endphp
                             <td style="text-align:right;">{{number_format($cost, 2, '.', '')}}</td>
                         </tr>
                     @endforeach
