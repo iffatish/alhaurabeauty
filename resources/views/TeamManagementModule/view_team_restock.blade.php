@@ -231,7 +231,7 @@
                 </tr>
                 @if($team_restock->count() < 1)
                     <tr>
-                        <td colspan="6" class="center">No results found</td>
+                        <td colspan="6" class="center" style="color:Dimgrey;">No results found</td>
                     </tr>
                 @endif
                 @foreach($team_restock as $i => $data)
