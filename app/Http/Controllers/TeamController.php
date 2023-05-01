@@ -297,8 +297,8 @@ class TeamController extends Controller
                 $team_restock_price = RestockInformation::where('employeeId',$data)
                                                         ->whereMonth('restockDate', Carbon::now()->month)
                                                         ->sum('restockPrice');
-
-                $total_restock[++$k] = [$member->userName, number_format((double)($team_restock_price), 2, '.', '')];
+                                                                                           
+                $total_restock[++$k] = [$member->userName, (double)($team_restock_price)];
             }
         
             $month = Carbon::now()->format('F');

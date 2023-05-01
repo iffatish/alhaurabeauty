@@ -186,7 +186,7 @@ class ItemController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
+            $product = Product::where('status_data', 1)->get();
             
             return view('ItemManagementModule.restock_product')->with(['user'=> $user, 'product'=> $product]);
         }

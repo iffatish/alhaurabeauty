@@ -24,6 +24,9 @@
                     },
                 };
 
+                var formatter = new google.visualization.NumberFormat({decimalSymbol: '.'});
+                formatter.format(data, 1);
+
                 var chart = new google.charts.Bar(document.getElementById('restockChart'));
 
                 chart.draw(data, google.charts.Bar.convertOptions(options));
