@@ -352,6 +352,15 @@
                             $('input[name='+ name + ']').val('0');
                             $('input[name='+ name + ']').focus();
                         }
+                        else if($('input[name='+ name + ']').val() < 0)
+                        {
+                            alert("The quantity must be a positive value!");
+                            $('input[name='+ name + ']').val('0');
+                            $('input[name='+ name + ']').focus();
+                        }
+                        else{
+
+                        }
 
                     },
                 });

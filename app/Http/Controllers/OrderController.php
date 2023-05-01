@@ -17,7 +17,7 @@ class OrderController extends Controller
         {
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
-            $order = OrderInformation::where('employeeId', Auth::id())->get();
+            $order = OrderInformation::where('employeeId', Auth::id())->orderBy('orderDate','DESC')->get();
 
             //count total items
             $total_items = array();
@@ -95,9 +95,9 @@ class OrderController extends Controller
             {
                 $product_qty = $d->productId . "_order_qty";
                 $product_price = $d->productId . "_order_price";
-                $order->$product_qty = $data[$name];
+                $order->$product_qty = $data[$product_qty];
                 $order->$product_price = $d->productSellPrice;
-                $total_price += $d->productSellPrice * $data[$name];
+                $total_price += $d->productSellPrice * $data[$product_qty];
             }
             $order->orderPrice = $total_price + $data['additionalCost'];
             $order->employeeId = Auth::id();
