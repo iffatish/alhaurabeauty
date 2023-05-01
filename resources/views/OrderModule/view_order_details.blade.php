@@ -5,7 +5,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link> 
@@ -58,6 +58,9 @@
             .dropdown:hover .dropdown-content {
                 display: block;
             }
+            .menu a{
+                color: black;
+            }
             .menu a:link{
                 text-decoration:none;
                 font-weight: bold;
@@ -76,11 +79,10 @@
                 justify-content: space-between;
             }
             .menu a{
-                margin-top: 1.875rem;
-                margin-left: 3.125rem;
-                color: black;
+                margin-top:1.875rem;
+                margin-left:3.125rem;
             }
-            .stock-btn button{
+            .order-btn button{
                 color: white;
                 background-color: #FF2667;
                 border: none;
@@ -91,53 +93,41 @@
                 margin-left: 0.938rem;
             }
             .content{
-                width: 60%;
+                width: 70%;
                 margin: auto;
                 margin-top: 3.75rem;
                 margin-bottom: 6.25rem;
+                background-color:white;
+                display: flex;
+                padding: 1.875rem;
+                border-radius: 1.875rem;
+                flex-direction: row;
             }
-            .center{
-                text-align: center;
-            }
-            table{
+            .content table{
                 border-collapse: collapse;
             }
-            td{
-                padding-top: 0.625rem;
-                padding-bottom: 0.625rem;
-                background-color: white;
+            .first th{
+                color: #FF2667;
+                font-size: 1.5rem;
+                padding-bottom: 0.938rem;
             }
-            th{
+            .first td{
+                padding-bottom: 0.938rem;
+                padding-right: 2.5rem;
+                border-right: 1px solid #C8C8C8;
+                vertical-align: top;
+            }
+            .second td{
+                padding: 0.625rem 0.938rem;
+                background-color: white;
+                border: 0.063rem solid #C8C8C8;
+                vertical-align: top;
+            }
+            .second th{
                 color: white;
                 background-color: #FF2667;
                 padding: 0.938rem 0.938rem;
-            }
-            .view a{
-                color: #FF2667;
-            }
-            .view a:link{
-                text-decoration:none;
-                font-weight: bold;
-            }
-            .view a:hover{
-                text-decoration: underline;
-            }
-            .view a:active {
-                text-decoration: #FF2667;
-            }
-            .message{
-                position:fixed;
-                background-color:#C1E1C1;
-                color:#023020;
-                padding:15px;
-                box-shadow: 0 0.125rem 0.063rem black;
-            }
-            .message a:hover{cursor:pointer;}
-            .message a{
-                color: black;
-            }
-            .order td{
-                vertical-align: top;
+                font-size: 0.875rem;
             }
         </style>
     </head>
@@ -166,46 +156,73 @@
             </div>         
         </div>
 
-        @if ($message = Session::get('success'))
-        <div class="message" id="message">
-            <span>{{ $message }}</span>
-            <a href="javascript:close()"><i class="fa fa-times"></i></a>
-        </div>
-        @endif
-        
-        <div class="stock-btn" style="margin: 3.125rem 6.25rem">
-            <a href="{{route('view_order_list')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">View Order</button></a>
-            <a href="{{route('add_order')}}"><button>Add Order</button></a>
-            
+        <div class="order-btn" style="margin: 3.125rem 0 1.25rem 6.25rem;">
+            <a href="{{route('view_order_list')}}"><button style="color: white;background-color:#FF2667;">Back to Order List</button></a>
         </div>
 
         <div class="content">
-            <table width="100%">
-                <tr>
-                    <th width="10%" style="border-right: 0.063rem solid white">No.</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Customer Name</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Order Date</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">No. of items</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Order Price (RM)</th>
-                    <th width="20%">Details</th>
-                </tr>
-                @if($order->count() > 0)
-                    @foreach($order as $i => $data)
-                    <tr class="order">
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
-                        <td style="border-right: 0.063rem solid #E8E8E8;padding-left:0.5rem;">{{$data->custName}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{date('d-m-Y', strtotime($data->orderDate))}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$total_items[$i]}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->orderPrice}}</td>
-                        <td class="view center"><a href="{{route('view_order_details', ['orderId' => $data->orderId])}}">view</a></td>
+            <div width="30%" style="margin-right: 1.875rem;">
+                <table class="first">
+                    <tr>
+                        <th style="text-align:left;">Order Details</th>
                     </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Order Date : <b>{{date('d-m-Y', strtotime($order->orderDate))}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Name : <b>{{$order->custName}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number : <b>{{$order->custPhoneNum}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Address : <b>{{$order->deliveryAddress}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Method : <b>{{$order->deliveryMethod}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Payment Method : <b>{{$order->paymentMethod}}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Number of Items Ordered : <b>{{$total_items}}</b></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding-top:2.5rem">
+                <table class="second" width="100%">
+                    <tr>
+                        <th style="border-right: 0.063rem solid white">No.</th>
+                        <th style="border-right: 0.063rem solid white">Item</th>
+                        <th style="border-right: 0.063rem solid white">Price Per Unit (RM)</th>
+                        <th style="border-right: 0.063rem solid white">Quantity</th>
+                        <th style="border-right: 0.063rem solid white">Cost (RM)</th>
+                    </tr>
+                    @foreach($product_ordered as $i => $data)
+                        <tr>
+                            <td style="text-align:center;border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
+                            <td style="border-right: 0.063rem solid #E8E8E8">{{$data->productName}}</td>
+                            @php $col_price = $data->productId . "_order_price"; @endphp
+                            <td style="text-align:right;border-right: 0.063rem solid #E8E8E8">{{number_format($order->$col_price, 2, '.', '')}}</td>
+                            @php $col = $data->productId . "_order_qty"; @endphp
+                            <td style="text-align:center;border-right: 0.063rem solid #E8E8E8">{{$order->$col}}</td>
+                            @php $cost = $order->$col * $order->$col_price @endphp
+                            <td style="text-align:right;">{{number_format($cost, 2, '.', '')}}</td>
+                        </tr>
                     @endforeach
-                @else
-                <tr class="center">
-                    <td colspan="6" style="color:Dimgrey;">No results found</td>
-                </tr>
-                @endif
-            </table>
+                        <tr>
+                            <td style="text-align:right;" colspan="4">Additional Cost (RM)</td>
+                            <td style="text-align:right;">{{$order->additionalCost}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;" colspan="4">Total Order Price (RM)</td>
+                            <td style="text-align:right;">{{$order->orderPrice}}</td>
+                        </tr>
+                </table>
+            </div>  
         </div>
 
         <script>
@@ -224,12 +241,7 @@
                             window.location.href = link;
                         }
                     });
-            });
-            
-            function close() {
-                var x = document.getElementById("message");
-                x.style.display = "none";
-            }
+            });                  
         </script>
 
 

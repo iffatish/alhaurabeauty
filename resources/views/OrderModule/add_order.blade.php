@@ -298,7 +298,7 @@
                             @php
                                 $product_qty_col = $product->productId . "_order_qty";
                             @endphp
-                            <td>{{$product->productName}}</td><td><input style="width:6.25rem;" required type="number" name="{{$product_qty_col}}" value="0" onchange="validateStock('{{$product->productId}}')"></td>
+                            <td>{{$product->productName}}</td><td><input style="width:6.25rem;" required type="number" min="0" name="{{$product_qty_col}}" value="0" onchange="validateStock('{{$product->productId}}')"></td>
                         </tr>
                         @endforeach
                     </table>   
@@ -351,15 +351,6 @@
                             alert("The product is out of stock!");
                             $('input[name='+ name + ']').val('0');
                             $('input[name='+ name + ']').focus();
-                        }
-                        else if($('input[name='+ name + ']').val() < 0)
-                        {
-                            alert("The quantity must be a positive value!");
-                            $('input[name='+ name + ']').val('0');
-                            $('input[name='+ name + ']').focus();
-                        }
-                        else{
-
                         }
 
                     },

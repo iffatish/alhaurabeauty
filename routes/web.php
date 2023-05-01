@@ -108,4 +108,6 @@ Route::controller(OrderController::class)->group(function(){
 
     Route::post('validate-quantity-stock','validateQuantityStock')->name('ajaxValidateQuantityStock');
 
+    Route::get('view_order_details', 'viewOrderDetails')->name('view_order_details');
+
 });

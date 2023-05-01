@@ -121,6 +121,38 @@ class OrderController extends Controller
         return redirect('login');
     }
 
+    public function viewOrderDetails(Request $request)
+    {
+        if(Auth::check())
+        {
+            $orderId = $request->orderId;
+            $order = OrderInformation::where('orderId', $orderId)->first();
+            
+            $user = User::where('id', Auth::id())->first();
+            $product = Product::get();
+
+            $total_items = 0;
+            $product_ordered = collect();
+            foreach($product as $data)
+            {
+                $col = $data->productId . "_order_qty";
+                $total_items += $order->$col;
+
+                if($order->$col != 0){
+                    $product_ordered->push($data);
+                }
+            }
+
+            return view('OrderModule.view_order_details')->with([
+                                                            'user'=> $user,
+                                                            'order'=> $order, 
+                                                            'orderId' => $order->orderId,
+                                                            'total_items' => $total_items,
+                                                            'product_ordered' => $product_ordered
+                                                            ]);
+        }
+        return redirect('login');
+    }
     //AJAX
 
     public function validateQuantityStock(Request $request) {

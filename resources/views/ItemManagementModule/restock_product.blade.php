@@ -276,7 +276,7 @@
                         @php
                             $product_qty_col = $product->productId . "_restock_qty";
                         @endphp
-                        <td style="padding-left: 3.125rem;">{{$i +1}}) {{$product->productName}}</td><td class="right" style="padding-right:5.063rem;"><input style="width:6.25rem;" required type="number" name="{{$product_qty_col}}" value="0"></td>
+                        <td style="padding-left: 3.125rem;">{{$i +1}}) {{$product->productName}}</td><td class="right" style="padding-right:5.063rem;"><input style="width:6.25rem;" required type="number" min="0" name="{{$product_qty_col}}" value="0"></td>
                     </tr>
                     @endforeach
                     <tr>
