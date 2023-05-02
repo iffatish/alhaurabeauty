@@ -58,6 +58,9 @@
             .dropdown:hover .dropdown-content {
                 display: block;
             }
+            a{
+                color: black;
+            }
             .menu a:link{
                 text-decoration:none;
                 font-weight: bold;
@@ -76,9 +79,8 @@
                 justify-content: space-between;
             }
             .menu a{
-                margin-top: 1.875rem;
-                margin-left: 3.125rem;
-                color: black;
+                margin-top:1.875rem;
+                margin-left:3.125rem;
             }
             .stock-btn button{
                 color: white;
@@ -91,10 +93,10 @@
                 margin-left: 0.938rem;
             }
             .content{
-                width: 60%;
+                width: 50%;
                 margin: auto;
-                margin-top: 3.75rem;
-                margin-bottom: 6.25rem;
+                margin-top: 60px;
+                margin-bottom: 100px;
             }
             .center{
                 text-align: center;
@@ -103,41 +105,94 @@
                 border-collapse: collapse;
             }
             td{
-                padding-top: 0.625rem;
-                padding-bottom: 0.625rem;
+                padding-top: 10px;
+                padding-bottom: 10px;
                 background-color: white;
             }
             th{
-                color: white;
-                background-color: #FF2667;
-                padding: 0.938rem 0.938rem;
-            }
-            .view a{
+                padding: 15px 0px;
+                font-size: 24px;
                 color: #FF2667;
+                background-color: white;
+                text-align: left;
+                padding-left: 50px;
             }
-            .view a:link{
-                text-decoration:none;
+            th:first-of-type {
+                border-top-left-radius: 30px;
+            }
+            th:last-of-type{
+                border-top-right-radius: 30px;
+            }
+            tr:last-of-type td:first-of-type {
+                border-bottom-left-radius: 30px;
+            }
+            tr:last-of-type td:last-of-type {
+                border-bottom-right-radius: 30px;
+            }
+            .input-title{
+                padding-left: 50px;
                 font-weight: bold;
             }
-            .view a:hover{
-                text-decoration: underline;
+            input[type=text], input[type=number] {
+                width: 300px;
+                height: 30px;
+                padding: 5px 5px;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
             }
-            .view a:active {
+            input[type=submit]{
+                font-family: 'Open Sans', sans-serif;
+                color: white;
+                background-color: #FF2667;
+                border: none;
+                padding: 15px 0;
+                font-weight: bold;
+                box-shadow: 0px 2px 1px black;
+                cursor: pointer;
+                width: 300px;
+                border-radius: 4px;
+                margin-top:5px;
+            }
+            input[type=file]{
+                font-family: 'Open Sans', sans-serif;
+                width: 300px;
+                height: 30px;
+                padding: 5px 5px;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            .back{
+                font-size:12px;
+            }
+            .back a{
+                text-decoration: none;
+            }
+            .back a:link{
+                text-decoration:none;
+            }
+            .back a:hover{
+                color: #FF2667;
+            }
+            .back a:active {
                 text-decoration: #FF2667;
             }
-            .message{
-                position:fixed;
-                background-color:#C1E1C1;
-                color:#023020;
-                padding:15px;
-                box-shadow: 0 0.125rem 0.063rem black;
+            .save{
+                font-family: 'Open Sans', sans-serif;
+                color: white;
+                background-color: #FF2667;
+                border: none;
+                padding: 10px 30px;
+                box-shadow: 0px 2px 1px black;
+                cursor: pointer;
+                width: 300px;
+                border-radius: 4px;
             }
-            .message a:hover{cursor:pointer;}
-            .message a{
-                color: black;
-            }
-            .order td{
-                vertical-align: top;
+            .image{
+                border: 1px solid #dfdfdf;
             }
             .current-user{
                 padding-right: 1.563rem;
@@ -152,9 +207,9 @@
                 <img class="logo" src="images/logoalhaura.jpg" height="80" width="auto">
                 <div class="menu">
                     <a href="{{route('dashboard')}}">HOME</a>
-                    <a href="{{route('view_order_list')}}" style="color:#FF2667">ORDER</a>
+                    <a href="{{route('view_order_list')}}">ORDER</a>
                     <a href="">REPORT</a>
-                    <a href="{{route('view_stock')}}">STOCK</a>
+                    <a href="{{route('view_stock')}}" style="color:#FF2667">STOCK</a>
                     @if($user->userPosition != "HQ")
                     <a href="{{route('view_team_list')}}">TEAM</a>
                     @endif
@@ -171,46 +226,18 @@
             </div>         
         </div>
 
-        @if ($message = Session::get('success'))
-        <div class="message" id="message">
-            <span>{{ $message }}</span>
-            <a href="javascript:close()"><i class="fa fa-times"></i></a>
-        </div>
-        @endif
-        
-        <div class="stock-btn" style="margin: 3.125rem 6.25rem">
-            <a href="{{route('view_order_list')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">View Order</button></a>
-            <a href="{{route('add_order')}}"><button>Add Order</button></a>
-            
+        <div class="stock-btn" style="margin: 50px 100px">
+            <a href="{{route('view_stock')}}"><button>View Products</button></a>
+            @if($user->userPosition == "HQ")
+                <a href="{{route('add_product')}}"><button>Add New Product</button></a>
+                <a href="{{route('view_update_position_price')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Update Position Price</button></a>
+            @endif
+            <a href="{{route('restock_product')}}"><button>Restock</button></a>
+            <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
         </div>
 
         <div class="content">
-            <table width="100%">
-                <tr>
-                    <th width="10%" style="border-right: 0.063rem solid white">No.</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Customer Name</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Order Date</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">No. of items</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Order Price (RM)</th>
-                    <th width="20%">Details</th>
-                </tr>
-                @if($order->count() > 0)
-                    @foreach($order as $i => $data)
-                    <tr class="order">
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
-                        <td style="border-right: 0.063rem solid #E8E8E8;padding-left:0.5rem;">{{$data->custName}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{date('d-m-Y', strtotime($data->orderDate))}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$total_items[$i]}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->orderPrice}}</td>
-                        <td class="view center"><a href="{{route('view_order_details', ['orderId' => $data->orderId])}}">view</a></td>
-                    </tr>
-                    @endforeach
-                @else
-                <tr class="center">
-                    <td colspan="6" style="color:Dimgrey;">No results found</td>
-                </tr>
-                @endif
-            </table>
+            
         </div>
 
         <script>
@@ -229,12 +256,7 @@
                             window.location.href = link;
                         }
                     });
-            });
-            
-            function close() {
-                var x = document.getElementById("message");
-                x.style.display = "none";
-            }
+            });                  
         </script>
 
 

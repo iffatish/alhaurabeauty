@@ -167,6 +167,10 @@
                 width: 80%;
                 margin: auto;
             }
+            .current-user{
+                padding-right: 1.563rem;
+                color: dimgrey;
+            }
         </style>
     </head>
     <body>
@@ -185,6 +189,7 @@
                 </div>
             </div>
             <div class="dropdown" style="float:right;">
+                <span class="current-user">{{$user->userName}} ({{$user->userPosition}})</span>
                 <img class="user" src="images/user_pink.png" height="35" width="auto">
 
                 <div id="myDropdown" class="dropdown-content" style="right:0;">

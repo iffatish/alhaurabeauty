@@ -141,6 +141,10 @@
                 box-shadow: 0 0.125rem 0.063rem black;
             }
             .message a:hover{cursor:pointer;}
+            .current-user{
+                padding-right: 1.563rem;
+                color: dimgrey;
+            }
         </style>
     </head>
     <body>
@@ -159,6 +163,7 @@
                 </div>
             </div>
             <div class="dropdown" style="float:right;">
+                <span class="current-user">{{$user->userName}} ({{$user->userPosition}})</span>
                 <img class="user" src="images/user.png" height="35" width="auto">
 
                 <div id="myDropdown" class="dropdown-content" style="right:0;">
@@ -179,6 +184,7 @@
             <a href="{{route('view_stock')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">View Products</button></a>
             @if($user->userPosition == "HQ")
                 <a href="{{route('add_product')}}"><button>Add New Product</button></a>
+                <a href="{{route('view_update_position_price')}}"><button>Update Position Price</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>

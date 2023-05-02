@@ -64,6 +64,8 @@ Route::controller(ItemController::class)->group(function(){
 
     Route::get('view_restock_details', 'viewRestockDetails')->name('view_restock_details');
 
+    Route::get('view_update_position_price', 'viewUpdatePositionPrice')->name('view_update_position_price');
+
 });
 
 Route::controller(TeamController::class)->group(function(){

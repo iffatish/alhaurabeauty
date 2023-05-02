@@ -322,4 +322,16 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    public function viewUpdatePositionPrice(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            $product = Product::where('status_data', 1)->get();
+            
+            return view('ItemManagementModule.update_position_price')->with(['user'=> $user, 'product'=> $product]);
+        }
+        return redirect('login');
+    }
+
 }

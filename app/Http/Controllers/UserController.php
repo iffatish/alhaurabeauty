@@ -91,7 +91,7 @@ class UserController extends Controller
         {
             $user = User::where('id', Auth::id())->first();
 
-            return view('UserModule.home')->with('userPosition', $user->userPosition);
+            return view('UserModule.home')->with('user', $user);
         }
         return redirect('login');
     }

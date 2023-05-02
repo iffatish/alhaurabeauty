@@ -93,6 +93,10 @@
                 box-shadow: 0 0.125rem 0.063rem black;
             }
             .message a:hover{cursor:pointer;}
+            .current-user{
+                padding-right: 1.563rem;
+                color: dimgrey;
+            }
         </style>
     </head>
     <body>
@@ -105,12 +109,13 @@
                     <a href="{{route('view_order_list')}}">ORDER</a>
                     <a href="">REPORT</a>
                     <a href="{{route('view_stock')}}">STOCK</a>
-                    @if($userPosition != "HQ")
+                    @if($user->userPosition != "HQ")
                     <a href="{{route('view_team_list')}}">TEAM</a>
                     @endif
                 </div>
             </div>
             <div class="dropdown" style="float:right;">
+                <span class="current-user">{{$user->userName}} ({{$user->userPosition}})</span>
                 <img class="user" src="images/user.png" height="35" width="auto">
 
                 <div id="myDropdown" class="dropdown-content" style="right:0;">
