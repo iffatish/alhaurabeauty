@@ -134,7 +134,7 @@
                 font-weight: bold;
             }
             input[type=text], input[type=number] {
-                width: 300px;
+                width: 200px;
                 height: 30px;
                 padding: 5px 5px;
                 display: inline-block;
@@ -151,7 +151,7 @@
                 font-weight: bold;
                 box-shadow: 0px 2px 1px black;
                 cursor: pointer;
-                width: 300px;
+                width: 200px;
                 border-radius: 4px;
                 margin-top:5px;
             }
@@ -188,7 +188,7 @@
                 padding: 10px 30px;
                 box-shadow: 0px 2px 1px black;
                 cursor: pointer;
-                width: 300px;
+                width: 200px;
                 border-radius: 4px;
             }
             .image{
@@ -230,14 +230,58 @@
             <a href="{{route('view_stock')}}"><button>View Products</button></a>
             @if($user->userPosition == "HQ")
                 <a href="{{route('add_product')}}"><button>Add New Product</button></a>
-                <a href="{{route('view_update_position_price')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Update Position Price</button></a>
+                <a href="{{route('view_position_discount')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Position Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
         </div>
 
         <div class="content">
-            
+        <table width="100%">
+                <form method="post" action="{{route('update_position_discount')}}" enctype="multipart/form-data" id="form_update">
+                @csrf
+                    <tr>
+                        <th>Update Position Discount</th><th></th><th></th>
+                    </tr>
+                    <tr>
+                        <td class="input-title">HQ Discount</td><td class="center"><input required name="discountHQ" type="number" step=".01" value="{{$position_discount->discountHQ ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Master Leader Discount</td><td class="center"><input required name="discountMasterLeader" type="number" step=".01" value="{{$position_discount->discountMasterLeader ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Leader Discount</td><td class="center"><input required name="discountLeader" type="number" step=".01" value="{{$position_discount->discountLeader ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Master Stockist Discount</td><td class="center"><input required name="discountMasterStockist" type="number" step=".01" value="{{$position_discount->discountMasterStockist ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Stockist Discount</td><td class="center"><input required name="discountStockist" type="number" step=".01" value="{{$position_discount->discountStockist ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Master Agent Discount</td><td class="center"><input required name="discountMasterAgent" type="number" step=".01" value="{{$position_discount->discountMasterAgent ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Agent Discount</td><td class="center"><input required name="discountAgent" type="number" step=".01" value="{{$position_discount->discountAgent ?? ''}}"></td><td>%</td>
+                    </tr>
+                    <tr>
+                        <td class="input-title">Dropship Discount</td><td class="center"><input required name="discountDropship" type="number" step=".01" value="{{$position_discount->discountDropship ?? ''}}"></td><td>%</td>
+                    </tr>                    
+                    <tr>
+                        <td colspan="3">@if ($errors->any())
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li style="color:red;">{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                    <td class="input-title"></td><td style="padding-bottom:40px;"class="center back"><button class="save" type="submit" form="form_update" value="Save"><i class='fa fa-save'></i>&nbsp;&nbsp;Save</button><br><br><a href="{{route('view_position_discount')}}">Cancel</a></td><td></td>
+                    </tr>
+                </form>
+            </table>
         </div>
 
         <script>

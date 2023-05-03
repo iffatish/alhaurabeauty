@@ -95,51 +95,55 @@
             .content{
                 width: 50%;
                 margin: auto;
-                margin-top: 3.75rem;
-                margin-bottom: 6.25rem;
+                margin-top: 60px;
+                margin-bottom: 100px;
             }
             .center{
                 text-align: center;
+            }
+            .right{
+                text-align: right;
+                padding-right: 50px;
             }
             table{
                 border-collapse: collapse;
             }
             td{
-                padding-top: 0.625rem;
-                padding-bottom: 0.625rem;
+                padding-top: 10px;
+                padding-bottom: 10px;
                 background-color: white;
             }
             th{
-                padding: 0.938rem 0;
-                font-size: 1.5rem;
+                padding: 15px 0px;
+                font-size: 24px;
                 color: #FF2667;
                 background-color: white;
                 text-align: left;
-                padding-left: 3.125rem;
+                padding-left: 50px;
             }
             th:first-of-type {
-                border-top-left-radius: 1.875rem;
+                border-top-left-radius: 30px;
             }
             th:last-of-type{
-                border-top-right-radius: 1.875rem;
+                border-top-right-radius: 30px;
             }
             tr:last-of-type td:first-of-type {
-                border-bottom-left-radius: 1.875rem;
+                border-bottom-left-radius: 30px;
             }
             tr:last-of-type td:last-of-type {
-                border-bottom-right-radius: 1.875rem;
+                border-bottom-right-radius: 30px;
             }
             .input-title{
-                padding-left: 3.125rem;
+                padding-left: 50px;
                 font-weight: bold;
             }
             input[type=text], input[type=number] {
-                width: 18.75rem;
-                height: 1.875rem;
-                padding: 0.313rem 0.313rem;
+                width: 300px;
+                height: 30px;
+                padding: 5px 5px;
                 display: inline-block;
-                border: 0.063rem solid #ccc;
-                border-radius: 0.25rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
                 box-sizing: border-box;
             }
             input[type=submit]{
@@ -147,25 +151,26 @@
                 color: white;
                 background-color: #FF2667;
                 border: none;
-                padding: 0.938rem 0;
-                box-shadow: 0 0.125rem 0.063rem black;
+                padding: 15px 0;
+                font-weight: bold;
+                box-shadow: 0px 2px 1px black;
                 cursor: pointer;
-                width: 18.75rem;
-                border-radius: 0.25rem;
-                margin-top:0.313rem;
+                width: 300px;
+                border-radius: 4px;
+                margin-top:5px;
             }
             input[type=file]{
                 font-family: 'Open Sans', sans-serif;
-                width: 18.75rem;
-                height: 1.875rem;
-                padding: 0.313rem 0.313rem;
+                width: 300px;
+                height: 30px;
+                padding: 5px 5px;
                 display: inline-block;
-                border: 0.063rem solid #ccc;
-                border-radius: 0.25rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
                 box-sizing: border-box;
             }
             .back{
-                font-size:0.75rem;
+                font-size:12px;
             }
             .back a{
                 text-decoration: none;
@@ -179,19 +184,23 @@
             .back a:active {
                 text-decoration: #FF2667;
             }
-            .current-user{
-                padding-right: 1.563rem;
-                color: dimgrey;
-            }
-            .update-btn button{
+            .save{
+                font-family: 'Open Sans', sans-serif;
                 color: white;
                 background-color: #FF2667;
                 border: none;
-                padding: 0.625rem 1.875rem;
-                border-radius: 0.25rem;
-                box-shadow: 0 0.125rem 0.063rem black;
+                padding: 10px 30px;
+                box-shadow: 0px 2px 1px black;
                 cursor: pointer;
-                margin-left: 0.938rem;
+                width: 300px;
+                border-radius: 4px;
+            }
+            .image{
+                border: 1px solid #dfdfdf;
+            }
+            .current-user{
+                padding-right: 1.563rem;
+                color: dimgrey;
             }
         </style>
     </head>
@@ -221,80 +230,49 @@
             </div>         
         </div>
 
-        <div class="stock-btn" style="margin: 3.125rem 6.25rem">
+        <div class="stock-btn" style="margin: 50px 100px">
             <a href="{{route('view_stock')}}"><button>View Products</button></a>
             @if($user->userPosition == "HQ")
-                <a href="{{route('add_product')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">Add New Product</button></a>
-                <a href="{{route('view_position_discount')}}"><button>Position Discount</button></a>
+                <a href="{{route('add_product')}}"><button>Add New Product</button></a>
+                <a href="{{route('view_position_discount')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Position Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
         </div>
 
         <div class="content">
-            @if(isset($discount))
-            <table width="100%">
-                <form method="post" action="{{route('product.add')}}" enctype="multipart/form-data">
-                @csrf
+        <table width="100%">
                     <tr>
-                        <th>Add Product</th><th></th>
+                        <th>Position Discount</th><th></th>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Product Name</td><td width="40%" class="center"><input required name="productName" type="text"></td>
+                        <td class="input-title">HQ Discount</td><td class="right">{{$position_discount->discountHQ ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Product Image</td><td class="center"><input required name="productImage" type="file" accept="image/png, image/gif, image/jpeg"></td>
+                        <td class="input-title">Master Leader Discount</td><td class="right">{{$position_discount->discountMasterLeader ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Product Sell Price</td><td class="center"><input required name="productSellPrice" type="number" step=".01"></td>
+                        <td class="input-title">Leader Discount</td><td class="right">{{$position_discount->discountLeader ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">HQ Price</td><td class="center"><input required name="priceHQ" type="number" step=".01"></td>
+                        <td class="input-title">Master Stockist Discount</td><td class="right">{{$position_discount->discountMasterStockist ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Master Leader Price</td><td class="center"><input required name="priceMasterLeader" type="number" step=".01"></td>
+                        <td class="input-title">Stockist Discount</td><td class="right">{{$position_discount->discountStockist ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Leader Price</td><td class="center"><input required name="priceLeader" type="number" step=".01"></td>
+                        <td class="input-title">Master Agent Discount</td><td class="right">{{$position_discount->discountMasterAgent ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Master Stockist Price</td><td class="center"><input required name="priceMasterStockist" type="number" step=".01"></td>
+                        <td class="input-title">Agent Discount</td><td class="right">{{$position_discount->discountAgent ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Stockist Price</td><td class="center"><input required name="priceStockist" type="number" step=".01"></td>
+                        <td class="input-title">Dropship Discount</td><td class="right">{{$position_discount->discountDropship ?? ''}} %</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Master Agent Price</td><td class="center"><input required name="priceMasterAgent" type="number" step=".01"></td>
+                    <td colspan="2" class="stock-btn center" style="padding-bottom: 3.125rem;"><a href="{{route('view_update_position_discount')}}"><button class="update">Update</button></a></td>
                     </tr>
-                    <tr>
-                        <td class="input-title">Agent Price</td><td class="center"><input required name="priceAgent" type="number" step=".01"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Dropship Price</td><td class="center"><input required name="priceDropship" type="number" step=".01"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">@if ($errors->any())
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li style="color:red;">{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td><td class="center back" style="padding-bottom:1.875rem;"><input type="submit" value="+  Add Product"><br><br><a href="{{route('view_stock')}}">Cancel</a></td> 
-                    </tr>    
-                </form>
             </table>
-            @else
-            <div class="center update-btn button" style="background-color: white;padding:30px;">
-                <span>Please update position discount first.</span>
-                <br>
-                <br>
-                <a href="{{route('view_update_position_discount')}}"><button>Update Position Discount&nbsp;&nbsp;<i class='fa fa-arrow-right'></i></button></a>
-            </div>
-            @endif
         </div>
 
         <script>

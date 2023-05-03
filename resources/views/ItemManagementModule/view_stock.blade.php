@@ -184,7 +184,7 @@
             <a href="{{route('view_stock')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">View Products</button></a>
             @if($user->userPosition == "HQ")
                 <a href="{{route('add_product')}}"><button>Add New Product</button></a>
-                <a href="{{route('view_update_position_price')}}"><button>Update Position Price</button></a>
+                <a href="{{route('view_position_discount')}}"><button>Position Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
