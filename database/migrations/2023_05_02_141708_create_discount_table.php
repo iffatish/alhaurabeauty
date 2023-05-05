@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('position_discount', function (Blueprint $table) {
+        Schema::create('discount', function (Blueprint $table) {
             $table->increments('discountId');
             $table->float('discountHQ');
             $table->float('discountMasterLeader');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('position_discount');
+        Schema::dropIfExists('discount');
     }
 };

@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductQuantity;
 use App\Models\RestockInformation;
-use App\Models\PositionDiscount;
+use App\Models\Discount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +33,7 @@ class ItemController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $discount = PositionDiscount::first();
+            $discount = Discount::first();
             
             return view('ItemManagementModule.add_new_product')->with(['user' => $user, 'discount' => $discount]);
         }
@@ -324,31 +324,31 @@ class ItemController extends Controller
         return redirect('login');
     }
 
-    public function viewPositionDiscount(Request $request)
+    public function viewDiscount(Request $request)
     {
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $position_discount = PositionDiscount::first();
+            $discount = Discount::first();
             
-            return view('ItemManagementModule.view_position_discount')->with(['user'=> $user,'position_discount'=> $position_discount]);
+            return view('ItemManagementModule.view_discount')->with(['user'=> $user,'discount'=> $discount]);
         }
         return redirect('login');
     }
 
-    public function viewUpdatePositionDiscount(Request $request)
+    public function viewUpdateDiscount(Request $request)
     {
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $position_discount = PositionDiscount::first();
+            $discount = Discount::first();
             
-            return view('ItemManagementModule.update_position_discount')->with(['user'=> $user, 'position_discount'=> $position_discount]);
+            return view('ItemManagementModule.update_discount')->with(['user'=> $user, 'discount'=> $discount]);
         }
         return redirect('login');
     }
 
-    public function updatePositionDiscount(Request $request)
+    public function updateDiscount(Request $request)
     {
         if(Auth::check())
         {
@@ -366,11 +366,11 @@ class ItemController extends Controller
             $data = $request->all();
 
             $product = Product::where('status_data',1)->get();
-            $discount = PositionDiscount::first();
+            $discount = Discount::first();
 
             if(isset($discount)){
 
-                $saved = PositionDiscount::where('discountId',1) //forever only one row
+                $saved = Discount::where('discountId',1) //forever only one row
                         ->update([
                             'discountHQ' => $data['discountHQ'],
                             'discountMasterLeader' => $data['discountMasterLeader'],
@@ -383,7 +383,7 @@ class ItemController extends Controller
                         ]);
 
             }else{
-                $add_discount = new PositionDiscount;
+                $add_discount = new Discount;
                 $add_discount->discountHQ = $data['discountHQ'];
                 $add_discount->discountMasterLeader = $data['discountMasterLeader'];
                 $add_discount->discountLeader = $data['discountLeader'];
@@ -398,9 +398,9 @@ class ItemController extends Controller
             $user = User::where('id', Auth::id())->first();
 
             if($saved){
-                return redirect()->route('view_position_discount')->with('success', 'Discount successfully updated!');
+                return redirect()->route('view_discount')->with('success', 'Discount successfully updated!');
             }else{
-                return redirect()->route('view_update_position_discount');
+                return redirect()->route('view_update_discount');
             }
         }
         return redirect('login');

@@ -64,11 +64,11 @@ Route::controller(ItemController::class)->group(function(){
 
     Route::get('view_restock_details', 'viewRestockDetails')->name('view_restock_details');
     
-    Route::get('view_position_discount', 'viewPositionDiscount')->name('view_position_discount');
+    Route::get('view_discount', 'viewDiscount')->name('view_discount');
 
-    Route::get('view_update_position_discount', 'viewUpdatePositionDiscount')->name('view_update_position_discount');
+    Route::get('view_update_discount', 'viewUpdateDiscount')->name('view_update_discount');
 
-    Route::post('update_position_discount', 'updatePositionDiscount')->name('update_position_discount');
+    Route::post('update_discount', 'updateDiscount')->name('update_discount');
 
 });
 
