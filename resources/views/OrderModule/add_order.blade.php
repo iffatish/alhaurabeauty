@@ -230,7 +230,7 @@
             
         </div>
 
-        <form id="form_update" method="post" action="{{route('add_order_save')}}">
+        <form id="form_update" onsubmit="return addOrder();" method="post" action="{{route('add_order_save')}}">
         @csrf
         <div class="content">
             <div class="details">
@@ -282,7 +282,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="input-title">Additional Cost (RM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 11rem;" type="number" name="additionalCost" placeholder="Postage or COD fee" value="0"></td>
+                            <td class="input-title">Additional Cost (RM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 11rem;" type="number" name="additionalCost" placeholder="Postage or COD fee" required></td>
                         </tr>
                     </table>
                 </div>
@@ -303,7 +303,7 @@
                             @php
                                 $product_qty_col = $product->productId . "_order_qty";
                             @endphp
-                            <td>{{$product->productName}}</td><td><input style="width:6.25rem;" required type="number" min="0" name="{{$product_qty_col}}" value="0" onchange="validateStock('{{$product->productId}}')"></td>
+                            <td>{{$product->productName}}</td><td><input class="amount" style="width:6.25rem;" required type="number" min="0" name="{{$product_qty_col}}" value="0" onchange="validateStock('{{$product->productId}}')"></td>
                         </tr>
                         @endforeach
                     </table>   
@@ -360,6 +360,24 @@
 
                     },
                 });
+            }
+
+            function addOrder() {
+
+                let total = 0;
+
+                $('.amount').each(function() {
+                    total += $(this).val();
+                })
+
+                if(total == 0)
+                {
+                    alert("Please insert at least one item to add order!");
+                    return false;
+                }
+                else{
+                    return true;
+                }
             }
         </script>
 

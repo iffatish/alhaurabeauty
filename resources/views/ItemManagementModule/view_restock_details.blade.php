@@ -219,7 +219,7 @@
                         </tr>
                     @endforeach
                         <tr>
-                            <td style="text-align:right;" colspan="4">Total Restock Price (RM)</td>
+                            <td style="text-align:right;" colspan="4">Total Restock Price (RM) <br><i style="color:Dimgrey;font-size: 10px;">(Overall price of restocked products)</i></td>
                             <td style="text-align:right;">{{$restock->restockPrice}}</td>
                         </tr>
                 </table>

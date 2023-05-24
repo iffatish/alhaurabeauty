@@ -247,7 +247,15 @@
                         <td style="border-right: 0.063rem solid #E8E8E8">{{$data->getEmployee->userName}}<br>({{$data->getEmployee->userPosition}})</td>
                         <td style="border-right: 0.063rem solid #E8E8E8">
                             @foreach($product_restock[$i] as $j => $data2)
-                                    {{($j+1)}}. {{$data2->productName}} ({{$total_items[$i][$j]}})
+                                    @php
+                                        $col_qty = $data2->productId . "_restock_qty";
+                                        $col_price = $data2->productId . "_restock_price";
+                                        $qty = $data->$col_qty;
+                                        $price = $data->$col_price;
+                                        $calculated_price = $qty * $price;
+                                    @endphp
+
+                                    {{($j+1)}}. {{$data2->productName}} ({{$total_items[$i][$j]}}) - RM {{number_format($calculated_price, 2, '.', '')}}
                                 <br>
                             @endforeach   
                         </td>

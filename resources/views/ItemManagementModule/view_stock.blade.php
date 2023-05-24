@@ -95,7 +95,7 @@
             .content{
                 width: 80%;
                 margin: auto;
-                margin-top: 3.75rem;
+                margin-top: 1.875rem;
                 margin-bottom: 6.25rem;
                 display: flex;
                 flex-wrap: wrap;
@@ -189,6 +189,12 @@
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
         </div>
+
+        @if($product_discount)
+            <div style="background-color: #40bf40;color:white;padding:5px;text-align:center;">
+                <marquee scrollamount="15">>> Discount {{$product_discount->discountName}} {{$product_discount->productDiscount}}% <<</marquee>
+            </div>
+        @endif
 
         <div class="content">
             @if($product->count()>0)

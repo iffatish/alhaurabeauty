@@ -23,8 +23,9 @@ class ItemController extends Controller
             $user = User::where('id', Auth::id())->first();
             $product = Product::where('status_data', 1)->get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
+            $product_discount = ProductDiscount::where('status',1)->first();
             
-            return view('ItemManagementModule.view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock]);
+            return view('ItemManagementModule.view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock, 'product_discount' => $product_discount]);
         }
         return redirect('login');
     }
@@ -56,8 +57,8 @@ class ItemController extends Controller
 
             $pos_discount = PositionDiscount::first();
 
-            if(isset($pos_discount)){
-
+            if($pos_discount)
+            {
                 $priceHQ = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountHQ / 100));
                 $priceMasterLeader = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountMasterLeader / 100));
                 $priceLeader = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountLeader / 100));
@@ -66,6 +67,16 @@ class ItemController extends Controller
                 $priceMasterAgent = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountMasterAgent / 100));
                 $priceAgent = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountAgent / 100));
                 $priceDropship = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountDropship / 100));
+            }
+
+            $active_discount = ProductDiscount::where('status',1)->first();
+
+            if($active_discount)
+            {
+                $priceDiscount = $data['productSellPrice'] - ($data['productSellPrice'] * ($active_discount->productDiscount/ 100));
+            }
+
+            if($pos_discount && $active_discount){
 
                Product::create([
                     'productName' => $data['productName'],
@@ -78,8 +89,42 @@ class ItemController extends Controller
                     'priceStockist' => $priceStockist,
                     'priceMasterAgent' => $priceMasterAgent,
                     'priceAgent' => $priceAgent,
-                    'priceDropship' => $priceDropship
+                    'priceDropship' => $priceDropship,
+                    'productDiscountPrice' => $priceDiscount
                 ]); 
+
+            }else if($pos_discount && !($active_discount)){
+
+                Product::create([
+                    'productName' => $data['productName'],
+                    'productImage' => $imageName,
+                    'productSellPrice' => $data['productSellPrice'],
+                    'priceHQ' => $priceHQ,
+                    'priceMasterLeader' => $priceMasterLeader,
+                    'priceLeader' => $priceLeader,
+                    'priceMasterStockist' => $priceMasterStockist,
+                    'priceStockist' => $priceStockist,
+                    'priceMasterAgent' => $priceMasterAgent,
+                    'priceAgent' => $priceAgent,
+                    'priceDropship' => $priceDropship
+                ]);
+
+            }else if(!($pos_discount) && $active_discount){
+                
+                Product::create([
+                    'productName' => $data['productName'],
+                    'productImage' => $imageName,
+                    'productSellPrice' => $data['productSellPrice'],
+                    'priceHQ' => $data['productSellPrice'],
+                    'priceMasterLeader' => $data['productSellPrice'],
+                    'priceLeader' => $data['productSellPrice'],
+                    'priceMasterStockist' => $data['productSellPrice'],
+                    'priceStockist' => $data['productSellPrice'],
+                    'priceMasterAgent' => $data['productSellPrice'],
+                    'priceAgent' => $data['productSellPrice'],
+                    'priceDropship' => $data['productSellPrice'],
+                    'productDiscountPrice' => $priceDiscount
+                ]);
 
             }else{
 
@@ -120,7 +165,7 @@ class ItemController extends Controller
             $product = Product::get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
 
-            return redirect('view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock, 'success' => 'New product successfully added!']);
+            return redirect('view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock, 'success' => 'New product successfully added!', 'product_discount' => $active_discount]);
         }
         return redirect('login');
     }
@@ -395,7 +440,9 @@ class ItemController extends Controller
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
-            return redirect('view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock, 'success' => 'Product successfully restocked!']);
+            $product_discount = ProductDiscount::where('status',1)->first();
+
+            return redirect('view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock, 'success' => 'Product successfully restocked!', 'product_discount' => $product_discount]);
         }
         return redirect('login');
     }

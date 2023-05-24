@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('deliveryAddress');
             $table->string('deliveryMethod');
             $table->string('paymentMethod');
-            $table->decimal('additionalCost', 8, 2);
+            $table->decimal('additionalCost', 8, 2)->default(0);
             $table->decimal('orderPrice', 8, 2);
             $table->date('orderDate');
             $table->foreignId('employeeId')->references('id')->on('employee')->onDelete('cascade');

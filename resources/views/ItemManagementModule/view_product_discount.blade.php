@@ -260,7 +260,7 @@
                                 @else
                                     @foreach($discount as $bil => $disc)
                                     <tr>
-                                        <td>{{$bil + 1}}.</td><td>{{$disc->discountName}}</td><td>{{$disc->productDiscount}}</td>@if($disc->status == 1)<td style="background-color:#40bf40;color:white;">Active</td>@else<td style="color:red;">Inactive</td>@endif
+                                        <td>{{$bil + 1}}</td><td>{{$disc->discountName}}</td><td>{{$disc->productDiscount}}</td>@if($disc->status == 1)<td style="background-color:#40bf40;color:white;">Active</td>@else<td style="color:red;">Inactive</td>@endif
                                     </tr>
                                     @endforeach
                                 @endif
