@@ -21,7 +21,8 @@ class Product extends Model
         'priceStockist',
         'priceMasterAgent',
         'priceAgent',
-        'priceDropship'
+        'priceDropship',
+        'productDiscountPrice'
     ];
     public $timestamps = false;
 }

@@ -8,7 +8,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductQuantity;
 use App\Models\RestockInformation;
-use App\Models\Discount;
+use App\Models\PositionDiscount;
+use App\Models\ProductDiscount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +34,8 @@ class ItemController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $discount = Discount::first();
             
-            return view('ItemManagementModule.add_new_product')->with(['user' => $user, 'discount' => $discount]);
+            return view('ItemManagementModule.add_new_product')->with('user', $user);
         }
         return redirect('login');
     }
@@ -47,34 +47,57 @@ class ItemController extends Controller
             $request->validate([
                 'productName' => 'required',
                 'productImage' => 'required',
-                'productSellPrice' => 'required',
-                'priceHQ' => 'required',
-                'priceMasterLeader' => 'required',
-                'priceLeader' => 'required',
-                'priceMasterStockist' => 'required',
-                'priceStockist' => 'required',
-                'priceMasterAgent' => 'required',
-                'priceAgent' => 'required',
-                'priceDropship' => 'required'
+                'productSellPrice' => 'required'
             ]);
     
             $data = $request->all();
             $imageName = time().'.'.$request->productImage->extension();
             $request->productImage->move(public_path('images/products'), $imageName);
 
-            Product::create([
-                'productName' => $data['productName'],
-                'productImage' => $imageName,
-                'productSellPrice' => $data['productSellPrice'],
-                'priceHQ' => $data['priceHQ'],
-                'priceMasterLeader' => $data['priceMasterLeader'],
-                'priceLeader' => $data['priceLeader'],
-                'priceMasterStockist' => $data['priceMasterStockist'],
-                'priceStockist' => $data['priceStockist'],
-                'priceMasterAgent' => $data['priceMasterAgent'],
-                'priceAgent' => $data['priceAgent'],
-                'priceDropship' => $data['priceDropship']
-            ]);
+            $pos_discount = PositionDiscount::first();
+
+            if(isset($pos_discount)){
+
+                $priceHQ = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountHQ / 100));
+                $priceMasterLeader = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountMasterLeader / 100));
+                $priceLeader = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountLeader / 100));
+                $priceMasterStockist = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountMasterStockist / 100));
+                $priceStockist = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountStockist / 100));
+                $priceMasterAgent = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountMasterAgent / 100));
+                $priceAgent = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountAgent / 100));
+                $priceDropship = $data['productSellPrice'] - ($data['productSellPrice'] * ($pos_discount->discountDropship / 100));
+
+               Product::create([
+                    'productName' => $data['productName'],
+                    'productImage' => $imageName,
+                    'productSellPrice' => $data['productSellPrice'],
+                    'priceHQ' => $priceHQ,
+                    'priceMasterLeader' => $priceMasterLeader,
+                    'priceLeader' => $priceLeader,
+                    'priceMasterStockist' => $priceMasterStockist,
+                    'priceStockist' => $priceStockist,
+                    'priceMasterAgent' => $priceMasterAgent,
+                    'priceAgent' => $priceAgent,
+                    'priceDropship' => $priceDropship
+                ]); 
+
+            }else{
+
+                Product::create([
+                    'productName' => $data['productName'],
+                    'productImage' => $imageName,
+                    'productSellPrice' => $data['productSellPrice'],
+                    'priceHQ' => $data['productSellPrice'],
+                    'priceMasterLeader' => $data['productSellPrice'],
+                    'priceLeader' => $data['productSellPrice'],
+                    'priceMasterStockist' => $data['productSellPrice'],
+                    'priceStockist' => $data['productSellPrice'],
+                    'priceMasterAgent' => $data['productSellPrice'],
+                    'priceAgent' => $data['productSellPrice'],
+                    'priceDropship' => $data['productSellPrice']
+                ]);
+            }
+            
 
             //Add column in product_quantity table
             $new_product = Product::where('productName', $data['productName'])->first();
@@ -121,58 +144,167 @@ class ItemController extends Controller
             $request->validate([
                 'productName' => 'required',
                 'productSellPrice' => 'required',
-                'priceHQ' => 'required',
-                'priceMasterLeader' => 'required',
-                'priceLeader' => 'required',
-                'priceMasterStockist' => 'required',
-                'priceStockist' => 'required',
-                'priceMasterAgent' => 'required',
-                'priceAgent' => 'required',
-                'priceDropship' => 'required'
             ]);
     
             $data = $request->all();
 
             $item = Product::where('productId', $request->productId)->first();
-            
+            $position_discount = PositionDiscount::first();
+            $active_discount = ProductDiscount::where('status',1)->first();
+
             if($request->productImage){
 
                 $imageName = time().'.'.$request->productImage->extension();
                 $request->productImage->move(public_path('images/products'), $imageName);
 
-                $saved = Product::where('productId', $request->productId)
+                if($position_discount && $active_discount){
+
+                    $saved = Product::where('productId', $request->productId)
                         ->update([
                             'productName' => $request->productName,
                             'productImage' => $imageName,
                             'productSellPrice' => $request->productSellPrice,
-                            'priceHQ' => $request->priceHQ,
-                            'priceMasterLeader' => $request->priceMasterLeader,
-                            'priceLeader' => $request->priceLeader,
-                            'priceMasterStockist' => $request->priceMasterStockist,
-                            'priceStockist' => $request->priceStockist,
-                            'priceMasterAgent' => $request->priceMasterAgent,
-                            'priceAgent' => $request->priceAgent,
-                            'priceDropship' => $request->priceDropship
+                            'priceHQ' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountHQ/ 100)),
+                            'priceMasterLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterLeader/ 100)),
+                            'priceLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountLeader/ 100)),
+                            'priceMasterStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterStockist/ 100)),
+                            'priceStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountStockist/ 100)),
+                            'priceMasterAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterAgent/ 100)),
+                            'priceAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountAgent/ 100)), 
+                            'priceDropship' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountDropship/ 100)),
+                            'productDiscountPrice' => $request->productSellPrice - ($request->productSellPrice * ($active_discount->productDiscount/ 100))
                         ]);
 
+                }else if($position_discount && !($active_discount)){
+
+                    $saved = Product::where('productId', $request->productId)
+                        ->update([
+                            'productName' => $request->productName,
+                            'productImage' => $imageName,
+                            'productSellPrice' => $request->productSellPrice,
+                            'priceHQ' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountHQ/ 100)),
+                            'priceMasterLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterLeader/ 100)),
+                            'priceLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountLeader/ 100)),
+                            'priceMasterStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterStockist/ 100)),
+                            'priceStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountStockist/ 100)),
+                            'priceMasterAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterAgent/ 100)),
+                            'priceAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountAgent/ 100)), 
+                            'priceDropship' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountDropship/ 100)),
+                            'productDiscountPrice' => 0
+                        ]);
+
+                }else if(!($position_discount) && $active_discount){
+
+                    $saved = Product::where('productId', $request->productId)
+                        ->update([
+                            'productName' => $request->productName,
+                            'productImage' => $imageName,
+                            'productSellPrice' => $request->productSellPrice,
+                            'priceHQ' => $request->productSellPrice,
+                            'priceMasterLeader' => $request->productSellPrice,
+                            'priceLeader' => $request->productSellPrice,
+                            'priceMasterStockist' => $request->productSellPrice,
+                            'priceStockist' => $request->productSellPrice,
+                            'priceMasterAgent' => $request->productSellPrice,
+                            'priceAgent' => $request->productSellPrice, 
+                            'priceDropship' => $request->productSellPrice,
+                            'productDiscountPrice' => $request->productSellPrice - ($request->productSellPrice * ($active_discount->productDiscount/ 100))
+                        ]);
+
+                }else{
+                    
+                    $saved = Product::where('productId', $request->productId)
+                    ->update([
+                        'productName' => $request->productName,
+                        'productImage' => $imageName,
+                        'productSellPrice' => $request->productSellPrice,
+                        'priceHQ' => $request->productSellPrice,
+                        'priceMasterLeader' => $request->productSellPrice,
+                        'priceLeader' => $request->productSellPrice,
+                        'priceMasterStockist' => $request->productSellPrice,
+                        'priceStockist' => $request->productSellPrice,
+                        'priceMasterAgent' => $request->productSellPrice,
+                        'priceAgent' => $request->productSellPrice, 
+                        'priceDropship' => $request->productSellPrice,
+                        'productDiscountPrice' => 0
+                    ]);
+
+                }
             }else{
-                $saved =Product::where('productId', $request->productId)
+
+                if($position_discount && $active_discount){
+
+                    $saved = Product::where('productId', $request->productId)
                         ->update([
                             'productName' => $request->productName,
                             'productSellPrice' => $request->productSellPrice,
-                            'priceHQ' => $request->priceHQ,
-                            'priceMasterLeader' => $request->priceMasterLeader,
-                            'priceLeader' => $request->priceLeader,
-                            'priceMasterStockist' => $request->priceMasterStockist,
-                            'priceStockist' => $request->priceStockist,
-                            'priceMasterAgent' => $request->priceMasterAgent,
-                            'priceAgent' => $request->priceAgent,
-                            'priceDropship' => $request->priceDropship
+                            'priceHQ' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountHQ/ 100)),
+                            'priceMasterLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterLeader/ 100)),
+                            'priceLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountLeader/ 100)),
+                            'priceMasterStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterStockist/ 100)),
+                            'priceStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountStockist/ 100)),
+                            'priceMasterAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterAgent/ 100)),
+                            'priceAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountAgent/ 100)), 
+                            'priceDropship' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountDropship/ 100)),
+                            'productDiscountPrice' => $request->productSellPrice - ($request->productSellPrice * ($active_discount->productDiscount/ 100))
                         ]);
+
+                }else if($position_discount && !($active_discount)){
+
+                    $saved = Product::where('productId', $request->productId)
+                        ->update([
+                            'productName' => $request->productName,
+                            'productSellPrice' => $request->productSellPrice,
+                            'priceHQ' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountHQ/ 100)),
+                            'priceMasterLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterLeader/ 100)),
+                            'priceLeader' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountLeader/ 100)),
+                            'priceMasterStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterStockist/ 100)),
+                            'priceStockist' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountStockist/ 100)),
+                            'priceMasterAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountMasterAgent/ 100)),
+                            'priceAgent' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountAgent/ 100)), 
+                            'priceDropship' => $request->productSellPrice - ($request->productSellPrice * ($position_discount->discountDropship/ 100)),
+                            'productDiscountPrice' => 0
+                        ]);
+
+                }else if(!($position_discount) && $active_discount){
+
+                    $saved = Product::where('productId', $request->productId)
+                        ->update([
+                            'productName' => $request->productName,
+                            'productSellPrice' => $request->productSellPrice,
+                            'priceHQ' => $request->productSellPrice,
+                            'priceMasterLeader' => $request->productSellPrice,
+                            'priceLeader' => $request->productSellPrice,
+                            'priceMasterStockist' => $request->productSellPrice,
+                            'priceStockist' => $request->productSellPrice,
+                            'priceMasterAgent' => $request->productSellPrice,
+                            'priceAgent' => $request->productSellPrice, 
+                            'priceDropship' => $request->productSellPrice,
+                            'productDiscountPrice' => $request->productSellPrice - ($request->productSellPrice * ($active_discount->productDiscount/ 100))
+                        ]);
+
+                }else{
+                    
+                    $saved = Product::where('productId', $request->productId)
+                    ->update([
+                        'productName' => $request->productName,
+                        'productSellPrice' => $request->productSellPrice,
+                        'priceHQ' => $request->productSellPrice,
+                        'priceMasterLeader' => $request->productSellPrice,
+                        'priceLeader' => $request->productSellPrice,
+                        'priceMasterStockist' => $request->productSellPrice,
+                        'priceStockist' => $request->productSellPrice,
+                        'priceMasterAgent' => $request->productSellPrice,
+                        'priceAgent' => $request->productSellPrice, 
+                        'priceDropship' => $request->productSellPrice,
+                        'productDiscountPrice' => 0
+                    ]);
+
+                }
             }
 
             $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
+            $product = Product::where('status_data', 1)->get();
 
             if($saved){
                 return redirect()->route('view_stock')->with('success', 'Product successfully updated!');
@@ -329,7 +461,7 @@ class ItemController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $discount = Discount::first();
+            $discount = PositionDiscount::first();
             
             return view('ItemManagementModule.view_discount')->with(['user'=> $user,'discount'=> $discount]);
         }
@@ -341,7 +473,7 @@ class ItemController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $discount = Discount::first();
+            $discount = PositionDiscount::first();
             
             return view('ItemManagementModule.update_discount')->with(['user'=> $user, 'discount'=> $discount]);
         }
@@ -366,11 +498,12 @@ class ItemController extends Controller
             $data = $request->all();
 
             $product = Product::where('status_data',1)->get();
-            $discount = Discount::first();
+
+            $discount = PositionDiscount::first();
 
             if(isset($discount)){
 
-                $saved = Discount::where('discountId',1) //forever only one row
+                $saved = PositionDiscount::where('posDiscId',1) //forever only one row
                         ->update([
                             'discountHQ' => $data['discountHQ'],
                             'discountMasterLeader' => $data['discountMasterLeader'],
@@ -383,7 +516,7 @@ class ItemController extends Controller
                         ]);
 
             }else{
-                $add_discount = new Discount;
+                $add_discount = new PositionDiscount;
                 $add_discount->discountHQ = $data['discountHQ'];
                 $add_discount->discountMasterLeader = $data['discountMasterLeader'];
                 $add_discount->discountLeader = $data['discountLeader'];
@@ -395,6 +528,21 @@ class ItemController extends Controller
                 $saved = $add_discount->save();
             }
 
+            foreach($product as $p){
+
+                $saved = Product::where('productId',$p->productId)
+                        ->update([
+                            'priceHQ' => $p->productSellPrice - ($p->productSellPrice * ($data['discountHQ']/ 100)),
+                            'priceMasterLeader' => $p->productSellPrice - ($p->productSellPrice * ($data['discountMasterLeader']/ 100)),
+                            'priceLeader' => $p->productSellPrice - ($p->productSellPrice * ($data['discountLeader']/ 100)),
+                            'priceMasterStockist' => $p->productSellPrice - ($p->productSellPrice * ($data['discountMasterStockist']/ 100)),
+                            'priceStockist' => $p->productSellPrice - ($p->productSellPrice * ($data['discountStockist']/ 100)),
+                            'priceMasterAgent' => $p->productSellPrice - ($p->productSellPrice * ($data['discountMasterAgent']/ 100)),
+                            'priceAgent' => $p->productSellPrice - ($p->productSellPrice * ($data['discountAgent']/ 100)), 
+                            'priceDropship' => $p->productSellPrice - ($p->productSellPrice * ($data['discountDropship']/ 100))
+                        ]);
+            }
+
             $user = User::where('id', Auth::id())->first();
 
             if($saved){
@@ -402,6 +550,123 @@ class ItemController extends Controller
             }else{
                 return redirect()->route('view_update_discount');
             }
+        }
+        return redirect('login');
+    }
+
+    public function viewProductDiscount(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            $discount = ProductDiscount::get();
+            
+            return view('ItemManagementModule.view_product_discount')->with(['user'=> $user,'discount'=> $discount]);
+        }
+        return redirect('login');
+    }
+
+    public function viewUpdateProductDiscount(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            $discount = ProductDiscount::get();
+            
+            return view('ItemManagementModule.update_product_discount')->with(['user'=> $user, 'discount'=> $discount]);
+        }
+        return redirect('login');
+    }
+
+    public function updateProductDiscount(Request $request)
+    {
+        if(Auth::check())
+        {
+            $saved_delete = 0;
+            $saved_add = 0;
+            $saved_update = 0;
+
+            $request->validate([
+                'name' => 'required',
+                'disc' => 'required',
+            ]);
+
+            if(isset($request->switch[0])){
+                $switch = $request->switch[0];
+            }else{
+                $switch = -1;
+            }
+
+            foreach($request->name as $bil => $data)
+            {
+                $discount = ProductDiscount::where('prodDiscId', $request->id[$bil])->first();
+
+                if(isset($discount)){
+                    if($request->flag[$bil] == 2){
+                        $saved_delete = ProductDiscount::where('prodDiscId',$request->id[$bil])->delete();
+                    }
+                    else{
+                        if($switch == $bil){
+                           $saved_update = ProductDiscount::where('prodDiscId',$request->id[$bil])
+                                ->update([
+                                    'productDiscount' => $request->disc[$bil],
+                                    'discountName' => $request->name[$bil],
+                                    'status' => 1
+                                ]); 
+                        }else{
+                            $saved_update = ProductDiscount::where('prodDiscId',$request->id[$bil])
+                                ->update([
+                                    'productDiscount' => $request->disc[$bil],
+                                    'discountName' => $request->name[$bil],
+                                    'status' => 0
+                                ]);
+                        }
+                         
+                    }
+                    
+                }else{
+                    if($switch == $bil){
+
+                        $add_discount = new ProductDiscount;
+                        $add_discount->productDiscount = $request->disc[$bil];
+                        $add_discount->discountName = $request->name[$bil];
+                        $add_discount->status = 1;
+                        $saved_add = $add_discount->save();
+
+                    }else{
+
+                        $add_discount = new ProductDiscount;
+                        $add_discount->productDiscount = $request->disc[$bil];
+                        $add_discount->discountName = $request->name[$bil];
+                        $add_discount->status = 0;
+                        $saved_add = $add_discount->save();
+
+                    } 
+                }
+            }
+
+            $product = Product::where('status_data',1)->get();
+            $active_discount = ProductDiscount::where('status',1)->first();
+
+            foreach($product as $p){
+
+                if($active_discount){
+                    $saved = Product::where('productId',$p->productId)
+                        ->update([
+                            'productDiscountPrice' => $p->productSellPrice - ($p->productSellPrice * ($active_discount->productDiscount/ 100))
+                        ]);  
+                }else{
+                    $saved = Product::where('productId',$p->productId)
+                        ->update([
+                            'productDiscountPrice' => 0
+                        ]);
+                }
+                
+            }
+
+            $user = User::where('id', Auth::id())->first();
+
+            return redirect()->route('view_product_discount')->with('success', 'Discount successfully updated!');
         }
         return redirect('login');
     }

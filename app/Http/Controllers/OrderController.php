@@ -96,8 +96,17 @@ class OrderController extends Controller
                 $product_qty = $d->productId . "_order_qty";
                 $product_price = $d->productId . "_order_price";
                 $order->$product_qty = $data[$product_qty];
-                $order->$product_price = $d->productSellPrice;
-                $total_price += $d->productSellPrice * $data[$product_qty];
+
+                if($d->productDiscountPrice > 0)
+                {
+                    $order->$product_price = $d->productDiscountPrice;
+                    $total_price += $d->productDiscountPrice * $data[$product_qty];
+                }else
+                {
+                    $order->$product_price = $d->productSellPrice;
+                    $total_price += $d->productSellPrice * $data[$product_qty];
+                }
+                
             }
             $order->orderPrice = $total_price + $data['additionalCost'];
             $order->employeeId = Auth::id();

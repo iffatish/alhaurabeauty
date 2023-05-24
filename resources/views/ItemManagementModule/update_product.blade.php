@@ -230,7 +230,7 @@
             <a href="{{route('view_stock')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">View Products</button></a>
             @if($user->userPosition == "HQ")
                 <a href="{{route('add_product')}}"><button>Add New Product</button></a>
-                <a href="{{route('view_discount')}}"><button>Position Discount</button></a>
+                <a href="{{route('view_discount')}}"><button>Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
@@ -254,31 +254,7 @@
                     </tr>
                     <tr>
                         <td class="input-title">Product Sell Price</td><td class="center"><input required name="productSellPrice" type="number" step=".01" value="{{$product->productSellPrice}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">HQ Price</td><td class="center"><input required name="priceHQ" type="number" step=".01" value="{{$product->priceHQ}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Master Leader Price</td><td class="center"><input required name="priceMasterLeader" type="number" step=".01" value="{{$product->priceMasterLeader}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Leader Price</td><td class="center"><input required name="priceLeader" type="number" step=".01" value="{{$product->priceLeader}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Master Stockist Price</td><td class="center"><input required name="priceMasterStockist" type="number" step=".01" value="{{$product->priceMasterStockist}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Stockist Price</td><td class="center"><input required name="priceStockist" type="number" step=".01" value="{{$product->priceStockist}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Master Agent Price</td><td class="center"><input required name="priceMasterAgent" type="number" step=".01" value="{{$product->priceMasterAgent}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Agent Price</td><td class="center"><input required name="priceAgent" type="number" step=".01" value="{{$product->priceAgent}}"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Dropship Price</td><td class="center"><input required name="priceDropship" type="number" step=".01" value="{{$product->priceDropship}}"></td>
-                    </tr>                    
+                    </tr>                   
                     <tr>
                         <td colspan="2">@if ($errors->any())
                                 <ul>

@@ -184,7 +184,7 @@
             <a href="{{route('view_stock')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">View Products</button></a>
             @if($user->userPosition == "HQ")
                 <a href="{{route('add_product')}}"><button>Add New Product</button></a>
-                <a href="{{route('view_discount')}}"><button>Position Discount</button></a>
+                <a href="{{route('view_discount')}}"><button>Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
@@ -200,7 +200,11 @@
                                 <td colspan="2" style="font-size: 1.125rem;color: #FF2667;"><b>{{$product->productName}}</b></td>
                             </tr>
                             <tr>
-                                <td>Price</td><td class="desc"><b>RM {{$product->productSellPrice}}</b></td>
+                                @if($product->productDiscountPrice > 0)
+                                    <td>Price</td><td class="desc"><b>RM </b><s>{{$product->productSellPrice}}</s>&nbsp;&nbsp;&nbsp;<b>{{$product->productDiscountPrice}}</b></td>
+                                @else
+                                    <td>Price</td><td class="desc"><b>RM {{$product->productSellPrice}}</b></td>
+                                @endif
                             </tr>
                             <tr>
                                 @php

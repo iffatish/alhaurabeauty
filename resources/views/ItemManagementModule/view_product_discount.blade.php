@@ -95,77 +95,51 @@
             .content{
                 width: 50%;
                 margin: auto;
-                margin-top: 3.75rem;
-                margin-bottom: 6.25rem;
+                margin-top: 60px;
+                margin-bottom: 100px;
             }
             .center{
                 text-align: center;
+            }
+            .right{
+                text-align: right;
+                padding-right: 50px;
             }
             table{
                 border-collapse: collapse;
             }
             td{
-                padding-top: 0.625rem;
-                padding-bottom: 0.625rem;
+                padding-top: 10px;
+                padding-bottom: 10px;
                 background-color: white;
             }
             th{
-                padding: 0.938rem 0;
-                font-size: 1.5rem;
+                padding: 15px 0px;
+                font-size: 24px;
                 color: #FF2667;
                 background-color: white;
                 text-align: left;
-                padding-left: 3.125rem;
+                padding-left: 50px;
             }
-            th:first-of-type {
-                border-top-left-radius: 1.875rem;
+            tr:first-of-type th:first-of-type {
+                border-top-left-radius: 30px;
             }
-            th:last-of-type{
-                border-top-right-radius: 1.875rem;
+            tr:first-of-type th:last-of-type{
+                border-top-right-radius: 30px;
             }
             tr:last-of-type td:first-of-type {
-                border-bottom-left-radius: 1.875rem;
+                border-bottom-left-radius: 30px;
             }
             tr:last-of-type td:last-of-type {
-                border-bottom-right-radius: 1.875rem;
+                border-bottom-right-radius: 30px;
             }
             .input-title{
-                padding-left: 3.125rem;
-                font-weight: bold;
-            }
-            input[type=text], input[type=number] {
-                width: 18.75rem;
-                height: 1.875rem;
-                padding: 0.313rem 0.313rem;
-                display: inline-block;
-                border: 0.063rem solid #ccc;
-                border-radius: 0.25rem;
-                box-sizing: border-box;
-            }
-            input[type=submit]{
-                font-family: 'Open Sans', sans-serif;
-                color: white;
+                text-align: center;
                 background-color: #FF2667;
-                border: none;
-                padding: 0.938rem 0;
-                box-shadow: 0 0.125rem 0.063rem black;
-                cursor: pointer;
-                width: 18.75rem;
-                border-radius: 0.25rem;
-                margin-top:0.313rem;
-            }
-            input[type=file]{
-                font-family: 'Open Sans', sans-serif;
-                width: 18.75rem;
-                height: 1.875rem;
-                padding: 0.313rem 0.313rem;
-                display: inline-block;
-                border: 0.063rem solid #ccc;
-                border-radius: 0.25rem;
-                box-sizing: border-box;
+                color: white;
             }
             .back{
-                font-size:0.75rem;
+                font-size:12px;
             }
             .back a{
                 text-decoration: none;
@@ -179,19 +153,46 @@
             .back a:active {
                 text-decoration: #FF2667;
             }
+            .save{
+                font-family: 'Open Sans', sans-serif;
+                color: white;
+                background-color: #FF2667;
+                border: none;
+                padding: 10px 30px;
+                box-shadow: 0px 2px 1px black;
+                cursor: pointer;
+                width: 300px;
+                border-radius: 4px;
+            }
+            .image{
+                border: 1px solid #dfdfdf;
+            }
             .current-user{
                 padding-right: 1.563rem;
                 color: dimgrey;
             }
-            .update-btn button{
-                color: white;
-                background-color: #FF2667;
-                border: none;
-                padding: 0.625rem 1.875rem;
-                border-radius: 0.25rem;
+            .table-dc tr:first-of-type td:first-of-type {
+                border-top-left-radius: 0;
+            }
+            .table-dc tr:first-of-type td:last-of-type{
+                border-top-right-radius: 0;
+            }
+            .table-dc tr:last-of-type td:first-of-type {
+                border-bottom-left-radius: 0;
+            }
+            .table-dc tr:last-of-type td:last-of-type{
+                border-bottom-right-radius: 0;
+            }
+            .message{
+                position:fixed;
+                background-color:#C1E1C1;
+                color:#023020;
+                padding:15px;
                 box-shadow: 0 0.125rem 0.063rem black;
-                cursor: pointer;
-                margin-left: 0.938rem;
+            }
+            .message a:hover{cursor:pointer;}
+            .message a{
+                color: black;
             }
         </style>
     </head>
@@ -221,11 +222,18 @@
             </div>         
         </div>
 
-        <div class="stock-btn" style="margin: 3.125rem 6.25rem">
+        @if ($message = Session::get('success'))
+        <div class="message" id="message">
+            <span>{{ $message }}</span>
+            <a href="javascript:close()"><i class="fa fa-times"></i></a>
+        </div>
+        @endif
+
+        <div class="stock-btn" style="margin: 50px 100px">
             <a href="{{route('view_stock')}}"><button>View Products</button></a>
             @if($user->userPosition == "HQ")
-                <a href="{{route('add_product')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">Add New Product</button></a>
-                <a href="{{route('view_discount')}}"><button>Discount</button></a>
+                <a href="{{route('add_product')}}"><button>Add New Product</button></a>
+                <a href="{{route('view_discount')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
@@ -233,34 +241,36 @@
 
         <div class="content">
             <table width="100%">
-                <form method="post" action="{{route('product.add')}}" enctype="multipart/form-data">
-                @csrf
                     <tr>
-                        <th>Add Product</th><th></th>
+                        <th></th><th class="right stock-btn" style="font-size:16px;"><a href="{{route('view_discount')}}"><button>Position Discount&nbsp;&nbsp;<i class="fa fa-tag"></i></button></a></th>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Product Name</td><td width="40%" class="center"><input required name="productName" type="text"></td>
+                        <th>Product Discount</th><th></th>
                     </tr>
                     <tr>
-                        <td class="input-title">Product Image</td><td class="center"><input required name="productImage" type="file" accept="image/png, image/gif, image/jpeg"></td>
-                    </tr>
-                    <tr>
-                        <td class="input-title">Product Sell Price</td><td class="center"><input required name="productSellPrice" type="number" step=".01"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">@if ($errors->any())
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li style="color:red;">{{ $error }}</li>
+                        <td colspan="2" style="padding:30px">
+                            <table class="table-dc center" width="100%" border="1">
+                                <tr>
+                                    <td class="input-title" style="border-right: 0.063rem solid #E8E8E8">No.</td><td class="input-title" style="border-right: 0.063rem solid #E8E8E8">Discount Name</td><td class="input-title" style="border-right: 0.063rem solid #E8E8E8">Discount (%)</td><td class="input-title">Status</td>
+                                </tr>
+                                @if($discount->count() < 1)
+                                <tr>
+                                    <td colspan="4" class="center" style="color:Dimgrey;border: 1px solid #E8E8E8;">No results found</td>
+                                </tr>
+                                @else
+                                    @foreach($discount as $bil => $disc)
+                                    <tr>
+                                        <td>{{$bil + 1}}.</td><td>{{$disc->discountName}}</td><td>{{$disc->productDiscount}}</td>@if($disc->status == 1)<td style="background-color:#40bf40;color:white;">Active</td>@else<td style="color:red;">Inactive</td>@endif
+                                    </tr>
                                     @endforeach
-                                </ul>
-                            @endif
+                                @endif
+                            </table>
                         </td>
                     </tr>
                     <tr>
-                        <td></td><td class="center back" style="padding-bottom:1.875rem;"><input type="submit" value="+  Add Product"><br><br><a href="{{route('view_stock')}}">Cancel</a></td> 
-                    </tr>    
-                </form>
+                    <td colspan="2" class="stock-btn center" style="padding-bottom: 3.125rem;"><a href="{{route('view_update_product_discount')}}"><button class="update">Update</button></a></td>
+                    </tr>
+            </table>
         </div>
 
         <script>
@@ -279,7 +289,12 @@
                             window.location.href = link;
                         }
                     });
-            });                  
+            });
+            
+            function close() {
+                var x = document.getElementById("message");
+                x.style.display = "none";
+            }                
         </script>
 
 

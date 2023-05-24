@@ -121,10 +121,10 @@
                 text-align: left;
                 padding-left: 50px;
             }
-            th:first-of-type {
+            tr:first-of-type th:first-of-type {
                 border-top-left-radius: 30px;
             }
-            th:last-of-type{
+            tr:first-of-type th:last-of-type{
                 border-top-right-radius: 30px;
             }
             tr:last-of-type td:first-of-type {
@@ -202,6 +202,17 @@
                 padding-right: 1.563rem;
                 color: dimgrey;
             }
+            .message{
+                position:fixed;
+                background-color:#C1E1C1;
+                color:#023020;
+                padding:15px;
+                box-shadow: 0 0.125rem 0.063rem black;
+            }
+            .message a:hover{cursor:pointer;}
+            .message a{
+                color: black;
+            }
         </style>
     </head>
     <body>
@@ -230,11 +241,18 @@
             </div>         
         </div>
 
+        @if ($message = Session::get('success'))
+        <div class="message" id="message">
+            <span>{{ $message }}</span>
+            <a href="javascript:close()"><i class="fa fa-times"></i></a>
+        </div>
+        @endif
+
         <div class="stock-btn" style="margin: 50px 100px">
             <a href="{{route('view_stock')}}"><button>View Products</button></a>
             @if($user->userPosition == "HQ")
                 <a href="{{route('add_product')}}"><button>Add New Product</button></a>
-                <a href="{{route('view_discount')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Position Discount</button></a>
+                <a href="{{route('view_discount')}}"><button style="color:#FF2667 ;background-color:white;border: 3px solid #FF2667">Discount</button></a>
             @endif
             <a href="{{route('restock_product')}}"><button>Restock</button></a>
             <a href="{{route('view_restock_list')}}"><button>View Restock</button></a>
@@ -242,6 +260,9 @@
 
         <div class="content">
         <table width="100%">
+                    <tr>
+                        <th></th><th class="right stock-btn" style="font-size:16px;"><a href="{{route('view_product_discount')}}"><button>Product Discount&nbsp;&nbsp;<i class="fa fa-tag"></i></button></a></th>
+                    </tr>
                     <tr>
                         <th>Position Discount</th><th></th>
                     </tr>
@@ -291,7 +312,12 @@
                             window.location.href = link;
                         }
                     });
-            });                  
+            });
+            
+            function close() {
+                var x = document.getElementById("message");
+                x.style.display = "none";
+            }
         </script>
 
 

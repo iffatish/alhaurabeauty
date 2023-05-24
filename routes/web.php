@@ -70,6 +70,12 @@ Route::controller(ItemController::class)->group(function(){
 
     Route::post('update_discount', 'updateDiscount')->name('update_discount');
 
+    Route::get('view_product_discount', 'viewProductDiscount')->name('view_product_discount');
+
+    Route::get('view_update_product_discount', 'viewUpdateProductDiscount')->name('view_update_product_discount');
+
+    Route::post('update_product_discount', 'updateProductDiscount')->name('update_product_discount');
+
 });
 
 Route::controller(TeamController::class)->group(function(){
