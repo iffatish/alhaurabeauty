@@ -213,7 +213,15 @@
             .current-user{
                 padding-right: 1.563rem;
                 color: dimgrey;
-            }    
+            }
+            .message_error{
+                position:fixed;
+                background-color:#ffcccc;
+                color:#cc0000;
+                padding:15px;
+                box-shadow: 0 0.125rem 0.063rem black;
+            }
+            .message_error a:hover{cursor:pointer;} 
         </style>
     </head>
     <body>
@@ -241,6 +249,13 @@
                 </div>
             </div>         
         </div>
+
+        @if ($message = Session::get('error'))
+        <div class="message_error" id="message">
+            <span>{{ $message }}</span>
+            <a href="javascript:close()"><i class="fa fa-times"></i></a>
+        </div>
+        @endif
 
         <div class="team-btn" style="margin: 3.125rem 0 1.25rem 6.25rem;">
             <a href="{{route('view_team_list')}}"><button style="color: white;background-color:#FF2667;">Back to Team List</button></a>
@@ -297,6 +312,7 @@
 
         <script>
             $(document).ready(function() {
+
                 $("#select-employee").select2({
                     placeholder: "Enter Name",
                     minimumInputLength: 2,

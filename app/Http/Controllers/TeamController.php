@@ -206,6 +206,27 @@ class TeamController extends Controller
     
             $data = $request->all();
 
+            //check team member
+            $all_team = Team::get();
+
+            $team_member_list = array();
+            $all_team_member_list = array();
+
+            foreach($all_team as $bil => $t){
+
+                $team_member_list = preg_split("/[\s,]+/", $t->teamMember);
+                $all_team_member_list[$bil] = $team_member_list;
+
+            }
+
+            foreach($all_team_member_list as $t_l){
+
+                if(in_array($request->teamMemberId, $t_l)){
+                    return redirect()->route('add_team_member', ['teamId'=> $request->teamId])->with('error', 'ERROR! The user already belongs to another team.');
+                }
+
+            }
+
             $teamMember = Team::where('teamId', $request->teamId)->value('teamMember');
             $memberNum = Team::where('teamId', $request->teamId)->value('memberNum');
             $updated_teamMember = $teamMember .",".$data['teamMemberId'];
@@ -218,7 +239,6 @@ class TeamController extends Controller
                         ]);
 
             $user = User::where('id', Auth::id())->first();
-            $team = Team::where('teamId', $request->teamId)->first();
 
            if($saved){
                 return redirect()->route('view_team_member', ['teamId'=> $request->teamId])->with('success', 'Team member successfully added!');
@@ -359,10 +379,12 @@ class TeamController extends Controller
     public function searchEmployee(Request $request) {
        
         $input = $request->all();
-       
+
         $employee = User::where('userName', 'Like', '%' . $input['term']['term'] . '%')
-            ->get()->toArray();
-            return response()->json($employee);
+                    ->get()
+                    ->toArray();
+
+        return response()->json($employee);
     }
 
 }

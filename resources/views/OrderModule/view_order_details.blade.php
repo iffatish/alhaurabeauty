@@ -219,11 +219,11 @@
                         </tr>
                     @endforeach
                         <tr>
-                            <td style="text-align:right;" colspan="4">Additional Cost (RM)</td>
+                            <td style="text-align:right;" colspan="4">Additional Cost (RM) <br><i style="color:Dimgrey;font-size: 10px;">Postage or COD fee</i></td>
                             <td style="text-align:right;">{{$order->additionalCost}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:right;" colspan="4">Total Order Price (RM)</td>
+                            <td style="text-align:right;" colspan="4">Total Order Price (RM) <br><i style="color:Dimgrey;font-size: 10px;">Overall price of ordered product(s)</i></td>
                             <td style="text-align:right;">{{$order->orderPrice}}</td>
                         </tr>
                 </table>
