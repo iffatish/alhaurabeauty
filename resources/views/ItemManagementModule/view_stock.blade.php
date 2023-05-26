@@ -192,7 +192,7 @@
 
         @if($product_discount)
             <div style="background-color: #40bf40;color:white;padding:5px;text-align:center;">
-                <marquee scrollamount="15">>> Discount {{$product_discount->discountName}} {{$product_discount->productDiscount}}% <<</marquee>
+                <marquee scrollamount="10"><b style="text-shadow: 1px 1px 0px black;">>> Discount {{$product_discount->discountName}} {{$product_discount->productDiscount}}% <<</b></marquee>
             </div>
         @endif
 
