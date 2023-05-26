@@ -123,3 +123,9 @@ Route::controller(OrderController::class)->group(function(){
     Route::get('view_order_details', 'viewOrderDetails')->name('view_order_details');
 
 });
+
+Route::controller(ReportController::class)->group(function(){
+
+    Route::get('view_sales_report', 'viewSalesReport')->name('view_sales_report');
+
+});

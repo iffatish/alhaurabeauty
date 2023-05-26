@@ -5,7 +5,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link> 
@@ -58,9 +58,6 @@
             .dropdown:hover .dropdown-content {
                 display: block;
             }
-            .menu a{
-                color: black;
-            }
             .menu a:link{
                 text-decoration:none;
                 font-weight: bold;
@@ -79,54 +76,18 @@
                 justify-content: space-between;
             }
             .menu a{
-                margin-top:1.875rem;
-                margin-left:3.125rem;
-            }
-            .stock-btn button{
-                color: white;
-                background-color: #FF2667;
-                border: none;
-                padding: 0.625rem 1.875rem;
-                border-radius: 1.875rem;
-                box-shadow: 0 0.125rem 0.063rem black;
-                cursor: pointer;
-                margin-left: 0.938rem;
+                margin-top: 1.875rem;
+                margin-left: 3.125rem;
+                color: black;
             }
             .content{
-                width: 50%;
+                width: 60%;
                 margin: auto;
                 margin-top: 3.75rem;
                 margin-bottom: 6.25rem;
             }
             .center{
                 text-align: center;
-            }
-            table{
-                border-collapse: collapse;
-            }
-            td{
-                padding-top: 0.625rem;
-                padding-bottom: 0.625rem;
-                background-color: white;
-                vertical-align: top;
-            }
-            th{
-                color: white;
-                background-color: #FF2667;
-                padding: 0.938rem 0.938rem;
-            }
-            .view a{
-                color: #FF2667;
-            }
-            .view a:link{
-                text-decoration:none;
-                font-weight: bold;
-            }
-            .view a:hover{
-                text-decoration: underline;
-            }
-            .view a:active {
-                text-decoration: #FF2667;
             }
             .current-user{
                 padding-right: 1.563rem;
@@ -142,8 +103,8 @@
                 <div class="menu">
                     <a href="{{route('dashboard')}}">HOME</a>
                     <a href="{{route('view_order_list')}}">ORDER</a>
-                    <a href="{{route('view_sales_report')}}">REPORT</a>
-                    <a href="{{route('view_stock')}}" style="color:#FF2667">STOCK</a>
+                    <a href="{{route('view_sales_report')}}" style="color:#FF2667">REPORT</a>
+                    <a href="{{route('view_stock')}}">STOCK</a>
                     @if($user->userPosition != "HQ")
                     <a href="{{route('view_team_list')}}">TEAM</a>
                     @endif
@@ -160,43 +121,7 @@
             </div>         
         </div>
 
-        <div class="stock-btn" style="margin: 3.125rem 6.25rem">
-            <a href="{{route('view_stock')}}"><button>View Products</button></a>
-            @if($user->userPosition == "HQ")
-                <a href="{{route('add_product')}}"><button>Add New Product</button></a>
-                <a href="{{route('view_discount')}}"><button>Discount</button></a>
-            @endif
-            <a href="{{route('restock_product')}}"><button>Restock</button></a>
-            <a href="{{route('view_restock_list')}}"><button style="color:#FF2667 ;background-color:white;border: 0.188rem solid #FF2667">View Restock</button></a>
-        </div>
-
         <div class="content">
-            <table width="100%">
-                <tr>
-                    <th width="10%" style="border-right: 0.063rem solid white">No.</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Batch No.</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Restock Date</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">No. of items</th>
-                    <th width="20%" style="border-right: 0.063rem solid white">Total Price (RM)</th>
-                    <th width="20%">Details</th>
-                </tr>
-                @if($restock->count() > 0)
-                    @foreach($restock as $i => $data)
-                    <tr class="restock">
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->batchNo}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{date('d-m-Y', strtotime($data->restockDate))}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$total_items[$i]}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->restockPrice}}</td>
-                        <td class="view center"><a href="{{route('view_restock_details', ['restockId' => $data->restockId])}}">view</a></td>
-                    </tr>
-                    @endforeach
-                @else
-                <tr class="restock center">
-                    <td colspan="6" style="color:Dimgrey;">No results found</td>
-                </tr>
-                @endif
-            </table>
         </div>
 
         <script>
@@ -215,7 +140,7 @@
                             window.location.href = link;
                         }
                     });
-            });                  
+            });
         </script>
 
 

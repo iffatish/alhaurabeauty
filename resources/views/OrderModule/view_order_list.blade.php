@@ -153,7 +153,7 @@
                 <div class="menu">
                     <a href="{{route('dashboard')}}">HOME</a>
                     <a href="{{route('view_order_list')}}" style="color:#FF2667">ORDER</a>
-                    <a href="">REPORT</a>
+                    <a href="{{route('view_sales_report')}}">REPORT</a>
                     <a href="{{route('view_stock')}}">STOCK</a>
                     @if($user->userPosition != "HQ")
                     <a href="{{route('view_team_list')}}">TEAM</a>
