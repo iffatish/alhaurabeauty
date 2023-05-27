@@ -154,6 +154,8 @@ class ItemController extends Controller
             DB::statement($statementt);
             $statementt_1 = "ALTER TABLE restock_information ADD ".$new_product->productId."_restock_price DOUBLE DEFAULT 0";
             DB::statement($statementt_1);
+            $statementt_1 = "ALTER TABLE restock_information ADD ".$new_product->productId."_qty_remainder DOUBLE DEFAULT 0";
+            DB::statement($statementt_1);
 
             //Add column in order table
             $statementtt = "ALTER TABLE order_information ADD ".$new_product->productId."_order_qty INT DEFAULT 0";
@@ -445,9 +447,11 @@ class ItemController extends Controller
             {
                 $product_qty = $dataaa->productId . "_restock_qty";
                 $product_price = $dataaa->productId . "_restock_price";
+                $product_remainder = $dataaa->productId . "_qty_remainder";
                 $restock->$product_qty = $data[$product_qty];
                 $restock->$product_price = $dataaa->$search;
                 $total_price += $dataaa->$search * $data[$product_qty];
+                $restock->$product_remainder = $data[$product_qty];
             }
             $restock->restockPrice = $total_price;
             $restock->currentPosition = $position;

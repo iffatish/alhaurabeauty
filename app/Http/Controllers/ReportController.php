@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\ProductQuantity;
 use App\Models\OrderInformation;
+use App\Models\RestockInformation;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -30,6 +31,7 @@ class ReportController extends Controller
             $total_product = array();
             $total_product_price = array();
             $product_list = collect();
+            $capital = 0;
             
             //count total items
             foreach($daily_order as $o)
@@ -54,19 +56,64 @@ class ReportController extends Controller
                     $product_list->push($p);
                 }
             }
-
+            
             //Find total for each product
             foreach($product_list as $i => $p_o)
             {
-                $col = $p->productId . "_order_qty";
-                $col_price = $p->productId . "_order_price";
+                $col = $p_o->productId . "_order_qty";
+                $col_price = $p_o->productId . "_order_price";
                 $total_product[$i] = 0;
                 $total_product_price[$i] = 0;
 
                 foreach($daily_order as $d_o)
                 {
                     $total_product[$i] +=  $d_o->$col;
-                    $total_product_price[$i] += $d_o->$col_price;
+                    $total_product_price[$i] += $d_o->$col_price * $d_o->$col;
+                }
+            }
+            //find capital price
+            $user_restock = RestockInformation::where('employeeId',Auth::id())->get();
+            
+            foreach($product_list as $k => $p_l)
+            {
+                $col = $p_l->productId . "_qty_remainder";
+                $col_price = $p_l->productId . "_restock_price";
+                
+                $remainder = 0;
+                foreach($user_restock as $restock)
+                {
+                    if(($restock->$col >= $total_product[$k]) && ($remainder == 0)){              
+                        
+                        $capital += $restock->$col_price * $total_product[$k];
+
+                        RestockInformation::where('restockId',$restock->restockId)
+                        ->update([
+                            $col => $restock->$col - $total_product[$k]
+                        ]);
+
+                        break;
+                    }
+                    else if(($remainder != 0)  && ($restock->$col >= $remainder)){
+
+                        $capital += $restock->$col_price * $remainder;
+
+                        RestockInformation::where('restockId',$restock->restockId)
+                        ->update([
+                            $col => $restock->$col - $remainder
+                        ]);
+
+                        break;
+                    }
+                    else{
+                        $capital += $restock->$col_price * $restock->$col;
+
+                        RestockInformation::where('restockId',$restock->restockId)
+                        ->update([
+                            $col => 0
+                        ]);
+
+                        $remainder = $total_product[$k] - $restock->$col;
+                    }
                 }
             }
             
@@ -76,7 +123,8 @@ class ReportController extends Controller
                                                                 'total_items' => $total_items,
                                                                 'total_product' => $total_product,
                                                                 'product_list' => $product_list,
-                                                                'total_product_price' => $total_product_price
+                                                                'total_product_price' => $total_product_price,
+                                                                'capital' => $capital
                                                                 ]);
         }
         return redirect('login');

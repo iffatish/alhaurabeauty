@@ -109,6 +109,10 @@ Route::controller(TeamController::class)->group(function(){
 
     Route::post('update_team_restock_graph', 'updateChart')->name('update_team_restock_graph');
 
+    Route::post('remove_member/{id}', 'removeTeamMember')->name('remove_member');
+
+    Route::post('leave_team/{teamId}', 'leaveTeam')->name('leave_team');
+
 });
 
 Route::controller(OrderController::class)->group(function(){

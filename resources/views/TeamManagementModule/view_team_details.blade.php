@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>ABSMS</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -255,7 +256,7 @@
                 @else
                     <tr><td><a href="{{route('update_team', ['teamId' => $team->teamId])}}">Update Team</a></td></tr>
                 @endif
-                <tr><td><a href="">Leave Team</a></td></tr>
+                <tr><td><button id="{{$team->teamId}}" style="border: none;background: none;cursor: pointer;margin: 0;padding: 0;color:white;font-size: 0.875rem;" onclick="leaveTeam(this.id)" type="button" data-link="{{route('view_team_list')}}">Leave Team</button></td></tr>
                 @if(Auth::id() != $team->teamLeader)
                     <tr><td style="border:none;background-color:#B8B8B8;cursor:not-allowed"><a href="" style="cursor:not-allowed;">Delete Team</a></td></tr>
                 @else
@@ -281,6 +282,52 @@
                         }
                     });
             });
+
+            function leaveTeam(id){
+                var link = $("#"+id).data("link");
+                swal.fire({
+                    html: "<b>Are you sure you want to <span style='color:#FF2667'>leave</span> this team?</b>",
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#FF2667',
+                }).then(function (e) {
+
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/leave_team/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Done!",
+                                        text: results.message,
+                                        confirmButtonColor: '#FF2667',
+                                        allowOutsideClick: false
+                                    });
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        window.location.href = link;
+                                    },3000);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
+                    }
+
+                }, function (dismiss) {
+                    return false;
+                })
+            }
             
             function close() {
                 var x = document.getElementById("message");

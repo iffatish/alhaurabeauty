@@ -374,6 +374,128 @@ class TeamController extends Controller
         return redirect('login');                                                                        
     }
 
+    public function removeTeamMember(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            
+            $data = $request->id;
+            $data_arr = array();
+            $data_arr = preg_split("/[\s,]+/", $data);
+            
+            $team = Team::where("teamId", $data_arr[1])->first();
+            $team_member = array();
+            $team_member = preg_split("/[\s,]+/", $team->teamMember);
+
+            foreach($team_member as $i => $t)
+            {
+                if($data_arr[0] == $t){
+                    array_splice($team_member, $i, 1);
+                } 
+            }
+
+            $total = count($team_member);
+            $last_index = $total - 1;
+            $new_team_member = "";
+            foreach($team_member as $k => $t_m)
+            {
+                if($k == $last_index) {
+                    $new_team_member .= $t_m;
+                }else{
+                    $new_team_member .= $t_m.",";
+                }      
+            }
+            
+            $saved = Team::where('teamId', $data_arr[1])
+                        ->update([
+                            'teamMember' => $new_team_member,
+                            'memberNum' => $total
+                        ]);
+            
+            // check data deleted or not
+            if ($saved) {
+                $success = true;
+                $message = "Member removed successfully";
+            } else {
+                $success = true;
+                $message = "Member not found";
+            }
+
+            //  return response
+            return response()->json([
+                'success' => $success,
+                'message' => $message,
+            ]);
+            
+        }
+        return redirect('login');
+    }
+
+    public function leaveTeam(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            
+            $teamId = $request->teamId;
+            
+            $team = Team::where('teamId', $teamId)->first();
+            
+            if($team->teamLeader != Auth::id())
+            {
+                $team_member = array();
+                $team_member = preg_split("/[\s,]+/", $team->teamMember);
+
+                foreach($team_member as $i => $t)
+                {
+                    if(Auth::id() == $t){
+                        array_splice($team_member, $i, 1);
+                    } 
+                }
+
+                $total = count($team_member);
+                $last_index = $total - 1;
+                $new_team_member = "";
+                foreach($team_member as $k => $t_m)
+                {
+                    if($k == $last_index) {
+                        $new_team_member .= $t_m;
+                    }else{
+                        $new_team_member .= $t_m.",";
+                    }      
+                }
+
+                $saved = Team::where('teamId', $teamId)
+                        ->update([
+                            'teamMember' => $new_team_member,
+                            'memberNum' => $total
+                        ]);
+            }
+            else
+            {
+
+            }
+
+            // check data deleted or not
+            if ($saved) {
+                $success = true;
+                $message = "Successfully leave from the team";
+            } else {
+                $success = true;
+                $message = "Unable to leave team";
+            }
+
+            //  return response
+            return response()->json([
+                'success' => $success,
+                'message' => $message,
+            ]);
+            
+        }
+        return redirect('login');
+    }
+
     //AJAX
 
     public function searchEmployee(Request $request) {

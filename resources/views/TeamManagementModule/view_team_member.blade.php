@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>ABSMS</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -252,8 +253,16 @@
                         <td style="border-right: 0.063rem solid #E8E8E8">{{$teamMember->userName}} @if($i == 0)<span style="color: #FF2667">(LEADER)</span>@endif</td>
                         @if(Auth::id() == $team->teamLeader)
                             <td style="border-right: 0.063rem solid #E8E8E8">{{$teamMember->userPosition}}</td>
-                            <td class="view" style="padding: 0;text-align:center; border-right: 0.063rem solid #E8E8E8"><a href="">view</a></td>
-                            <td class="view" style="padding: 0;text-align:center;"><a href=""><i class="fa fa-user-minus"></i></a></td>
+                            <td class="view" style="padding: 0;text-align:center; border-right: 0.063rem solid #E8E8E8">
+                                @if($teamMember->id != $team->teamLeader)
+                                    <a href="">view</a>
+                                @endif
+                            </td>
+                            <td class="view" style="padding: 0;text-align:center;">
+                                @if($teamMember->id != $team->teamLeader)
+                                    <button id="{{$teamMember->id . ',' .  $team->teamId}}" style="border: none;background: none;cursor: pointer;margin: 0;padding: 0;color:#FF2667;" onclick="removeMember(this.id)" type="button"><i class="fa fa-user-minus"></i></button>
+                                @endif
+                            </td>
                         @else
                             <td style="padding: 0;text-align:center;">{{$teamMember->userPosition}}</td>
                         @endif
@@ -283,7 +292,7 @@
                 @else
                     <tr><td><a href="{{route('update_team', ['teamId' => $team->teamId])}}">Update Team</a></td></tr>
                 @endif
-                <tr><td><a href="">Leave Team</a></td></tr>
+                <tr><td><button id="{{$team->teamId}}" style="border: none;background: none;cursor: pointer;margin: 0;padding: 0;color:white;font-size: 0.875rem;" onclick="leaveTeam(this.id)" type="button" data-link="{{route('view_team_list')}}">Leave Team</button></td></tr>
                 @if(Auth::id() != $team->teamLeader)
                     <tr><td style="border:none;background-color:#B8B8B8;cursor:not-allowed"><a href="" style="cursor:not-allowed;">Delete Team</a></td></tr>
                 @else
@@ -309,6 +318,98 @@
                         }
                     });
             });
+
+            function removeMember(id){
+                
+                swal.fire({
+                    html: "<b>Are you sure you want to <span style='color:#FF2667'>remove</span> this member?</b>",
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#FF2667',
+                }).then(function (e) {
+
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/remove_member/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Done!",
+                                        text: results.message,
+                                        confirmButtonColor: '#FF2667',
+                                        allowOutsideClick: false
+                                    });
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },3000);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
+                    }
+
+                }, function (dismiss) {
+                    return false;
+                })
+            }
+
+            function leaveTeam(id){
+                var link = $(this).data("link");
+                swal.fire({
+                    html: "<b>Are you sure you want to <span style='color:#FF2667'>leave</span> this team?</b>",
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#FF2667',
+                }).then(function (e) {
+
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/leave_team/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Done!",
+                                        text: results.message,
+                                        confirmButtonColor: '#FF2667',
+                                        allowOutsideClick: false
+                                    });
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        window.location.href = link;
+                                    },3000);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
+                    }
+
+                }, function (dismiss) {
+                    return false;
+                })
+            }
             
             function close() {
                 var x = document.getElementById("message");

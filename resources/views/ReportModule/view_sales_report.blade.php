@@ -164,6 +164,7 @@
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
                 <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$daily_order->count()}}</b></td></tr>
                 <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$total_items}}</b></td></tr>
                 <tr>
                     <td>Product(s) Sold</td>
@@ -188,8 +189,8 @@
                     </td>
                 </tr>
                 <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($total_sales, 2, '.', '')}}</b></td></tr>
-                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($total_product_price[$i], 2, '.', '')}}</b></td></tr>
-                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($total_product_price[$i], 2, '.', '')}}</b></td></tr>
+                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($capital, 2, '.', '')}}</b></td></tr>
+                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format(($total_sales - $capital), 2, '.', '')}}</b></td></tr>
             </table>
             @else
             <table width="100%" class="tb_report">

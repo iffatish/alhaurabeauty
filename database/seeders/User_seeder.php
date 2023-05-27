@@ -29,7 +29,7 @@ class User_seeder extends Seeder
             'userName' => 'Kesh',
             'userAddress' => '1, Jalan Hati, Negeri Sembilan',
             'userPhoneNum' => '01310890033',
-            'userPosition' => 'Agent',
+            'userPosition' => 'Master Agent',
             'email' => 'kesh@gmail.com',
             'password' => 'kesh123'
         ]);
@@ -37,5 +37,10 @@ class User_seeder extends Seeder
         DB::table('product_quantity')->insert([
             'employeeId' => 1
         ]);
+
+        DB::table('product_quantity')->insert([
+            'employeeId' => 2
+        ]);
+
     }
 }
