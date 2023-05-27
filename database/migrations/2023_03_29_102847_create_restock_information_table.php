@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('restockPaymentMethod');
             $table->date('restockDate');
             $table->decimal('restockPrice', 8, 2);
+            $table->string('currentPosition');
             $table->foreignId('employeeId')->references('id')->on('employee')->onDelete('cascade');
         });
     }

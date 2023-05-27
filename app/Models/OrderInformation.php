@@ -19,6 +19,7 @@ class OrderInformation extends Model
         'additionalCost',
         'orderPrice',
         'orderDate',
+        'totalItems',
         'employeeId'         
     ];
     public $timestamps = false;

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <title>ABSMS</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -191,8 +192,10 @@
         </div>
 
         @if($product_discount)
-            <div style="background-color: #40bf40;color:white;padding:5px;text-align:center;">
-                <marquee scrollamount="10"><b style="text-shadow: 1px 1px 0px black;">>> Discount {{$product_discount->discountName}} {{$product_discount->productDiscount}}% <<</b></marquee>
+            <div style="background-color: #40bf40;color:white;padding:5px;">
+                <marquee scrollamount="10" behaviour="scroll">
+                    <b style="text-shadow: 1px 1px 0px black;">Discount {{$product_discount->discountName}} {{$product_discount->productDiscount}}%</b>
+                </marquee>
             </div>
         @endif
 
@@ -221,7 +224,7 @@
                             @if($user->userPosition == "HQ")
                             <tr>
                                 <td><a href="{{route('update_product',['productId'=> $product->productId])}}"><button class="edit-dlt-btn" style="background-color:#FF2667;">Edit</button></a></td>
-                                <td><a href=""><button class="edit-dlt-btn" style="background-color:grey;">Delete</button></a></td>
+                                <td><button id="{{$product->productId}}" class="edit-dlt-btn" style="background-color:grey;" type="button" onclick="deleteProduct(this.id)">Delete</button></td>
                             </tr>
                             @endif
                         </table> 
@@ -251,6 +254,51 @@
                         }
                     });
             });
+            
+            function deleteProduct(id){
+                swal.fire({
+                    html: "<b>Are you sure you want to <span style='color:#FF2667'>delete</span> this product?</b>",
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#FF2667',
+                }).then(function (e) {
+
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/delete_product/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Done!",
+                                        text: results.message,
+                                        confirmButtonColor: '#FF2667',
+                                        allowOutsideClick: false
+                                    });
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },3000);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
+                    }
+
+                }, function (dismiss) {
+                    return false;
+                })
+            }
             
             function close() {
                 var x = document.getElementById("message");

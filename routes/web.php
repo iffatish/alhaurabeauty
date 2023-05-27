@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,8 @@ Route::controller(ItemController::class)->group(function(){
     Route::get('update_product', 'viewUpdateProduct')->name('update_product');
 
     Route::post('update_product_save', 'updateProduct')->name('product.update');
+
+    Route::post('delete_product/{productId}', 'deleteProduct')->name('product.delete');
 
     Route::get('restock_product', 'viewRestockProduct')->name('restock_product');
 
@@ -111,8 +114,6 @@ Route::controller(TeamController::class)->group(function(){
 Route::controller(OrderController::class)->group(function(){
 
     Route::get('view_order_list', 'viewOrderList')->name('view_order_list');
-
-    Route::get('view_order', 'viewOrder')->name('view_order');
 
     Route::get('add_order', 'viewAddOrder')->name('add_order');
     

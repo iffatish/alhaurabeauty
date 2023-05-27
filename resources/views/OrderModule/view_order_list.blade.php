@@ -200,7 +200,7 @@
                         <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{($i + 1)}}</td>
                         <td style="border-right: 0.063rem solid #E8E8E8;padding-left:0.5rem;">{{$data->custName}}</td>
                         <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{date('d-m-Y', strtotime($data->orderDate))}}</td>
-                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$total_items[$i]}}</td>
+                        <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->totalItems}}</td>
                         <td class="center" style="border-right: 0.063rem solid #E8E8E8">{{$data->orderPrice}}</td>
                         <td class="view center"><a href="{{route('view_order_details', ['orderId' => $data->orderId])}}">view</a></td>
                     </tr>

@@ -360,6 +360,37 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    public function deleteProduct(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            $product = Product::where('status_data', 1)->get();
+
+            $saved = Product::where('productId', $request->productId)
+                        ->update([
+                            'status_data' => 0
+                        ]);
+
+            // check data deleted or not
+            if ($saved) {
+                $success = true;
+                $message = "Product deleted successfully";
+            } else {
+                $success = true;
+                $message = "Product not found";
+            }
+
+            //  return response
+            return response()->json([
+                'success' => $success,
+                'message' => $message,
+            ]);
+            
+        }
+        return redirect('login');
+    }
+
     public function viewRestockProduct()
     {
         if(Auth::check())
@@ -419,6 +450,7 @@ class ItemController extends Controller
                 $total_price += $dataaa->$search * $data[$product_qty];
             }
             $restock->restockPrice = $total_price;
+            $restock->currentPosition = $position;
             $restock->employeeId = Auth::id();
             $restock->save();
 
@@ -435,8 +467,6 @@ class ItemController extends Controller
                 
             }
             $product_qty_user->save();
-
-
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();

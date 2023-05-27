@@ -83,7 +83,7 @@
             .content{
                 width: 60%;
                 margin: auto;
-                margin-top: 3.75rem;
+                margin-top: 30px;
                 margin-bottom: 6.25rem;
             }
             .center{
@@ -92,6 +92,38 @@
             .current-user{
                 padding-right: 1.563rem;
                 color: dimgrey;
+            }
+            h1{
+                margin-top: 50px;
+                color: #FF2667;
+                padding: 0;
+            }
+            .content table{
+                border-collapse: collapse;
+            }
+            .tb_report td{
+                padding: 15px;
+                background-color: white;
+                vertical-align: top;
+            }
+            .tb_report th{
+                color: white;
+                background-color: #FF2667;
+                padding: 15px;
+            }
+            .mid{
+                text-align: center;
+            }
+            .list{
+                padding-left: 15px;
+                margin: 0;
+            }
+            .list li{
+                padding-left: 20px;
+            }
+
+            li:not(:last-child) {
+                margin-bottom: 10px;
             }
         </style>
     </head>
@@ -121,7 +153,49 @@
             </div>         
         </div>
 
+        <div class="center">
+            <h1>Sales Report</h1>
+        </div>
+
         <div class="content">
+            @if($user->userPosition != "HQ")
+            <table width="100%" class="tb_report">
+                <tr><th colspan="3">DAILY SALES REPORT</th></tr>
+                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
+                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
+                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$total_items}}</b></td></tr>
+                <tr>
+                    <td>Product(s) Sold</td>
+                    <td class="mid">:</td>
+                    <td>
+                        <b>
+                            <ol class="list">
+                                @php
+                                    $total_sales = 0;
+                                @endphp
+
+                                @foreach($product_list as $i => $product_list)
+
+                                @php
+                                    $total_sales += $total_product_price[$i];
+                                @endphp
+
+                                    <li>{{$product_list->productName}} ({{$total_product[$i]}}) - RM {{number_format($total_product_price[$i], 2, '.', '')}}</li>
+                                @endforeach
+                            </ol>
+                        </b>
+                    </td>
+                </tr>
+                <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($total_sales, 2, '.', '')}}</b></td></tr>
+                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($total_product_price[$i], 2, '.', '')}}</b></td></tr>
+                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($total_product_price[$i], 2, '.', '')}}</b></td></tr>
+            </table>
+            @else
+            <table width="100%" class="tb_report">
+                <tr><th></th></tr>
+            </table>
+            @endif
         </div>
 
         <script>

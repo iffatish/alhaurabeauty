@@ -18,34 +18,8 @@ class OrderController extends Controller
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
             $order = OrderInformation::where('employeeId', Auth::id())->orderBy('orderDate','DESC')->get();
-
-            //count total items
-            $total_items = array();
-            foreach($order as $o)
-            {
-                $total = 0;
-                foreach($product as $data)
-                {
-                    $col = $data->productId . "_order_qty";
-                    $total += $o->$col;
-                }
-                array_push($total_items , $total);
-            }
             
-            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $product, 'order'=> $order, 'total_items' => $total_items]);
-        }
-        return redirect('login');
-    }
-
-    public function viewOrder()
-    {
-        if(Auth::check())
-        {
-            $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
-            $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
-            
-            return view('OrderModule.view_order')->with(['user'=> $user, 'product'=> $product]);
+            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $product, 'order'=> $order]);
         }
         return redirect('login');
     }
@@ -81,7 +55,7 @@ class OrderController extends Controller
             $data = $request->all();
             $all_product = Product::get();
             $total_price = 0;
-
+            $total_items = 0;
             //add row in Order Information
             $order = new OrderInformation;
             $order->custName = $data['custName'];
@@ -96,6 +70,7 @@ class OrderController extends Controller
                 $product_qty = $d->productId . "_order_qty";
                 $product_price = $d->productId . "_order_price";
                 $order->$product_qty = $data[$product_qty];
+                $total_items += $data[$product_qty];
 
                 if($d->productDiscountPrice > 0)
                 {
@@ -109,6 +84,7 @@ class OrderController extends Controller
                 
             }
             $order->orderPrice = $total_price + $data['additionalCost'];
+            $order->totalItems = $total_items;
             $order->employeeId = Auth::id();
             $order->save();
 
@@ -140,12 +116,10 @@ class OrderController extends Controller
             $user = User::where('id', Auth::id())->first();
             $product = Product::get();
 
-            $total_items = 0;
             $product_ordered = collect();
             foreach($product as $data)
             {
                 $col = $data->productId . "_order_qty";
-                $total_items += $order->$col;
 
                 if($order->$col != 0){
                     $product_ordered->push($data);
@@ -156,7 +130,6 @@ class OrderController extends Controller
                                                             'user'=> $user,
                                                             'order'=> $order, 
                                                             'orderId' => $order->orderId,
-                                                            'total_items' => $total_items,
                                                             'product_ordered' => $product_ordered
                                                             ]);
         }

@@ -25,6 +25,15 @@ class User_seeder extends Seeder
                 'password' => 'shima123'
         ]);
 
+        DB::table('employee')->insert([
+            'userName' => 'Kesh',
+            'userAddress' => '1, Jalan Hati, Negeri Sembilan',
+            'userPhoneNum' => '01310890033',
+            'userPosition' => 'Agent',
+            'email' => 'kesh@gmail.com',
+            'password' => 'kesh123'
+        ]);
+
         DB::table('product_quantity')->insert([
             'employeeId' => 1
         ]);
