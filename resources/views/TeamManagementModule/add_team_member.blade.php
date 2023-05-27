@@ -307,7 +307,7 @@
                 <tr><td style="background-color:#871437;"><a href="{{route('add_team_member', ['teamId' => $team->teamId])}}">Add Team Member</a></td></tr>
                 <tr><td><a href="{{route('update_team', ['teamId' => $team->teamId])}}">Update Team</a></td></tr>
                 <tr><td><button id="{{$team->teamId}}" style="border: none;background: none;cursor: pointer;margin: 0;padding: 0;color:white;font-size: 0.875rem;" onclick="leaveTeam(this.id)" type="button" data-link="{{route('view_team_list')}}">Leave Team</button></td></tr>
-                <tr><td style="border:none;"><a href="">Delete Team</a></td></tr>
+                <tr><td style="border:none;"><button id="{{$team->teamId}}" style="border: none;background: none;cursor: pointer;margin: 0;padding: 0;color:white;font-size: 0.875rem;" onclick="deleteTeam(this.id)" type="button" data-link="{{route('view_team_list')}}">Delete Team</button></td></tr>
             </table>
         </div>
 
@@ -347,7 +347,7 @@
 
             function leaveTeam(id){
 
-                var link = $(this).data("link");
+                var link = $("#"+id).data("link");
                 swal.fire({
                     html: "<b>Are you sure you want to <span style='color:#FF2667'>leave</span> this team?</b>",
                     showCancelButton: true,
@@ -389,7 +389,54 @@
 
                 }, function (dismiss) {
                     return false;
-                })
+                });
+            }
+
+            function deleteTeam(id){
+
+                var link = $("#"+id).data("link");
+                swal.fire({
+                    html: "<b>Are you sure you want to <span style='color:#FF2667'>delete</span> this team?</b>",
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#FF2667',
+                }).then(function (e) {
+
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/delete_team/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Done!",
+                                        text: results.message,
+                                        confirmButtonColor: '#FF2667',
+                                        allowOutsideClick: false
+                                    });
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        window.location.href = link;
+                                    },3000);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
+                    }
+
+                }, function (dismiss) {
+                    return false;
+                });
             }
             
             $("#logout-button").click(function(e){

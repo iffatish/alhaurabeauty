@@ -474,7 +474,7 @@ class TeamController extends Controller
             }
             else
             {
-
+                $saved = Team::where('teamId', $teamId)->delete();
             }
 
             // check data deleted or not
@@ -484,6 +484,35 @@ class TeamController extends Controller
             } else {
                 $success = true;
                 $message = "Unable to leave team";
+            }
+
+            //  return response
+            return response()->json([
+                'success' => $success,
+                'message' => $message,
+            ]);
+            
+        }
+        return redirect('login');
+    }
+
+    public function deleteTeam(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            
+            $teamId = $request->teamId;
+            
+            $saved = Team::where('teamId', $teamId)->delete();
+
+            // check data deleted or not
+            if ($saved) {
+                $success = true;
+                $message = "Team deleted successfully";
+            } else {
+                $success = true;
+                $message = "Unable to delete team";
             }
 
             //  return response

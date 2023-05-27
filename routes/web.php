@@ -113,6 +113,8 @@ Route::controller(TeamController::class)->group(function(){
 
     Route::post('leave_team/{teamId}', 'leaveTeam')->name('leave_team');
 
+    Route::post('delete_team/{teamId}', 'deleteTeam')->name('delete_team');
+
 });
 
 Route::controller(OrderController::class)->group(function(){
