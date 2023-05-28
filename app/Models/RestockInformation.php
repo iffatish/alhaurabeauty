@@ -17,6 +17,7 @@ class RestockInformation extends Model
         'restockDate',
         'restockPrice',
         'currentPosition',
+        'status',
         'employeeId'     
     ];
     public $timestamps = false;

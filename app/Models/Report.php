@@ -16,6 +16,7 @@ class Report extends Model
         'employeeId',
         'reportDate',
         'totalSalesQty',
+        'quantitySold',
         'productSold',
         'totalSales',
         'capital',

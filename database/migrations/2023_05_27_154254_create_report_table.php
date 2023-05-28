@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('employeeId')->references('id')->on('employee')->onDelete('cascade');
             $table->date('reportDate');
             $table->integer('totalSalesQty');
+            $table->integer('quantitySold');
             $table->string('productSold');
             $table->decimal('totalSales', 8, 2);
             $table->decimal('capital', 8, 2);

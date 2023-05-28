@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('restockDate');
             $table->decimal('restockPrice', 8, 2);
             $table->string('currentPosition');
+            $table->integer('status')->default(0);
             $table->foreignId('employeeId')->references('id')->on('employee')->onDelete('cascade');
         });
     }

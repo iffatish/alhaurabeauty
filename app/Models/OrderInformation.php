@@ -20,6 +20,7 @@ class OrderInformation extends Model
         'orderPrice',
         'orderDate',
         'totalItems',
+        'status',
         'employeeId'         
     ];
     public $timestamps = false;

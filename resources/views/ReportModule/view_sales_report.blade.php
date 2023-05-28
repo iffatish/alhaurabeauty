@@ -125,6 +125,30 @@
             li:not(:last-child) {
                 margin-bottom: 10px;
             }
+            .report-menu{
+                position: absolute;
+                top: 230px;
+                right:100px;
+                font-size: 0.875rem;
+            }
+            .report-menu td{
+                padding: 0.938rem 0.938rem;
+                text-align: center;
+                background-color: #FF2667;
+                box-shadow: 0 0.125rem 0.063rem black;
+                cursor: pointer;
+                border-bottom: 0.063rem solid white;
+            }
+            .report-menu td:hover{
+                background-color: #871437;
+            }
+            .report-menu a{
+                color:white;
+                text-decoration: none;
+            }
+            .report-menu a:link{
+                text-decoration:none;
+            }
         </style>
     </head>
     <body>
@@ -161,11 +185,12 @@
             @if($user->userPosition != "HQ")
             <table width="100%" class="tb_report">
                 <tr><th colspan="3">DAILY SALES REPORT</th></tr>
+                @if($report)
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
                 <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
-                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$daily_order->count()}}</b></td></tr>
-                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$total_items}}</b></td></tr>
+                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
+                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$report->quantitySold}}</b></td></tr>
                 <tr>
                     <td>Product(s) Sold</td>
                     <td class="mid">:</td>
@@ -173,30 +198,49 @@
                         <b>
                             <ol class="list">
                                 @php
-                                    $total_sales = 0;
+                                    $products = array();
+                                    $products = explode(',', $report->productSold);
                                 @endphp
 
-                                @foreach($product_list as $i => $product_list)
-
-                                @php
-                                    $total_sales += $total_product_price[$i];
-                                @endphp
-
-                                    <li>{{$product_list->productName}} ({{$total_product[$i]}}) - RM {{number_format($total_product_price[$i], 2, '.', '')}}</li>
+                                @foreach($products as $p)
+                                    <li>{{$p}}</li>
                                 @endforeach
                             </ol>
                         </b>
                     </td>
                 </tr>
-                <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($total_sales, 2, '.', '')}}</b></td></tr>
-                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($capital, 2, '.', '')}}</b></td></tr>
-                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format(($total_sales - $capital), 2, '.', '')}}</b></td></tr>
+                <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($report->totalSales, 2, '.', '')}}</b></td></tr>
+                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($report->capital, 2, '.', '')}}</b></td></tr>
+                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
+                @else
+                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
+                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
+                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>0</b></td></tr>
+                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b></b></td></tr>
+                <tr>
+                    <td>Product(s) Sold</td>
+                    <td class="mid">:</td>
+                    <td></td>
+                </tr>
+                <tr><td>Total Sales</td><td class="mid">:</td><td><b></b></td></tr>
+                <tr><td>Capital</td><td class="mid">:</td><td><b></b></td></tr>
+                <tr><td>Profit</td><td class="mid">:</td><td><b></b></td></tr>
+                @endif
             </table>
             @else
             <table width="100%" class="tb_report">
                 <tr><th></th></tr>
             </table>
             @endif
+        </div>
+
+        <div class="report-menu">
+            <table>
+                <tr><td><a href="">Daily</a></td></tr>
+                <tr><td><a href="">Monthly</a></td></tr>
+                <tr><td><a href="">Yearly</a></td></tr>
+            </table>
         </div>
 
         <script>

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('orderPrice', 8, 2);
             $table->date('orderDate');
             $table->integer('totalItems');
+            $table->integer('status')->default(0);
             $table->foreignId('employeeId')->references('id')->on('employee')->onDelete('cascade');
         });
     }
