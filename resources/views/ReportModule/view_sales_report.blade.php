@@ -125,17 +125,29 @@
             li:not(:last-child) {
                 margin-bottom: 10px;
             }
+            .report-menu tr:first-of-type td:first-of-type{
+                border-top-left-radius: 10px;
+            }
+            .report-menu tr:first-of-type td:last-of-type{
+                border-top-right-radius: 10px;
+            }
+            .report-menu tr:last-of-type td:first-of-type {
+                border-bottom-left-radius: 10px;
+            }
+            .report-menu tr:last-of-type td:last-of-type {
+                border-bottom-right-radius: 10px;
+            }
             .report-menu{
                 position: absolute;
                 top: 230px;
-                right:100px;
+                right:110px;
                 font-size: 0.875rem;
             }
             .report-menu td{
                 padding: 0.938rem 0.938rem;
                 text-align: center;
                 background-color: #FF2667;
-                box-shadow: 0 0.125rem 0.063rem black;
+                box-shadow: 0 0.125rem 1px dimgrey;
                 cursor: pointer;
                 border-bottom: 0.063rem solid white;
             }
@@ -237,7 +249,7 @@
 
         <div class="report-menu">
             <table>
-                <tr><td><a href="">Daily</a></td></tr>
+                <tr><td><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
                 <tr><td><a href="">Monthly</a></td></tr>
                 <tr><td><a href="">Yearly</a></td></tr>
             </table>
