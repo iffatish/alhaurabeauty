@@ -354,6 +354,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                 }).then(function (e) {
 
                     if (e.value === true) {
@@ -401,6 +403,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                 }).then(function (e) {
 
                     if (e.value === true) {
@@ -449,6 +453,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                     }).then((result) => {
                     if (result.isConfirmed) {
                             window.location.href = link;

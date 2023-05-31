@@ -255,7 +255,7 @@
                             <td style="border-right: 0.063rem solid #E8E8E8">{{$teamMember->userPosition}}</td>
                             <td class="view" style="padding: 0;text-align:center; border-right: 0.063rem solid #E8E8E8">
                                 @if($teamMember->id != $team->teamLeader)
-                                    <a href="">view</a>
+                                    <a href="{{route('view_teammate_sales_report', ['teamMemberId' => $teamMember->id, 'teamId' => $team->teamId])}}">view</a>
                                 @endif
                             </td>
                             <td class="view" style="padding: 0;text-align:center;">
@@ -312,6 +312,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                     }).then((result) => {
                     if (result.isConfirmed) {
                             window.location.href = link;
@@ -327,6 +329,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                 }).then(function (e) {
 
                     if (e.value === true) {
@@ -373,6 +377,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                 }).then(function (e) {
 
                     if (e.value === true) {
@@ -420,6 +426,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                 }).then(function (e) {
 
                     if (e.value === true) {

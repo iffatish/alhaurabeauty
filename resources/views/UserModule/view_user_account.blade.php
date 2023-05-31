@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>ABSMS</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -137,20 +138,21 @@
             .deactivate-div{
                 text-align: center;
                 margin-bottom: 5rem;
+                margin-top: 40px;
+                width:100%;
             }
-            .deactivate-div a{
-                color: #FF2667;
+            .deactivate-div button{
+                color: #ff3333;
+                border: 1px solid #ff3333;
+                cursor: pointer;
+                margin: 0;
+                padding: 5px 15px;
+                font-size: 17px;
+                background-color: white;
             }
-            .deactivate-div a:link{
-                text-decoration: none;
-                font-weight: bold;
-            }
-            .deactivate-div a:hover{
-                color: red;
-                text-decoration: underline;
-            }
-            .deactivate-div a:active {
-                text-decoration: underline;
+            .deactivate-div button:hover{
+                background-color: #ff3333;
+                color: white;
             }
             .update a{
                 color: white;
@@ -239,7 +241,7 @@
         </div>
 
         <div class="deactivate-div">
-            <a href="">Deactivate Account</a>
+            <button id="{{$user->id}}" onclick="deactivateAccount(this.id)" type="button" data-link="{{route('login')}}">Deactivate Account</button>
         </div>
 
         <script>
@@ -253,12 +255,63 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                     }).then((result) => {
                     if (result.isConfirmed) {
                             window.location.href = link;
                         }
                     });
             });
+
+            function deactivateAccount(id){
+
+                var link = $("#"+id).data("link");
+                swal.fire({
+                    html: "<b>Are you sure you want to <span style='color:#FF2667'>deactivate</span> your account?</b>",
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
+                }).then(function (e) {
+
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "/deactivate_account/" + id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Done!",
+                                        text: results.message,
+                                        confirmButtonColor: '#FF2667',
+                                        allowOutsideClick: false
+                                    });
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        window.location.href = link;
+                                    },3000);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
+                    }
+
+                }, function (dismiss) {
+                    return false;
+                });
+            }
             
             function close() {
                 var x = document.getElementById("message");

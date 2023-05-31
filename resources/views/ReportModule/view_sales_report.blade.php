@@ -194,7 +194,6 @@
         </div>
 
         <div class="content">
-            @if($user->userPosition != "HQ")
             <table width="100%" class="tb_report">
                 <tr><th colspan="3">DAILY SALES REPORT</th></tr>
                 @if($report)
@@ -240,18 +239,13 @@
                 <tr><td>Profit</td><td class="mid">:</td><td><b></b></td></tr>
                 @endif
             </table>
-            @else
-            <table width="100%" class="tb_report">
-                <tr><th></th></tr>
-            </table>
-            @endif
         </div>
 
         <div class="report-menu">
             <table>
-                <tr><td><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
-                <tr><td><a href="">Monthly</a></td></tr>
-                <tr><td><a href="">Yearly</a></td></tr>
+                <tr><td style="background-color:#871437;"><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
+                <tr><td><a href="{{route('view_monthly_sales_report')}}">Monthly</a></td></tr>
+                <tr><td><a href="{{route('view_yearly_sales_report')}}">Yearly</a></td></tr>
             </table>
         </div>
 
@@ -266,6 +260,8 @@
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     confirmButtonColor: '#FF2667',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.4)'
                     }).then((result) => {
                     if (result.isConfirmed) {
                             window.location.href = link;

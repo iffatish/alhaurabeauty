@@ -161,6 +161,25 @@
             .report-menu a:link{
                 text-decoration:none;
             }
+            input[type=month]{
+                font-family: 'Open Sans', sans-serif;
+                width: 9.375rem;
+                height: 1.875rem;
+                padding: 0.313rem 0.313rem;
+                display: inline-block;
+                border: 0.063rem solid #ccc;
+                border-radius: 0.25rem;
+                box-sizing: border-box;
+            }
+            input[type=submit]{
+                font-family: 'Open Sans', sans-serif;
+                color: white;
+                background-color: #FF2667;
+                border: none;
+                padding: 0.313rem 1.25rem;
+                border-radius: 0.25rem;
+                cursor: pointer;
+            }
             .tm-btn button{
                 color: white;
                 background-color: #FF2667;
@@ -209,11 +228,22 @@
 
         <div class="content">
             <table width="100%" class="tb_report">
-                <tr><th colspan="3">DAILY SALES REPORT</th></tr>
+                <tr><th colspan="3">MONTHLY SALES REPORT</th></tr>
+                <tr>
+                    <td colspan="3" style="text-align:right;">
+                        <form method="get" action="{{route('update_monthly_teammate_sales_report')}}">
+                            @csrf
+                            <input type="hidden" name="teamId" value="{{$teamId}}">
+                            <input type="hidden" name="teamMemberId" value="{{$teamMemberId}}">
+                            <input name="year_month" id="year_month" type="month">
+                            <input type="submit" value="Search">
+                        </form>
+                    </td>
+                </tr>
                 @if($report)
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Report Type</td><td class="mid">:</td><td><b>Monthly</b></td></tr>
+                <tr><td>Month</td><td class="mid">:</td><td><b>{{$month}}</b></td></tr>
                 <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
                 <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$report->quantitySold}}</b></td></tr>
                 <tr>
@@ -239,8 +269,8 @@
                 <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
                 @else
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Report Type</td><td class="mid">:</td><td><b>Monthly</b></td></tr>
+                <tr><td>Month</td><td class="mid">:</td><td><b>{{$month}}</b></td></tr>
                 <tr><td>Number of Orders</td><td class="mid">:</td><td><b>0</b></td></tr>
                 <tr><td>Quantity Sold</td><td class="mid">:</td><td><b></b></td></tr>
                 <tr>
@@ -257,8 +287,8 @@
 
         <div class="report-menu">
             <table>
-                <tr><td style="background-color:#871437;"><a href="{{route('view_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Daily</a></td></tr>
-                <tr><td><a href="{{route('view_monthly_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Monthly</a></td></tr>
+                <tr><td><a href="{{route('view_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Daily</a></td></tr>
+                <tr><td style="background-color:#871437;"><a href="{{route('view_monthly_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Monthly</a></td></tr>
                 <tr><td><a href="{{route('view_yearly_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Yearly</a></td></tr>
             </table>
         </div>

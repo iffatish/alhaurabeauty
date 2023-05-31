@@ -94,7 +94,7 @@
                 color: dimgrey;
             }
             h1{
-                margin-top: 15px;
+                margin-top: 50px;
                 color: #FF2667;
                 padding: 0;
             }
@@ -139,7 +139,7 @@
             }
             .report-menu{
                 position: absolute;
-                top: 280px;
+                top: 230px;
                 right:110px;
                 font-size: 0.875rem;
             }
@@ -161,15 +161,24 @@
             .report-menu a:link{
                 text-decoration:none;
             }
-            .tm-btn button{
+            select{
+                font-family: 'Open Sans', sans-serif;
+                width: 9.375rem;
+                height: 1.875rem;
+                padding: 0.313rem 0.313rem;
+                display: inline-block;
+                border: 0.063rem solid #ccc;
+                border-radius: 0.25rem;
+                box-sizing: border-box;
+            }
+            input[type=submit]{
+                font-family: 'Open Sans', sans-serif;
                 color: white;
                 background-color: #FF2667;
                 border: none;
-                padding: 0.625rem 1.875rem;
-                border-radius: 1.875rem;
-                box-shadow: 0 0.125rem 0.063rem black;
+                padding: 0.313rem 1.25rem;
+                border-radius: 0.25rem;
                 cursor: pointer;
-                margin-left: 0.938rem;
             }
         </style>
     </head>
@@ -181,10 +190,10 @@
                 <div class="menu">
                     <a href="{{route('dashboard')}}">HOME</a>
                     <a href="{{route('view_order_list')}}">ORDER</a>
-                    <a href="{{route('view_sales_report')}}">REPORT</a>
+                    <a href="{{route('view_sales_report')}}" style="color:#FF2667">REPORT</a>
                     <a href="{{route('view_stock')}}">STOCK</a>
                     @if($user->userPosition != "HQ")
-                    <a href="{{route('view_team_list')}}" style="color:#FF2667">TEAM</a>
+                    <a href="{{route('view_team_list')}}">TEAM</a>
                     @endif
                 </div>
             </div>
@@ -199,21 +208,32 @@
             </div>         
         </div>
 
-        <div class="tm-btn" style="margin: 3.125rem 0 1.25rem 6.25rem;">
-            <a href="{{route('view_team_member', ['teamId' => $teamId])}}"><button style="color: white;background-color:#FF2667;">Back to Team Member</button></a>
-        </div>
-
         <div class="center">
             <h1>Sales Report</h1>
         </div>
 
         <div class="content">
             <table width="100%" class="tb_report">
-                <tr><th colspan="3">DAILY SALES REPORT</th></tr>
+                <tr><th colspan="3">YEARLY SALES REPORT</th></tr>
+                <tr>
+                    <td colspan="3" style="text-align:right;">
+                        <form method="get" action="{{route('update_yearly_sales_report')}}">
+                            @csrf
+                            @php $years = range(strftime("%Y", time()), 1900); @endphp
+                            <select name="year_selected">
+                                <option>Select year</option>
+                                @foreach($years as $years)
+                                <option value="{{$years}}">{{$years}}</option>
+                                @endforeach
+                            </select>
+                            <input type="submit" value="Search">
+                        </form>
+                    </td>
+                </tr>
                 @if($report)
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Report Type</td><td class="mid">:</td><td><b>Yearly</b></td></tr>
+                <tr><td>Year</td><td class="mid">:</td><td><b>{{$year}}</b></td></tr>
                 <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
                 <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$report->quantitySold}}</b></td></tr>
                 <tr>
@@ -239,8 +259,8 @@
                 <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
                 @else
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                <tr><td>Report Type</td><td class="mid">:</td><td><b>Yearly</b></td></tr>
+                <tr><td>Year</td><td class="mid">:</td><td><b>{{$year}}</b></td></tr>
                 <tr><td>Number of Orders</td><td class="mid">:</td><td><b>0</b></td></tr>
                 <tr><td>Quantity Sold</td><td class="mid">:</td><td><b></b></td></tr>
                 <tr>
@@ -257,9 +277,9 @@
 
         <div class="report-menu">
             <table>
-                <tr><td style="background-color:#871437;"><a href="{{route('view_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Daily</a></td></tr>
-                <tr><td><a href="{{route('view_monthly_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Monthly</a></td></tr>
-                <tr><td><a href="{{route('view_yearly_teammate_sales_report', [ 'teamId' => $teamId, 'teamMemberId' => $teamMemberId])}}">Yearly</a></td></tr>
+                <tr><td><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
+                <tr><td><a href="{{route('view_monthly_sales_report')}}">Monthly</a></td></tr>
+                <tr><td style="background-color:#871437;"><a href="{{route('view_yearly_sales_report')}}">Yearly</a></td></tr>
             </table>
         </div>
 

@@ -43,6 +43,8 @@ Route::controller(UserController::class)->group(function(){
 
     Route::post('update_user_save', 'updateUser')->name('user.update');
 
+    Route::post('deactivate_account/{id}', 'deactivateAccount')->name('user.deactivate');
+
 });
 
 Route::controller(ItemController::class)->group(function(){
@@ -134,5 +136,23 @@ Route::controller(OrderController::class)->group(function(){
 Route::controller(ReportController::class)->group(function(){
 
     Route::get('view_sales_report', 'viewSalesReport')->name('view_sales_report');
+    
+    Route::get('view_monthly_sales_report', 'viewMonthlySalesReport')->name('view_monthly_sales_report');
+    
+    Route::get('view_yearly_sales_report', 'viewYearlySalesReport')->name('view_yearly_sales_report');
+
+    Route::get('update_monthly_sales_report', 'updateMonthlySalesReport')->name('update_monthly_sales_report');
+    
+    Route::get('update_yearly_sales_report', 'updateYearlySalesReport')->name('update_yearly_sales_report');
+    
+    Route::get('view_teammate_sales_report', 'viewTeammateSalesReport')->name('view_teammate_sales_report');
+
+    Route::get('view_monthly_teammate_sales_report', 'viewMonthlyTeammateSalesReport')->name('view_monthly_teammate_sales_report');
+    
+    Route::get('view_yearly_teammate_sales_report', 'viewYearlyTeammateSalesReport')->name('view_yearly_teammate_sales_report');
+
+    Route::get('update_monthly_teammate_sales_report', 'updateMonthlyTeammateSalesReport')->name('update_monthly_teammate_sales_report');
+    
+    Route::get('update_yearly_teammate_sales_report', 'updateYearlyTeammateSalesReport')->name('update_yearly_teammate_sales_report');
 
 });

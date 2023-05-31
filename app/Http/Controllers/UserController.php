@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Session;
 use App\Models\User;
 use App\Models\ProductQuantity;
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
@@ -153,6 +154,75 @@ class UserController extends Controller
             }else{
                 return view('UserModule.update_user')->with('user', $user);
             }
+        }
+        return redirect('login');
+    }
+
+    public function deactivateAccount(Request $request)
+    {
+        if(Auth::check())
+        {
+            $team = Team::where('teamLeader', Auth::id())->first();
+
+            if($team){
+
+                Team::where('teamId',$team->teamId)->delete();
+
+            }
+            
+            $all_team = Team::get();
+
+            foreach($all_team as $t){
+
+                $team_member_list = preg_split("/[\s,]+/", $t->teamMember);
+            
+                foreach($team_member_list as $i => $t_l){
+                
+                    if($t_l == Auth::id()){
+                        $delete_index = $i;
+                    }
+                }
+                
+                if(isset($delete_index)){
+                    array_splice($team_member_list, $delete_index, 1);
+                    
+                    $total = count($team_member_list);
+                    $last_index = $total - 1;
+                    $new_team_member_list = "";
+
+                    foreach($team_member_list as $j => $t_m)
+                    {
+                        if($j == $last_index) {
+                            $new_team_member_list .= $t_m;
+                        }else{
+                            $new_team_member_list .= $t_m.",";
+                        }      
+                    }
+
+                    Team::where('teamId',$t->teamId)->update([
+                        'memberNum' => $total,
+                        'teamMember' => $new_team_member_list
+                    ]);
+                }
+            }
+
+            $saved = User::where('id', Auth::id())->delete();
+
+            // check data deleted or not
+            if ($saved) {
+                $success = true;
+                $message = "Your account deactivated successfully";
+            } else {
+                $success = true;
+                $message = "Unable to deactivate your account";
+            }
+
+            //  return response
+            return response()->json([
+                'success' => $success,
+                'message' => $message,
+            ]);
+            
         }
         return redirect('login');
     }
