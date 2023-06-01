@@ -195,59 +195,21 @@
 
         <div class="content">
             <table width="100%" class="tb_report">
-                <tr><th colspan="3">DAILY SALES REPORT</th></tr>
-                @if($report)
-                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
-                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
-                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$report->quantitySold}}</b></td></tr>
-                <tr>
-                    <td>Product(s) Sold</td>
-                    <td class="mid">:</td>
-                    <td>
-                        <b>
-                            <ol class="list">
-                                @php
-                                    $products = array();
-                                    $products = explode(',', $report->productSold);
-                                @endphp
-
-                                @foreach($products as $p)
-                                    <li>{{$p}}</li>
-                                @endforeach
-                            </ol>
-                        </b>
-                    </td>
-                </tr>
-                <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($report->totalSales, 2, '.', '')}}</b></td></tr>
-                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($report->capital, 2, '.', '')}}</b></td></tr>
-                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
-                @else
-                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
-                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>0</b></td></tr>
-                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b></b></td></tr>
-                <tr>
-                    <td>Product(s) Sold</td>
-                    <td class="mid">:</td>
-                    <td></td>
-                </tr>
-                <tr><td>Total Sales</td><td class="mid">:</td><td><b></b></td></tr>
-                <tr><td>Capital</td><td class="mid">:</td><td><b></b></td></tr>
-                <tr><td>Profit</td><td class="mid">:</td><td><b></b></td></tr>
-                @endif
+                <tr><th colspan="4">TEAM SALES REPORT</th></tr>
+                    <tr><td>Team <br><hr></td><td>Restock (RM)<br><hr></td><td>Sales (RM)<br><hr></td><td>Profit (RM)<br><hr></td></tr>
+                    @foreach($teams as $team)
+                    <tr><td>{{$team->teamName}}</td><td>0</td><td>0</td><td>0</td></tr>
+                    @endforeach
             </table>
         </div>
 
         <div class="report-menu">
             <table>
-                <tr><td style="background-color:#871437;"><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
+                <tr><td><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
                 <tr><td><a href="{{route('view_monthly_sales_report')}}">Monthly</a></td></tr>
                 <tr><td><a href="{{route('view_yearly_sales_report')}}">Yearly</a></td></tr>
                 @if($user->userPosition == "HQ")
-                <tr><td><a href="{{route('view_team_sales_report')}}">View Team Sales Report</a></td></tr>
+                <tr><td style="background-color:#871437;"><a href="{{route('view_team_sales_report')}}">View Team Sales Report</a></td></tr>
                 @endif
             </table>
         </div>

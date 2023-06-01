@@ -140,7 +140,7 @@
             .report-menu{
                 position: absolute;
                 top: 230px;
-                right:110px;
+                right:90px;
                 font-size: 0.875rem;
             }
             .report-menu td{
@@ -274,6 +274,9 @@
                 <tr><td><a href="{{route('view_sales_report')}}">Daily</a></td></tr>
                 <tr><td style="background-color:#871437;"><a href="{{route('view_monthly_sales_report')}}">Monthly</a></td></tr>
                 <tr><td><a href="{{route('view_yearly_sales_report')}}">Yearly</a></td></tr>
+                @if($user->userPosition == "HQ")
+                <tr><td><a href="{{route('view_team_sales_report')}}">View Team Sales Report</a></td></tr>
+                @endif
             </table>
         </div>
 

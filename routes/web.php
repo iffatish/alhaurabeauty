@@ -155,4 +155,6 @@ Route::controller(ReportController::class)->group(function(){
     
     Route::get('update_yearly_teammate_sales_report', 'updateYearlyTeammateSalesReport')->name('update_yearly_teammate_sales_report');
 
+    Route::get('view_team_sales_report', 'viewTeamSalesReport')->name('view_team_sales_report');
+
 });

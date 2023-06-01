@@ -9,6 +9,7 @@ use App\Models\ProductQuantity;
 use App\Models\OrderInformation;
 use App\Models\RestockInformation;
 use App\Models\Report;
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -1295,6 +1296,18 @@ class ReportController extends Controller
                             ->first();
             
             return view('ReportModule.view_yearly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'year' => $request->year_selected, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId]);
+        }
+        return redirect('login');
+    }
+
+    public function viewTeamSalesReport(Request $request)
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+            $teams = Team::get();
+
+            return view('ReportModule.view_team_sales_report')->with(['user'=> $user,'teams'=> $teams]);
         }
         return redirect('login');
     }
