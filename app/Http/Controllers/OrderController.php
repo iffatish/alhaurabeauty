@@ -16,10 +16,9 @@ class OrderController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
             $order = OrderInformation::where('employeeId', Auth::id())->orderBy('orderDate','DESC')->get();
             
-            return view('OrderModule.view_order_list')->with(['user'=> $user, 'product'=> $product, 'order'=> $order]);
+            return view('OrderModule.view_order_list')->with(['user'=> $user,'order'=> $order]);
         }
         return redirect('login');
     }
@@ -29,7 +28,7 @@ class OrderController extends Controller
         if(Auth::check())
         {
             $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
+            $product = Product::where('status_data',1)->get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
             
             return view('OrderModule.add_order')->with(['user'=> $user, 'product'=> $product]);
@@ -53,7 +52,7 @@ class OrderController extends Controller
             
             $user = User::where('id', Auth::id())->first();
             $data = $request->all();
-            $all_product = Product::get();
+            $all_product = Product::where('status_data',1)->get();
             $total_price = 0;
             $total_items = 0;
             //add row in Order Information

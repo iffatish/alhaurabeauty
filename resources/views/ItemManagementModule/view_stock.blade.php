@@ -283,12 +283,13 @@
                                         title: "Done!",
                                         text: results.message,
                                         confirmButtonColor: '#FF2667',
-                                        allowOutsideClick: false
+                                        allowOutsideClick: false,
+                                        backdrop: 'rgba(0,0,0,0.4)'
                                     });
                                     // refresh page after 2 seconds
                                     setTimeout(function(){
                                         location.reload();
-                                    },3000);
+                                    },1500);
                                 } else {
                                     swal.fire("Error!", results.message, "error");
                                 }

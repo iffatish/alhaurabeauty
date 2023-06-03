@@ -418,7 +418,7 @@ class ItemController extends Controller
 
             $data = $request->all();
     
-            $all_product = Product::get();
+            $all_product = Product::where('status_data',1)->get();
             $position = User::where('id', Auth::id())->value('userPosition');
             $product_quantity = ProductQuantity::where('employeeId', Auth::id())->first();
 
@@ -472,7 +472,7 @@ class ItemController extends Controller
             }
             $product_qty_user->save();
             $user = User::where('id', Auth::id())->first();
-            $product = Product::get();
+            $product = Product::where('status_data',1)->get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
             $product_discount = ProductDiscount::where('status',1)->first();
 

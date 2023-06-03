@@ -145,7 +145,7 @@ class ReportController extends Controller
                 
                 if($daily_order){
                     //select restock row that remainder all zero to update report status
-                    $db_statement = "SELECT * FROM restock_information WHERE ";
+                    $db_statement = "SELECT * FROM restock_information WHERE employeeId = " . Auth::id() . " AND ";
                     $lastindex = count($list_column_qty) - 1;
                     foreach($list_column_qty as $m => $l)
                     {
@@ -324,7 +324,7 @@ class ReportController extends Controller
                     }
                     
                     //select restock row that remainder all zero to update report status
-                    $db_statement = "SELECT * FROM restock_information WHERE ";
+                    $db_statement = "SELECT * FROM restock_information WHERE employeeId = " . Auth::id() . " AND ";
                     $lastindex = count($list_column_qty) - 1;
                     foreach($list_column_qty as $m => $l)
                     {
@@ -657,19 +657,20 @@ class ReportController extends Controller
     {
         if(Auth::check())
         {
-            $user = User::where('id', $request->teamMemberId)->first();
+            $teammate = User::where('id', $request->teamMemberId)->first();
+            $user = User::where('id', Auth::id())->first();
             $teamId = $request->teamId;
             $teamMemberId = $request->teamMemberId;
             $current_date = Carbon::now()->format('d-m-Y');
             $current_date_system = Carbon::now()->format('Y-m-d');
            
-            $report = Report::where(['reportDate' => $current_date_system, 'employeeId' => $user->id, 'salesReportType' => "Daily"])->first();
+            $report = Report::where(['reportDate' => $current_date_system, 'employeeId' => $teammate->id, 'salesReportType' => "Daily"])->first();
 
             if(!$report)
             {
                 $daily_order = OrderInformation::where([
                     'orderDate' => $current_date_system,
-                    'employeeId' => $user->id
+                    'employeeId' => $teammate->id
                     ])->get();
                 
                 if($daily_order->count() != 0){
@@ -737,7 +738,7 @@ class ReportController extends Controller
                 }
 
                 //find capital price
-                $user_restock = RestockInformation::where('employeeId',$user->id)->get();
+                $user_restock = RestockInformation::where('employeeId',$teammate->id)->get();
                 $list_column_qty = array();
                 foreach($product_list as $k => $p_l)
                 {
@@ -784,7 +785,7 @@ class ReportController extends Controller
                 
                 if($daily_order){
                     //select restock row that remainder all zero to update report status
-                    $db_statement = "SELECT * FROM restock_information WHERE ";
+                    $db_statement = "SELECT * FROM restock_information WHERE employeeId = " . $teammate->id . " AND ";
                     $lastindex = count($list_column_qty) - 1;
                     foreach($list_column_qty as $m => $l)
                     {
@@ -804,7 +805,7 @@ class ReportController extends Controller
                 }
 
                 $saved = Report::create([
-                                        'employeeId' => $user->id,
+                                        'employeeId' => $teammate->id,
                                         'salesReportType' => "Daily",
                                         'reportDate' => $current_date_system,
                                         'totalSalesQty' => $daily_order->count(),
@@ -815,19 +816,19 @@ class ReportController extends Controller
                                         'profit' => $total_sales - $capital
                                     ]);
 
-                $daily_order_update_status = OrderInformation::where(['orderDate' => $current_date_system,'employeeId' => Auth::id()])->update(['status' => 1]);
+                $daily_order_update_status = OrderInformation::where(['orderDate' => $current_date_system,'employeeId' => $teammate->id])->update(['status' => 1]);
                 }
 
             }else{
                 $daily_order = OrderInformation::where([
                     'orderDate' => $current_date_system,
-                    'employeeId' => $user->id,
+                    'employeeId' => $teammate->id,
                     'status' => 0
                     ])->get();
                 
                 $daily_order_all = OrderInformation::where([
                     'orderDate' => $current_date_system,
-                    'employeeId' => $user->id
+                    'employeeId' => $teammate->id
                     ])->get();
                 
                 if($daily_order->count() > 0)
@@ -917,7 +918,7 @@ class ReportController extends Controller
                     }
 
                     //find capital price
-                    $user_restock = RestockInformation::where(['employeeId' => $user->id, 'status' => 0])->get();
+                    $user_restock = RestockInformation::where(['employeeId' => $teammate->id, 'status' => 0])->get();
                     $list_column_qty = array();
                     foreach($product_list as $k => $p_l)
                     {
@@ -963,7 +964,7 @@ class ReportController extends Controller
                     }
                     
                     //select restock row that remainder all zero to update report status
-                    $db_statement = "SELECT * FROM restock_information WHERE ";
+                    $db_statement = "SELECT * FROM restock_information WHERE employeeId = " . $teammate->id . " AND ";
                     $lastindex = count($list_column_qty) - 1;
                     foreach($list_column_qty as $m => $l)
                     {
@@ -985,7 +986,7 @@ class ReportController extends Controller
                     $total_capital = $report->capital + $capital;
                     $total_profit = $totalSales - $total_capital;
 
-                    $saved = Report::where(['reportDate'=> $current_date_system, 'employeeId' => $user->id,'salesReportType' => "Daily"])
+                    $saved = Report::where(['reportDate'=> $current_date_system, 'employeeId' => $teammate->id,'salesReportType' => "Daily"])
                                     ->update([
                                             'reportDate' => $current_date_system,
                                             'totalSalesQty' => $daily_order_all->count(),
@@ -996,13 +997,13 @@ class ReportController extends Controller
                                             'profit' => $total_profit
                                         ]);
                     
-                    $daily_order_update_status = OrderInformation::where(['orderDate' => $current_date_system,'employeeId' => $user->id])->update(['status' => 1]);
+                    $daily_order_update_status = OrderInformation::where(['orderDate' => $current_date_system,'employeeId' => $teammate->id])->update(['status' => 1]);
                 }
             }
 
-            $report = Report::where(['reportDate' => $current_date_system, 'employeeId' => $user->id,'salesReportType' => "Daily"])->first();
+            $report = Report::where(['reportDate' => $current_date_system, 'employeeId' => $teammate->id,'salesReportType' => "Daily"])->first();
 
-            return view('ReportModule.view_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'current_date' => $current_date, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId]);
+            return view('ReportModule.view_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'current_date' => $current_date, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId, 'teammate' => $teammate]);
         }
         return redirect('login');
     }
@@ -1011,7 +1012,8 @@ class ReportController extends Controller
     {
         if(Auth::check())
         {
-            $user = User::where('id', $request->teamMemberId)->first();
+            $user = User::where('id', Auth::id())->first();
+            $teammate = User::where('id', $request->teamMemberId)->first();
             $teamId = $request->teamId;
             $teamMemberId = $request->teamMemberId;
             $current_date = Carbon::now()->format('d-m-Y');
@@ -1020,7 +1022,7 @@ class ReportController extends Controller
             $month = Carbon::now()->month;
             $year = Carbon::now()->year;
             
-            $monthly_report = Report::where(['salesReportType' => 'Monthly','employeeId' => $user->id])
+            $monthly_report = Report::where(['salesReportType' => 'Monthly','employeeId' => $teammate->id])
                                     ->whereYear('reportDate', $year)
                                     ->whereMonth('reportDate', $month)
                                     ->first();
@@ -1033,7 +1035,7 @@ class ReportController extends Controller
             $capital = 0;
             $profit = 0;
 
-            $daily_reports = Report::where(['salesReportType'=>'Daily', 'employeeId' => $user->id])
+            $daily_reports = Report::where(['salesReportType'=>'Daily', 'employeeId' => $teammate->id])
                                     ->whereMonth('reportDate', Carbon::now()->month)
                                     ->get();
                 
@@ -1048,7 +1050,7 @@ class ReportController extends Controller
                     $profit += $dr->profit;  
                 }
 
-                $monthly_order = OrderInformation::where('employeeId', $user->id)
+                $monthly_order = OrderInformation::where('employeeId', $teammate->id)
                                                     ->whereMonth('orderDate', Carbon::now()->month)
                                                     ->get();
                 
@@ -1099,7 +1101,7 @@ class ReportController extends Controller
                 if(!$monthly_report){
 
                    $saved = Report::create([
-                                            'employeeId' => $user->id,
+                                            'employeeId' => $teammate->id,
                                             'salesReportType' => "Monthly",
                                             'reportDate' => $current_date_system,
                                             'totalSalesQty' => $totalSalesQty,
@@ -1111,7 +1113,7 @@ class ReportController extends Controller
 
                 }else{
 
-                    $saved = Report::where(['salesReportType'=>'Monthly', 'employeeId' => $user->id])
+                    $saved = Report::where(['salesReportType'=>'Monthly', 'employeeId' => $teammate->id])
                                     ->whereYear('reportDate', $year)
                                     ->whereMonth('reportDate', $month)
                                     ->update([
@@ -1125,14 +1127,14 @@ class ReportController extends Controller
                 }        
             }
 
-            $report = Report::where(['salesReportType' => 'Monthly','employeeId' => $user->id])
+            $report = Report::where(['salesReportType' => 'Monthly','employeeId' => $teammate->id])
                             ->whereYear('reportDate', $year)
                             ->whereMonth('reportDate', $month)
                             ->first();
             
             $month_str =  Carbon::now()->format('F');
 
-            return view('ReportModule.view_monthly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'month' => $month_str, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId]);
+            return view('ReportModule.view_monthly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'month' => $month_str, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId, 'teammate' => $teammate]);
         }
         return redirect('login');
     }
@@ -1141,21 +1143,22 @@ class ReportController extends Controller
     {
         if(Auth::check())
         {
-            $user = User::where('id', $request->teamMemberId)->first();
+            $user = User::where('id', Auth::id())->first();
+            $teammate = User::where('id', $request->teamMemberId)->first();
             $teamId = $request->teamId;
             $teamMemberId = $request->teamMemberId;
             $current_date = Carbon::now()->format('d-m-Y');
             $month = Carbon::parse($request->year_month)->format('m');
             $year = Carbon::parse($request->year_month)->format('Y');
             
-            $report = Report::where(['employeeId'=> $user->id, 'salesReportType'=>'Monthly'])
+            $report = Report::where(['employeeId'=> $teammate->id, 'salesReportType'=>'Monthly'])
                             ->whereYear('reportDate', $year)
                             ->whereMonth('reportDate', $month)
                             ->first();
             
             $month_str = Carbon::parse($request->year_month)->format('F');
 
-            return view('ReportModule.view_monthly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'month' => $month_str, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId]);
+            return view('ReportModule.view_monthly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'month' => $month_str, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId, 'teammate' => $teammate]);
         }
         return redirect('login');
     }
@@ -1164,7 +1167,8 @@ class ReportController extends Controller
     {
         if(Auth::check())
         {
-            $user = User::where('id', $request->teamMemberId)->first();
+            $user = User::where('id', Auth::id())->first();
+            $teammate = User::where('id', $request->teamMemberId)->first();
             $teamId = $request->teamId;
             $teamMemberId = $request->teamMemberId;
             $current_date = Carbon::now()->format('d-m-Y');
@@ -1172,7 +1176,7 @@ class ReportController extends Controller
             
             $year = Carbon::now()->year;
             
-            $yearly_report = Report::where(['salesReportType' => 'Yearly','employeeId' => $user->id])
+            $yearly_report = Report::where(['salesReportType' => 'Yearly','employeeId' => $teammate->id])
                                     ->whereYear('reportDate', $year)
                                     ->first();
             $product = Product::get();
@@ -1184,7 +1188,7 @@ class ReportController extends Controller
             $capital = 0;
             $profit = 0;
 
-            $monthly_reports = Report::where(['salesReportType'=>'Monthly', 'employeeId' => $user->id])
+            $monthly_reports = Report::where(['salesReportType'=>'Monthly', 'employeeId' => $teammate->id])
                                     ->whereYear('reportDate', $year)
                                     ->get();
                 
@@ -1199,7 +1203,7 @@ class ReportController extends Controller
                     $profit += $mr->profit;  
                 }
 
-                $yearly_order = OrderInformation::where('employeeId', $user->id)
+                $yearly_order = OrderInformation::where('employeeId', $teammate->id)
                                                     ->whereYear('orderDate', $year)
                                                     ->get();
                 
@@ -1249,7 +1253,7 @@ class ReportController extends Controller
 
                 if(!$yearly_report){
                     $saved = Report::create([
-                        'employeeId' => $user->id,
+                        'employeeId' => $teammate->id,
                         'salesReportType' => "Yearly",
                         'reportDate' => $current_date_system,
                         'totalSalesQty' => $totalSalesQty,
@@ -1260,7 +1264,7 @@ class ReportController extends Controller
                         'profit' => $profit
                     ]);
                 }else{
-                    $saved = Report::where(['salesReportType'=>'Yearly', 'employeeId' => $user->id])
+                    $saved = Report::where(['salesReportType'=>'Yearly', 'employeeId' => $teammate->id])
                                         ->whereYear('reportDate', $year)
                                         ->update([
                                             'reportDate' => $current_date_system,
@@ -1274,11 +1278,11 @@ class ReportController extends Controller
                 }
             }
 
-            $report = Report::where(['salesReportType' => 'Yearly','employeeId' => $user->id])
+            $report = Report::where(['salesReportType' => 'Yearly','employeeId' => $teammate->id])
                             ->whereYear('reportDate', $year)
                             ->first();
 
-            return view('ReportModule.view_yearly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'year' => $year, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId]);
+            return view('ReportModule.view_yearly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'year' => $year, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId, 'teammate' => $teammate]);
         }
         return redirect('login');
     }
@@ -1287,15 +1291,16 @@ class ReportController extends Controller
     {
         if(Auth::check())
         {
-            $user = User::where('id', $request->teamMemberId)->first();
+            $user = User::where('id', Auth::id())->first();
+            $teammate = User::where('id', $request->teamMemberId)->first();
             $teamId = $request->teamId;
             $teamMemberId = $request->teamMemberId;
             
-            $report = Report::where(['employeeId'=> $user->id, 'salesReportType'=>'Yearly'])
+            $report = Report::where(['employeeId'=> $teammate->id, 'salesReportType'=>'Yearly'])
                             ->whereYear('reportDate', $request->year_selected)
                             ->first();
             
-            return view('ReportModule.view_yearly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'year' => $request->year_selected, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId]);
+            return view('ReportModule.view_yearly_teammate_sales_report')->with(['user'=> $user, 'report' => $report, 'year' => $request->year_selected, 'teamId' => $teamId, 'teamMemberId' => $teamMemberId, 'teammate' => $teammate]);
         }
         return redirect('login');
     }

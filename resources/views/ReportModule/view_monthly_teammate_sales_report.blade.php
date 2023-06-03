@@ -241,7 +241,7 @@
                     </td>
                 </tr>
                 @if($report)
-                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
+                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Monthly</b></td></tr>
                 <tr><td>Month</td><td class="mid">:</td><td><b>{{$month}}</b></td></tr>
                 <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
@@ -268,7 +268,7 @@
                 <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($report->capital, 2, '.', '')}}</b></td></tr>
                 <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
                 @else
-                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
+                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Monthly</b></td></tr>
                 <tr><td>Month</td><td class="mid">:</td><td><b>{{$month}}</b></td></tr>
                 <tr><td>Number of Orders</td><td class="mid">:</td><td><b>0</b></td></tr>
