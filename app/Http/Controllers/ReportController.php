@@ -1307,14 +1307,44 @@ class ReportController extends Controller
         {
             $user = User::where('id', Auth::id())->first();
             $teams = Team::get();
+            
+            $restock = array();
+            $sales = array();
+            $profit = array();
 
-
-            foreach($teams as $team)
-            {
+            foreach($teams as $i => $team)
+            {   
+                $team_member_arr = array();
+                $team_member_arr = preg_split("/[\s,]+/", $team->teamMember);
                 
+                $restock[$i] = 0;
+                $sales[$i] = 0;
+                $profit[$i] = 0;
+
+                foreach($team_member_arr as $member)
+                {
+                    $restocks = RestockInformation::where(['employeeId' => $member])->get();
+                    $orders = OrderInformation::where(['employeeId' => $member])->get();
+                    $daily_reports = Report::where(['salesReportType'=>'Daily', 'employeeId' => $member])->get();
+
+                    foreach($restocks as $rstk)
+                    {
+                        $restock[$i] += $rstk->restockPrice;
+                    }
+
+                    foreach($orders as $order)
+                    {
+                        $sales[$i] += $order->orderPrice - $order->additionalCost;
+                    }
+
+                    foreach($daily_reports as $dr)
+                    {
+                        $profit[$i] += $dr->profit;
+                    }
+                }
             }
 
-            return view('ReportModule.view_team_sales_report')->with(['user'=> $user,'teams'=> $teams]);
+            return view('ReportModule.view_team_sales_report')->with(['user'=> $user,'teams'=> $teams, 'restock' => $restock, 'sales' => $sales, 'profit' => $profit]);
         }
         return redirect('login');
     }

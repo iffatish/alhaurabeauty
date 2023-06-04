@@ -197,8 +197,8 @@
             <table width="100%" class="tb_report">
                 <tr><th colspan="4">TEAM SALES REPORT</th></tr>
                     <tr><td>Team <br><hr></td><td>Restock (RM)<br><hr></td><td>Sales (RM)<br><hr></td><td>Profit (RM)<br><hr></td></tr>
-                    @foreach($teams as $team)
-                    <tr><td>{{$team->teamName}}</td><td>0</td><td>0</td><td>0</td></tr>
+                    @foreach($teams as $i => $team)
+                    <tr><td>{{$team->teamName}}</td><td>{{number_format($restock[$i], 2, '.', '')}}</td><td>{{number_format($sales[$i], 2, '.', '')}}</td><td>{{number_format($profit[$i], 2, '.', '')}}</td></tr>
                     @endforeach
             </table>
         </div>
