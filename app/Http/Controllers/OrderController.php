@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductQuantity;
 use App\Models\OrderInformation;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -63,7 +64,7 @@ class OrderController extends Controller
             $order->deliveryMethod = $data['deliveryMethod'];
             $order->paymentMethod = $data['paymentMethod'];
             $order->additionalCost = $data['additionalCost'];
-            $order->orderDate = $data['orderDate'];
+            $order->orderDate = Carbon::createFromFormat('d-m-Y',$data['orderDate'])->format('Y-m-d');
             foreach($all_product as $d)
             {
                 $product_qty = $d->productId . "_order_qty";

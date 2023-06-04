@@ -196,7 +196,7 @@
         <div class="content">
             <table width="100%" class="tb_report">
                 <tr><th colspan="3">DAILY SALES REPORT</th></tr>
-                @if($report)
+                @if($report->totalSalesQty != 0)
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$user->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
                 <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>

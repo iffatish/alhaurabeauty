@@ -243,7 +243,7 @@
                             <td class="input-title">Order Date</td>
                         </tr>
                         <tr>
-                            <td><input type="date" name="orderDate" required></td>
+                            <td><input type="hidden" name="orderDate" value="{{date('d-m-Y')}}"><input type="text" name="orderDateStr" value="{{date('d-m-Y')}}" disabled></td>
                         </tr>
                         <tr>
                             <td class="input-title">Name</td>

@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('salesReportType');
             $table->foreignId('employeeId')->references('id')->on('employee')->onDelete('cascade');
             $table->date('reportDate');
-            $table->integer('totalSalesQty');
-            $table->integer('quantitySold');
-            $table->string('productSold');
-            $table->decimal('totalSales', 8, 2);
-            $table->decimal('capital', 8, 2);
-            $table->decimal('profit', 8, 2);
+            $table->integer('totalSalesQty')->default(0);
+            $table->integer('quantitySold')->default(0);
+            $table->string('productSold')->nullable();
+            $table->decimal('totalSales', 8, 2)->default(0);
+            $table->decimal('capital', 8, 2)->default(0);
+            $table->decimal('profit', 8, 2)->default(0);
         });
     }
 

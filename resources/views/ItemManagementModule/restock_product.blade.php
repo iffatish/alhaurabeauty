@@ -221,6 +221,14 @@
                 padding-right: 1.563rem;
                 color: dimgrey;
             }
+            select{
+                font-family: 'Open Sans', sans-serif;
+                padding: 0.313rem 0.313rem;
+                display: inline-block;
+                border: 0.063rem solid #ccc;
+                border-radius: 0.25rem;
+                box-sizing: border-box;
+            }
         </style>
     </head>
     <body>
@@ -285,10 +293,20 @@
                         <td style="padding-left: 3.125rem;">{{$i +1}}) {{$product->productName}}</td><td class="right" style="padding-right:5.063rem;"><input style="width:6.25rem;" required type="number" min="0" name="{{$product_qty_col}}" value="0"></td>
                     </tr>
                     @endforeach
+
+                    @if($user->userPosition == "HQ")
                     <tr>
                         <td colspan="2" class="input-title" style="padding-top:2rem;">Restock from&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input style="width:28.75rem" type="text" name="restockFrom"></td>
                     </tr>
+                    @else
+                    <tr>
+                        <td colspan="2" class="input-title" style="padding-top:2rem;">Restock from&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select class="form-control" name="restockFrom" id="select-employee" style="width:300px;">
+                                
+                        </select></td>
+                    </tr>
+                    @endif
                     <tr>
                         <td colspan="2" class="input-title" style="padding-top:1rem;">Payment Method&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="radio" name="restockPaymentMethod" value="Cash" id="cash"><label for="cash">Cash</label>
@@ -305,10 +323,15 @@
                             @endif
                         </td>
                     </tr>
+                    @if($product->count() < 1)
+                    <tr>
+                        <td colspan="2" class="center back" style="padding-bottom:1.875rem;"><input style="background-color:#cccccc;cursor:not-allowed;" type="submit" value="+  Restock" disabled><br><br><a href="{{route('view_stock')}}">Cancel</a></td> 
+                    </tr>
+                    @else
                     <tr>
                         <td colspan="2" class="center back" style="padding-bottom:1.875rem;"><input type="submit" value="+  Restock"><br><br><a href="{{route('view_stock')}}">Cancel</a></td> 
                     </tr>
-                    
+                    @endif
                     
                 </form>
             </table>
@@ -316,8 +339,11 @@
 
         <script>
             $(document).ready(function() {
-                $("#select-name").select2({
+
+                $("#select-employee").select2({
+                    placeholder: "Enter Name",
                     minimumInputLength: 2,
+                    allowClear: true,
                     tags: true,
                     ajax: {
                         url: "{{ route('ajaxSearchEmployee') }}",
@@ -336,7 +362,7 @@
                                 results: $.map(data, function(item) {
                                     return {
                                         text: item.userName,
-                                        id: item.id,
+                                        id: item.userName,
                                     }
                                 })
                             };
