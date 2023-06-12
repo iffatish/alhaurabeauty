@@ -246,7 +246,7 @@
                         </form>
                     </td>
                 </tr>
-                @if($report)
+                @if($report->totalSalesQty != 0)
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Yearly</b></td></tr>
                 <tr><td>Year</td><td class="mid">:</td><td><b>{{$year}}</b></td></tr>

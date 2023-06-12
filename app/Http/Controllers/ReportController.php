@@ -179,7 +179,9 @@ class ReportController extends Controller
                                             'profit' => $total_sales - $capital
                                         ]);
 
-                    $daily_order_update_status = OrderInformation::where(['orderDate' => $current_date_system,'employeeId' => $user->id])->update(['status' => 1]);
+                    $daily_order_update_status = OrderInformation::where([
+                                                                            'orderDate' => $current_date_system,
+                                                                            'employeeId' => $user->id])->update(['status' => 1]);
                 }else{
 
                     $saved = Report::create([
@@ -853,6 +855,7 @@ class ReportController extends Controller
             $teamMemberId = $request->teamMemberId;
             $current_date = Carbon::now()->format('d-m-Y');
             $current_date_system = Carbon::now()->format('Y-m-d');
+            $report = Report::where(['reportDate' => $current_date_system, 'employeeId' => $teammate->id, 'salesReportType' => "Daily"])->first();
             
             $daily_order = OrderInformation::where([
                 'orderDate' => $current_date_system,
@@ -1349,4 +1352,373 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    public function createDailySalesReportNewUser(User $user)
+    {
+        $current_date = Carbon::now()->format('d-m-Y');
+        $current_date_system = Carbon::now()->format('Y-m-d');
+        
+        
+            
+            $daily_report = Report::where([
+                                            'reportDate' => $current_date_system,
+                                            'employeeId' => $user->id
+                                            ])->first();
+            if(!$daily_report){
+                
+                $daily_order = OrderInformation::where([
+                                                        'orderDate' => $current_date_system,
+                                                        'employeeId' => $user->id
+                                                        ])->get();
+                    
+                if($daily_order->count() != 0){
+
+                    $product = Product::get();
+
+                    $total_items = 0;
+                    $total = 0;
+                    $total_product = array();
+                    $total_product_price = array();
+                    $product_list = collect();
+                    $capital = 0;
+
+                    //count total items
+                    foreach($daily_order as $o)
+                    {
+                        $total_items += $o->totalItems;   
+                    }
+
+                    //Find list of products ordered
+                    foreach($product as $p)
+                    {  
+                        $col = $p->productId . "_order_qty";
+                        $total = 0;
+
+                        foreach($daily_order as $d_o)
+                        {
+                            $total +=  $d_o->$col;
+                        }
+
+                        if($total != 0)
+                        {
+                            $product_list->push($p);
+                        }
+                    }
+
+                    $productSold = "";
+                    $last_product = $product_list->count() - 1;
+                    //Find total for each product
+                    foreach($product_list as $i => $p_o)
+                    {
+                        $col = $p_o->productId . "_order_qty";
+                        $col_price = $p_o->productId . "_order_price";
+                        $total_product[$i] = 0;
+                        $total_product_price[$i] = 0;
+
+                        foreach($daily_order as $d_)
+                        {
+                            $total_product[$i] +=  $d_->$col;
+                            $total_product_price[$i] += $d_->$col_price * $d_->$col;
+                        }
+
+                        $productSold .= $p_o->productName . " (" . $total_product[$i] . ") - RM " . number_format($total_product_price[$i], 2, '.', '');
+                        
+                        if($i != $last_product){
+                            $productSold .= ",";
+                        }
+                        
+                    }
+
+                    $total_sales = 0;
+                    //find total sales
+                    foreach($total_product_price as $price){
+                        $total_sales += $price;
+                    }
+
+                    //find capital price
+                    $user_restock = RestockInformation::where('employeeId',$user->id)->get();
+                    $list_column_qty = array();
+                    foreach($product_list as $k => $p_l)
+                    {
+                        $col = $p_l->productId . "_qty_remainder";
+                        $col_price = $p_l->productId . "_restock_price";
+                        $list_column_qty[$k] = $col;
+                        $remainder = 0;
+                        foreach($user_restock as $restock)
+                        {
+                            if(($restock->$col >= $total_product[$k]) && ($remainder == 0)){              
+
+                            $capital += $restock->$col_price * $total_product[$k];
+
+                            RestockInformation::where('restockId',$restock->restockId)
+                                                ->update([
+                                                $col => $restock->$col - $total_product[$k]
+                                                ]);
+
+                            break;
+                            }
+                            else if(($remainder != 0)  && ($restock->$col >= $remainder)){
+
+                                $capital += $restock->$col_price * $remainder;
+
+                                RestockInformation::where('restockId',$restock->restockId)
+                                ->update([
+                                $col => $restock->$col - $remainder
+                                ]);
+
+                                break;
+                            }
+                            else{
+                                $capital += $restock->$col_price * $restock->$col;
+
+                                RestockInformation::where('restockId',$restock->restockId)
+                                ->update([
+                                $col => 0
+                                ]);
+
+                                $remainder = $total_product[$k] - $restock->$col;
+                            }
+                        }
+                    }
+                    
+                    if($daily_order){
+                        //select restock row that remainder all zero to update report status
+                        $db_statement = "SELECT * FROM restock_information WHERE employeeId = " . $user->id . " AND ";
+                        $lastindex = count($list_column_qty) - 1;
+                        foreach($list_column_qty as $m => $l)
+                        {
+                            $db_statement .= $l . " = 0 ";
+                            if($m != $lastindex){
+                                $db_statement .= "AND ";
+                            }
+                        }
+                        
+                        $result = DB::select($db_statement);
+                        $restocks = RestockInformation::hydrate($result);
+                        //update status to 1 if all remainder 0 (Have been used in report generated)
+                        foreach($restocks as $rstk)
+                        {
+                            $update = RestockInformation::where('restockId',$rstk->restockId)->update(['status' => 1]);
+                        }
+                    }
+
+                    $saved = Report::create([
+                                            'employeeId' => $user->id,
+                                            'salesReportType' => "Daily",
+                                            'reportDate' => $current_date_system,
+                                            'totalSalesQty' => $daily_order->count(),
+                                            'quantitySold' => $total_items,
+                                            'productSold' => $productSold,
+                                            'totalSales' => $total_sales,
+                                            'capital' => $capital,
+                                            'profit' => $total_sales - $capital
+                                        ]);
+
+                    $daily_order_update_status = OrderInformation::where([
+                                                                            'orderDate' => $current_date_system,
+                                                                            'employeeId' => $user->id])->update(['status' => 1]);
+                }else{
+
+                    $saved = Report::create([
+                        'employeeId' => $user->id,
+                        'salesReportType' => "Daily",
+                        'reportDate' => $current_date_system,
+                    ]);
+                }
+            }
+    }
+
+    public function createMonthlySalesReportNewUser(User $user)
+    {   
+        $current_date = Carbon::now()->format('d-m-Y');
+        $current_date_system = Carbon::now()->format('Y-m-d');
+        
+        $month = Carbon::now()->month;
+        $year = Carbon::now()->year;
+        
+        
+        $monthly_report = Report::where(['salesReportType'=>'Monthly', 'employeeId' => $user->id])
+                                ->whereMonth('reportDate', Carbon::now()->month)
+                                ->first();
+
+        if(!$monthly_report){
+            $product = Product::get();
+            
+            $totalSalesQty = 0;
+            $total_items = 0;
+            $productSold = "";
+            $total_sales = 0;
+            $capital = 0;
+            $profit = 0;
+
+            $daily_reports = Report::where(['salesReportType'=>'Daily', 'employeeId' => $user->id])
+                                    ->whereMonth('reportDate', Carbon::now()->month)
+                                    ->get();
+                
+        foreach($daily_reports as $dr)
+            {
+                $totalSalesQty += $dr->totalSalesQty;
+                $total_items += $dr->quantitySold;
+                $total_sales += $dr->totalSales;
+                $capital += $dr->capital;
+                $profit += $dr->profit;  
+            }
+
+            $monthly_order = OrderInformation::where('employeeId', $user->id)
+                                                ->whereMonth('orderDate', Carbon::now()->month)
+                                                ->get();
+            
+            //get list of monthly products ordered
+            $product_list = collect();
+            
+            foreach($product as $p)
+            {  
+                $col = $p->productId . "_order_qty";
+                $total = 0;
+
+                foreach($monthly_order as $m_order)
+                {
+                    $total +=  $m_order->$col;
+                }
+
+                if($total != 0)
+                {
+                    $product_list->push($p);
+                }
+            }
+
+            $last_product = $product_list->count() - 1;
+            $total_product = array();
+            $total_product_price = array();
+
+            //Find total for each product
+            foreach($product_list as $i => $p_o)
+            {
+                $col = $p_o->productId . "_order_qty";
+                $col_price = $p_o->productId . "_order_price";
+                $total_product[$i] = 0;
+                $total_product_price[$i] = 0;
+
+                foreach($monthly_order as $m_o)
+                {
+                    $total_product[$i] +=  $m_o->$col;
+                    $total_product_price[$i] += $m_o->$col_price * $m_o->$col;
+                }
+
+                $productSold .= $p_o->productName . " (" . $total_product[$i] . ") - RM " . number_format($total_product_price[$i], 2, '.', '');
+                
+                if($i != $last_product){
+                    $productSold .= ",";
+                }   
+            }
+
+            $saved = Report::create([
+                                        'employeeId' => $user->id,
+                                        'salesReportType' => "Monthly",
+                                        'reportDate' => $current_date_system,
+                                        'totalSalesQty' => $totalSalesQty,
+                                        'quantitySold' => $total_items,
+                                        'productSold' => $productSold,
+                                        'totalSales' => $total_sales,
+                                        'capital' => $capital,
+                                        'profit' => $profit]); 
+        }
+    }
+
+    public function createYearlySalesReportNewUser(User $user)
+    {
+        $current_date = Carbon::now()->format('d-m-Y');
+        $current_date_system = Carbon::now()->format('Y-m-d');
+        
+        $year = Carbon::now()->year;
+            
+        
+        $yearly_report = Report::where(['salesReportType'=>'Yearly', 'employeeId' => $user->id])
+                                ->whereYear('reportDate', $year)
+                                ->first();
+
+        if(!$yearly_report){
+
+            $product = Product::get();
+            
+            $totalSalesQty = 0;
+            $total_items = 0;
+            $productSold = "";
+            $total_sales = 0;
+            $capital = 0;
+            $profit = 0;
+
+            $monthly_reports = Report::where(['salesReportType'=>'Monthly', 'employeeId' => $user->id])
+                                    ->whereYear('reportDate', $year)
+                                    ->get();
+                
+            foreach($monthly_reports as $mr)
+            {
+                $totalSalesQty += $mr->totalSalesQty;
+                $total_items += $mr->quantitySold;
+                $total_sales += $mr->totalSales;
+                $capital += $mr->capital;
+                $profit += $mr->profit;  
+            }
+
+            $yearly_order = OrderInformation::where('employeeId', $user->id)
+                                                ->whereYear('orderDate', $year)
+                                                ->get();
+            
+            //get list of yearly products ordered
+            $product_list = collect();
+            
+            foreach($product as $p)
+            {  
+                $col = $p->productId . "_order_qty";
+                $total = 0;
+
+                foreach($yearly_order as $y_order)
+                {
+                    $total +=  $y_order->$col;
+                }
+
+                if($total != 0)
+                {
+                    $product_list->push($p);
+                }
+            }
+
+            $last_product = $product_list->count() - 1;
+            $total_product = array();
+            $total_product_price = array();
+
+            //Find total for each product
+            foreach($product_list as $i => $p_o)
+            {
+                $col = $p_o->productId . "_order_qty";
+                $col_price = $p_o->productId . "_order_price";
+                $total_product[$i] = 0;
+                $total_product_price[$i] = 0;
+
+                foreach($yearly_order as $y_o)
+                {
+                    $total_product[$i] +=  $y_o->$col;
+                    $total_product_price[$i] += $y_o->$col_price * $y_o->$col;
+                }
+
+                $productSold .= $p_o->productName . " (" . $total_product[$i] . ") - RM " . number_format($total_product_price[$i], 2, '.', '');
+                
+                if($i != $last_product){
+                    $productSold .= ",";
+                }   
+            }
+
+            $saved = Report::create([
+                    'employeeId' => $user->id,
+                    'salesReportType' => "Yearly",
+                    'reportDate' => $current_date_system,
+                    'totalSalesQty' => $totalSalesQty,
+                    'quantitySold' => $total_items,
+                    'productSold' => $productSold,
+                    'totalSales' => $total_sales,
+                    'capital' => $capital,
+                    'profit' => $profit
+                ]);
+        }          
+    }
 }

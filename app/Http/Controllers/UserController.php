@@ -48,10 +48,14 @@ class UserController extends Controller
             'password' => $data['password']
         ]);
 
-        $current_user = User::where('userName', $data['userName'])->first();
+        $current_user = User::where('email', $data['email'])->first();
         ProductQuantity::create([
             'employeeId' => $current_user->id
         ]);
+
+        $report_daily = (new ReportController)->createDailySalesReportNewUser($current_user);
+        $report_monthly = (new ReportController)->createMonthlySalesReportNewUser($current_user);
+        $report_yearly = (new ReportController)->createYearlySalesReportNewUser($current_user);
 
         return redirect('login')->with('success','Successful registration!');
     }
