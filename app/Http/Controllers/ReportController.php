@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
+    /*A function that will automatically executes daily at 00:00
+    to create daily sales report for every registered user*/
     public function createDailySalesReport(Request $request)
     {
         $users = User::get();

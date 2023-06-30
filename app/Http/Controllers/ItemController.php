@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
+    //A function to display all active products with the current stock quantity of the logged in user
     public function viewStock()
     {
         if(Auth::check())
@@ -30,6 +31,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to navigate user to the page to add new product
     public function viewAddProduct()
     {
         if(Auth::check())
@@ -41,6 +43,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to add new product into the system database
     public function addProduct(Request $request)
     {
         if(Auth::check())
@@ -172,6 +175,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to navigate user to the page to update product
     public function viewUpdateProduct(Request $request)
     {
         if(Auth::check())
@@ -183,7 +187,8 @@ class ItemController extends Controller
         }
         return redirect('login');
     }
-    
+  
+    //A function to update product information
     function updateProduct(Request $request)
     {
         if(Auth::check())
@@ -362,6 +367,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to delete selected product by changing the status data from 1 to 0
     public function deleteProduct(Request $request)
     {
         if(Auth::check())
@@ -393,6 +399,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to navigate user to the page to restock product
     public function viewRestockProduct()
     {
         if(Auth::check())
@@ -405,10 +412,12 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to restock product and save the restock information in database
     public function addItemRestockInfo(Request $request)
     {
         if(Auth::check())
         {
+            //validate input data
             $request->validate([
                 'batchNo' => 'required',
                 'restockFrom' => 'required',
@@ -422,6 +431,7 @@ class ItemController extends Controller
             $position = User::where('id', Auth::id())->value('userPosition');
             $product_quantity = ProductQuantity::where('employeeId', Auth::id())->first();
 
+            //find the column name of user's position restock price
             $split_position = preg_split("/[\s,]+/", $position);
             $capitalize_word = array();
             $total_price = 0;
@@ -437,7 +447,7 @@ class ItemController extends Controller
                 $search .= $d; 
             }
             
-            //add row in Restock Information
+            //add row in Restock Information table
             $restock = new RestockInformation;
             $restock->batchNo = $request->batchNo;
             $restock->restockFrom = $request->restockFrom;
@@ -458,7 +468,7 @@ class ItemController extends Controller
             $restock->employeeId = Auth::id();
             $restock->save();
 
-            //update table Product Quantity for current user
+            //update Product Quantity table for current user
             $product_qty_user = ProductQuantity::where('employeeId', Auth::id())->first();
             foreach($all_product as $dt)
             {
@@ -471,16 +481,24 @@ class ItemController extends Controller
                 
             }
             $product_qty_user->save();
+
+            //get all values needed for the view stock page
             $user = User::where('id', Auth::id())->first();
             $product = Product::where('status_data',1)->get();
             $user_stock = ProductQuantity::where('employeeId', Auth::id())->first();
             $product_discount = ProductDiscount::where('status',1)->first();
 
-            return redirect('view_stock')->with(['user'=> $user, 'product'=> $product, 'user_stock' => $user_stock, 'success' => 'Product successfully restocked!', 'product_discount' => $product_discount]);
+            return redirect('view_stock')->with([
+                                                'user'=> $user, 
+                                                'product'=> $product,
+                                                'user_stock' => $user_stock, 
+                                                'success' => 'Product successfully restocked!', 
+                                                'product_discount' => $product_discount]);
         }
         return redirect('login');
     }
 
+    //A function to navigate user to the page to view restock information list
     public function viewRestockList()
     {
         if(Auth::check())
@@ -507,6 +525,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to display restock information details
     public function viewRestockDetails(Request $request)
     {
         if(Auth::check())
@@ -537,6 +556,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to display position discount page
     public function viewDiscount(Request $request)
     {
         if(Auth::check())
@@ -549,6 +569,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to navigate user to the page to update position discount
     public function viewUpdateDiscount(Request $request)
     {
         if(Auth::check())
@@ -561,6 +582,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to update position discount
     public function updateDiscount(Request $request)
     {
         if(Auth::check())
@@ -635,6 +657,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to display product discount page
     public function viewProductDiscount(Request $request)
     {
         if(Auth::check())
@@ -647,6 +670,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to navigate user to the page to update product discount
     public function viewUpdateProductDiscount(Request $request)
     {
         if(Auth::check())
@@ -659,6 +683,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to update product discount
     public function updateProductDiscount(Request $request)
     {
         if(Auth::check())
