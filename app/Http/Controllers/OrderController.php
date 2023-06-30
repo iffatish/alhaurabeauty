@@ -101,6 +101,10 @@ class OrderController extends Controller
             }
             $product_qty_user->save();
 
+            $report_daily = (new ReportController)->editDailySalesReport($user);
+            $report_monthly = (new ReportController)->editMonthlySalesReport($user);
+            $report_yearly = (new ReportController)->editYearlySalesReport($user);
+
             return redirect()->route('view_order_list')->with(['user'=> $user, 'product'=> $all_product, 'success'=>'New order successfully added!']);
         }
         return redirect('login');

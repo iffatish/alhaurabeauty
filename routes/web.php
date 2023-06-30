@@ -19,11 +19,9 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::get('/', function () {
-    return view('UserModule.signin');
-});
-
 Route::controller(UserController::class)->group(function(){
+
+    Route::get('/', 'home')->name('home');
 
     Route::get('login', 'index')->name('login');
 

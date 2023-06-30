@@ -15,10 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //Run these three commands daily at midnight (00:00) to create the reports for every user registered in the system.
+        //Run this command daily at midnight (00:00) to create the daily sales report for every user registered in the system.
         $schedule->call('App\Http\Controllers\ReportController@createDailySalesReport')->daily();
-        $schedule->call('App\Http\Controllers\ReportController@createMonthlySalesReport')->daily();
-        $schedule->call('App\Http\Controllers\ReportController@createYearlySalesReport')->daily();
     }
 
     /**

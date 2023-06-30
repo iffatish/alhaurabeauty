@@ -15,6 +15,18 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+    function home()
+    {
+        if(Auth::check())
+        {
+            $user = User::where('id', Auth::id())->first();
+
+            return view('UserModule.home')->with('user', $user);
+        }
+        return view('UserModule.signin');
+    }
+
     function index()
     {
         return view('UserModule.signin');

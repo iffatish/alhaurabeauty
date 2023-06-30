@@ -211,37 +211,53 @@
             <table width="100%" class="tb_report">
                 <tr><th colspan="3">DAILY SALES REPORT</th></tr>
                 @if($report)
-                <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
-                <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
-                <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
-                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
-                <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$report->quantitySold}}</b></td></tr>
-                <tr>
-                    <td>Product(s) Sold</td>
-                    <td class="mid">:</td>
-                    <td>
-                        <b>
-                            <ol class="list">
-                                @php
-                                    $products = array();
-                                    $products = explode(',', $report->productSold);
-                                @endphp
+                    @if($report->totalSalesQty != 0)
+                        <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
+                        <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
+                        <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                        <tr><td>Number of Orders</td><td class="mid">:</td><td><b>{{$report->totalSalesQty}}</b></td></tr>
+                        <tr><td>Quantity Sold</td><td class="mid">:</td><td><b>{{$report->quantitySold}}</b></td></tr>
+                        <tr>
+                            <td>Product(s) Sold</td>
+                            <td class="mid">:</td>
+                            <td>
+                                <b>
+                                    <ol class="list">
+                                        @php
+                                            $products = array();
+                                            $products = explode(',', $report->productSold);
+                                        @endphp
 
-                                @foreach($products as $p)
-                                    <li>{{$p}}</li>
-                                @endforeach
-                            </ol>
-                        </b>
-                    </td>
-                </tr>
-                <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($report->totalSales, 2, '.', '')}}</b></td></tr>
-                <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($report->capital, 2, '.', '')}}</b></td></tr>
-                <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
+                                        @foreach($products as $p)
+                                            <li>{{$p}}</li>
+                                        @endforeach
+                                    </ol>
+                                </b>
+                            </td>
+                        </tr>
+                        <tr><td>Total Sales</td><td class="mid">:</td><td><b>RM {{number_format($report->totalSales, 2, '.', '')}}</b></td></tr>
+                        <tr><td>Capital</td><td class="mid">:</td><td><b>RM {{number_format($report->capital, 2, '.', '')}}</b></td></tr>
+                        <tr><td>Profit</td><td class="mid">:</td><td><b>RM {{number_format($report->profit, 2, '.', '')}}</b></td></tr>
+                    @else
+                        <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
+                        <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
+                        <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
+                        <tr><td>Number of Orders</td><td class="mid">:</td><td><span style="color:Dimgrey;">No data found.</span></td></tr>
+                        <tr><td>Quantity Sold</td><td class="mid">:</td><td><b></b></td></tr>
+                        <tr>
+                            <td>Product(s) Sold</td>
+                            <td class="mid">:</td>
+                            <td></td>
+                        </tr>
+                        <tr><td>Total Sales</td><td class="mid">:</td><td><b></b></td></tr>
+                        <tr><td>Capital</td><td class="mid">:</td><td><b></b></td></tr>
+                        <tr><td>Profit</td><td class="mid">:</td><td><b></b></td></tr>
+                    @endif
                 @else
                 <tr><td width="20%">Name</td><td width="5%" class="mid">:</td><td><b>{{$teammate->userName}}</b></td></tr>
                 <tr><td>Report Type</td><td class="mid">:</td><td><b>Daily</b></td></tr>
                 <tr><td>Date</td><td class="mid">:</td><td><b>{{$current_date}}</b></td></tr>
-                <tr><td>Number of Orders</td><td class="mid">:</td><td><b>0</b></td></tr>
+                <tr><td>Number of Orders</td><td class="mid">:</td><td><span style="color:Dimgrey;">No data found.</span></td></tr>
                 <tr><td>Quantity Sold</td><td class="mid">:</td><td><b></b></td></tr>
                 <tr>
                     <td>Product(s) Sold</td>
