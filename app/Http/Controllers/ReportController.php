@@ -34,6 +34,38 @@ class ReportController extends Controller
         }
     }
 
+    public function createMonthlySalesReport(Request $request)
+    {
+        $users = User::get();
+        $current_date = Carbon::now()->format('d-m-Y');
+        $current_date_system = Carbon::now()->format('Y-m-d');
+        
+        foreach($users as $user)
+        {  
+            $saved = Report::create([
+                'employeeId' => $user->id,
+                'salesReportType' => "Monthly",
+                'reportDate' => $current_date_system,
+            ]); 
+        }
+    }
+
+    public function createYearlySalesReport(Request $request)
+    {
+        $users = User::get();
+        $current_date = Carbon::now()->format('d-m-Y');
+        $current_date_system = Carbon::now()->format('Y-m-d');
+        
+        foreach($users as $user)
+        {  
+            $saved = Report::create([
+                'employeeId' => $user->id,
+                'salesReportType' => "Yearly",
+                'reportDate' => $current_date_system,
+            ]); 
+        }
+    }
+
     public function editDailySalesReport(User $user)
     {
         $current_date = Carbon::now()->format('d-m-Y');
