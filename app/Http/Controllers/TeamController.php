@@ -219,12 +219,10 @@ class TeamController extends Controller
 
             }
 
-            foreach($all_team_member_list as $t_l){
-
-                if(in_array($request->teamMemberId, $t_l)){
+            foreach($all_team as $bill => $a_t){
+                if(in_array($request->teamMemberId, $all_team_member_list[$bill]) && ($a_t->teamLeader != $request->teamMemberId)){
                     return redirect()->route('add_team_member', ['teamId'=> $request->teamId])->with('error', 'ERROR! The user already belongs to another team.');
                 }
-
             }
 
             $teamMember = Team::where('teamId', $request->teamId)->value('teamMember');
