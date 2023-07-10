@@ -79,6 +79,8 @@ Route::controller(ItemController::class)->group(function(){
 
     Route::post('update_product_discount', 'updateProductDiscount')->name('update_product_discount');
 
+    Route::post('validate_product', 'validateProduct')->name('validate_product');
+
 });
 
 Route::controller(TeamController::class)->group(function(){

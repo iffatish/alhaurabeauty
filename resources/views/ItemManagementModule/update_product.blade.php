@@ -247,7 +247,7 @@
                         <td><img class="image" src="images/products/{{$product->productImage}}" width="80%" height="auto" style="margin-left: 50px;"></td><td></td>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Product Name</td><td width="40%" class="center"><input required name="productName" type="text" value="{{$product->productName}}"></td>
+                        <td width="30%" class="input-title">Product Name</td><td width="40%" class="center"><input required name="productName" type="text" value="{{$product->productName}}" onchange="validateProduct()"></td>
                     </tr>
                     <tr>
                         <td class="input-title">Product Image</td><td class="center"><input name="productImage" type="file" accept="image/png, image/gif, image/jpeg"></td>
@@ -290,7 +290,32 @@
                             window.location.href = link;
                         }
                     });
-            });                  
+            });
+            
+            function validateProduct(){
+
+                var productName = $("input[name='productName']").val();
+                $.ajax({
+                    url: "{{route('validate_product')}}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "productName": productName
+                    },
+                    success: function(response){
+                        if(response.success == false){
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Product already exist!',
+                                confirmButtonColor: '#FF2667',
+                                allowOutsideClick: false,
+                                backdrop: 'rgba(0,0,0,0.4)'
+                            })
+                            $("input[name='productName']").val("");
+                        }
+                    }
+                });
+            }
         </script>
 
 

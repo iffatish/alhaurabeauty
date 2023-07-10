@@ -148,7 +148,7 @@ class ItemController extends Controller
             
 
             //Add column in product_quantity table
-            $new_product = Product::where('productName', $data['productName'])->first();
+            $new_product = Product::where(['productName' => $data['productName'], 'status_data' => 1])->first();
             $statement = "ALTER TABLE product_quantity ADD ".$new_product->productId."_qty INT DEFAULT 0";
             DB::statement($statement);
 
@@ -777,4 +777,21 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    public function validateProduct(Request $request)
+    {
+        
+        $product = Product::where(['productName' => $request->productName, 'status_data' => 1])->first();
+
+        if($product){
+            return response()->json([
+                'success' => false,
+                'message' => 'Product already exist!',
+            ]);
+        }else{
+            return response()->json([
+                'success' => true,
+                'message' => 'Product does not exist!',
+            ]);
+        }
+    }
 }
