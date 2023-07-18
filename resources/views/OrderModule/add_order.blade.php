@@ -246,25 +246,25 @@
                             <td><input type="hidden" name="orderDate" value="{{date('d-m-Y')}}"><input type="text" name="orderDateStr" value="{{date('d-m-Y')}}" disabled></td>
                         </tr>
                         <tr>
-                            <td class="input-title">Name</td>
+                            <td class="input-title">Name <span style="color:red;">*</span></td>
                         </tr>
                         <tr>
                             <td><input type="text" name="custName" required></td>
                         </tr>
                         <tr>
-                            <td class="input-title">Phone Number</td>
+                            <td class="input-title">Phone Number <span style="color:red;">*</span></td>
                         </tr>
                         <tr>
                             <td><input type="number" name="custPhoneNum" required></td>
                         </tr>
                         <tr>
-                            <td class="input-title">Delivery Address</td>
+                            <td class="input-title">Delivery Address <span style="color:red;">*</span></td>
                         </tr>
                         <tr>
                             <td><input type="text" name="deliveryAddress" required></td>
                         </tr>
                         <tr>
-                            <td class="input-title">Delivery Method</td>
+                            <td class="input-title">Delivery Method <span style="color:red;">*</span></td>
                         </tr>
                         <tr>
                             <td><input type="radio" name="deliveryMethod" value="Postage" id="postage"><label for="postage">Postage</label>
@@ -273,7 +273,7 @@
                             </td>
                         </tr>
                         <tr>
-                        <td class="input-title">Payment Method</td>
+                        <td class="input-title">Payment Method <span style="color:red;">*</span></td>
                         </tr>
                         <tr>
                             <td><input type="radio" name="paymentMethod" value="Online payment" id="online"><label for="online">Online payment</label>
@@ -282,7 +282,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="input-title">Additional Cost (RM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 11rem;" type="number" name="additionalCost" placeholder="Postage or COD fee" required></td>
+                            <td class="input-title">Additional Cost (RM) <span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="width: 11rem;" type="number" name="additionalCost" placeholder="Postage or COD fee" required></td>
                         </tr>
                     </table>
                 </div>

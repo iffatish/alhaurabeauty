@@ -330,8 +330,8 @@
                                             <tr id="{{$row}}">
                                                 <input type="hidden" name="id[]" value="{{$disc->prodDiscId}}">
                                                 <input type="hidden" name="flag[]" value="0">
-                                                <td><input name="name[]" type="text" value="{{$disc->discountName ?? ''}}"></td>
-                                                <td><input name="disc[]" type="number" step=".01" value="{{$disc->productDiscount ?? ''}}"></td>
+                                                <td><input name="name[]" type="text" value="{{$disc->discountName ?? ''}}"> <span style="color:red;">*</span></td>
+                                                <td><input name="disc[]" type="number" step=".01" value="{{$disc->productDiscount ?? ''}}"> <span style="color:red;">*</span></td>
                                                 <td><label class="switch"><input type="radio" name="switch[]" value="{{$bil}}" @if($disc->status == 1) checked @else @endif><span class="slider round"></span></label></td>
                                                 <td><button id="{{$bil + 1}}" style="padding:5px;background: none;color:red;border: none;cursor: pointer;" class="remove_row"><i class="fa fa-times"></i></button></td>
                                             </tr>
@@ -340,8 +340,8 @@
                                     <tr id="row1">
                                         <input type="hidden" name="id[]" value="0">
                                         <input type="hidden" name="flag[]" value="1">
-                                        <td><input name="name[]" type="text" required></td>
-                                        <td><input name="disc[]" type="number" step=".01" required></td>
+                                        <td><input name="name[]" type="text" required> <span style="color:red;">*</span></td>
+                                        <td><input name="disc[]" type="number" step=".01" required> <span style="color:red;">*</span></td>
                                         <td><label class="switch"><input type="radio" name="switch[]" value="0"><span class="slider round"></span></label></td>
                                         <td><button id="1" style="padding:5px;background: none;color:red;border: none;cursor: pointer;" class="remove_row"><i class="fa fa-times"></i></button></td>
                                     </tr>
@@ -394,7 +394,7 @@
 
                     e.preventDefault();
                     var i = $("#table-dc tr").length - 1;
-                    $("#table-dc").append(`<tr id="row`+(i+1)+`"><input type="hidden" name="id[]" value="0"><input type="hidden" name="flag[]" value="1"><td><input name="name[]" type="text" required></td><td><input name="disc[]" type="number" step=".01" required></td><td><label class="switch"><input type="radio" name="switch[]" value="`+i+`"><span class="slider round"></span></label></td><td><button id="`+(i+1)+`" style="padding:5px;background: none;color:red;border: none;cursor: pointer;" class="remove_row"><i class="fa fa-times"></i></button></td></tr>`);
+                    $("#table-dc").append(`<tr id="row`+(i+1)+`"><input type="hidden" name="id[]" value="0"><input type="hidden" name="flag[]" value="1"><td><input name="name[]" type="text" required> <span style="color:red;">*</span></td><td><input name="disc[]" type="number" step=".01" required> <span style="color:red;">*</span></td><td><label class="switch"><input type="radio" name="switch[]" value="`+i+`"><span class="slider round"></span></label></td><td><button id="`+(i+1)+`" style="padding:5px;background: none;color:red;border: none;cursor: pointer;" class="remove_row"><i class="fa fa-times"></i></button></td></tr>`);
                 });
 
                 $(document).on('click','.remove_row', function(e){

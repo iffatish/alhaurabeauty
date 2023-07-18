@@ -248,10 +248,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Team Name</td><td width="40%"><input required name="teamName" type="text"></td>
+                        <td width="30%" class="input-title">Team Name <span style="color:red;">*</span></td><td width="40%"><input required name="teamName" type="text"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Team Description</td><td><textarea id="w3review" name="teamDesc" rows="4" cols="50"></textarea></td>
+                        <td class="input-title">Team Description <span style="color:red;">*</span></td><td><textarea id="w3review" name="teamDesc" rows="4" cols="50"></textarea></td>
                     </tr>
                 </form>
             </table>

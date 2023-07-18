@@ -244,28 +244,28 @@
                         <th>Update Position Discount</th><th></th><th></th>
                     </tr>
                     <tr>
-                        <td class="input-title">HQ Discount</td><td class="center"><input required name="discountHQ" type="number" step=".01" value="{{$discount->discountHQ ?? 0}}"></td><td>%</td>
+                        <td class="input-title">HQ Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountHQ" type="number" step=".01" value="{{$discount->discountHQ ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Master Leader Discount</td><td class="center"><input required name="discountMasterLeader" type="number" step=".01" value="{{$discount->discountMasterLeader ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Master Leader Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountMasterLeader" type="number" step=".01" value="{{$discount->discountMasterLeader ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Leader Discount</td><td class="center"><input required name="discountLeader" type="number" step=".01" value="{{$discount->discountLeader ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Leader Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountLeader" type="number" step=".01" value="{{$discount->discountLeader ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Master Stockist Discount</td><td class="center"><input required name="discountMasterStockist" type="number" step=".01" value="{{$discount->discountMasterStockist ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Master Stockist Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountMasterStockist" type="number" step=".01" value="{{$discount->discountMasterStockist ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Stockist Discount</td><td class="center"><input required name="discountStockist" type="number" step=".01" value="{{$discount->discountStockist ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Stockist Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountStockist" type="number" step=".01" value="{{$discount->discountStockist ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Master Agent Discount</td><td class="center"><input required name="discountMasterAgent" type="number" step=".01" value="{{$discount->discountMasterAgent ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Master Agent Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountMasterAgent" type="number" step=".01" value="{{$discount->discountMasterAgent ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Agent Discount</td><td class="center"><input required name="discountAgent" type="number" step=".01" value="{{$discount->discountAgent ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Agent Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountAgent" type="number" step=".01" value="{{$discount->discountAgent ?? 0}}"></td><td>%</td>
                     </tr>
                     <tr>
-                        <td class="input-title">Dropship Discount</td><td class="center"><input required name="discountDropship" type="number" step=".01" value="{{$discount->discountDropship ?? 0}}"></td><td>%</td>
+                        <td class="input-title">Dropship Discount <span style="color:red;">*</span></td><td class="center"><input required name="discountDropship" type="number" step=".01" value="{{$discount->discountDropship ?? 0}}"></td><td>%</td>
                     </tr>                    
                     <tr>
                         <td colspan="3">@if ($errors->any())

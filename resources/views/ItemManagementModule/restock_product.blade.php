@@ -272,13 +272,13 @@
                 <form method="post" action="{{route('add_item_restock_info')}}" enctype="multipart/form-data">
                 @csrf
                     <tr>
-                        <th>Restock Item</th><th style="color:black;font-size:0.875rem; text-align:right;padding-right:5.063rem;">Batch No.&nbsp;&nbsp;&nbsp;&nbsp;<input required type="number" name="batchNo" id="batchNo"></th>
+                        <th>Restock Item</th><th style="color:black;font-size:0.875rem; text-align:right;padding-right:5.063rem;">Batch No. <span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;<input required type="number" name="batchNo" id="batchNo"></th>
                     </tr>
                     <tr>
-                        <td colspan="2" class="input-title" style="padding-top:2rem;padding-bottom:2rem;">Restock Date:&nbsp;&nbsp;&nbsp;&nbsp;<input required name="restockDate" type="date"></td>
+                        <td colspan="2" class="input-title" style="padding-top:2rem;padding-bottom:2rem;">Restock Date <span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;<input required name="restockDate" type="date"></td>
                     </tr>
                     <tr>
-                        <td class="input-title" style="color: #FF2667;">Item</td><td class="right" style="color: #FF2667;padding-right:6.25rem;"><b>Quantity</b></td>
+                        <td class="input-title" style="color: #FF2667;">Item</td><td class="right" style="color: #FF2667;padding-right:6.25rem;"><b>Quantity <span style="color:red;">*</span></b></td>
                     </tr>
                     @if($product->count() < 1)
                     <tr>
@@ -296,19 +296,19 @@
 
                     @if($user->userPosition == "HQ")
                     <tr>
-                        <td colspan="2" class="input-title" style="padding-top:2rem;">Restock from&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input style="width:28.75rem" type="text" name="restockFrom"></td>
+                        <td colspan="2" class="input-title" style="padding-top:2rem;">Restock from <span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input style="width:225px" type="text" name="restockFrom"></td>
                     </tr>
                     @else
                     <tr>
-                        <td colspan="2" class="input-title" style="padding-top:2rem;">Restock from&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td colspan="2" class="input-title" style="padding-top:2rem;">Restock from <span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <select class="form-control" name="restockFrom" id="select-employee" style="width:300px;">
                                 
                         </select></td>
                     </tr>
                     @endif
                     <tr>
-                        <td colspan="2" class="input-title" style="padding-top:1rem;">Payment Method&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td colspan="2" class="input-title" style="padding-top:1rem;">Payment Method <span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="radio" name="restockPaymentMethod" value="Cash" id="cash"><label for="cash">Cash</label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="restockPaymentMethod" value="Online Payment" id="online"><label for="online">Online Payment</label>
                         </td>

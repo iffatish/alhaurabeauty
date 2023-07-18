@@ -247,13 +247,13 @@
                         <td><img class="image" src="images/products/{{$product->productImage}}" width="80%" height="auto" style="margin-left: 50px;"></td><td></td>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Product Name</td><td width="40%" class="center"><input required name="productName" type="text" value="{{$product->productName}}" onchange="validateProduct()"></td>
+                        <td width="30%" class="input-title">Product Name <span style="color:red;">*</span></td><td width="40%" class="center"><input required name="productName" type="text" value="{{$product->productName}}" onchange="validateProduct()"></td>
                     </tr>
                     <tr>
                         <td class="input-title">Product Image</td><td class="center"><input name="productImage" type="file" accept="image/png, image/gif, image/jpeg"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Product Sell Price</td><td class="center"><input required name="productSellPrice" type="number" step=".01" value="{{$product->productSellPrice}}"></td>
+                        <td class="input-title">Product Sell Price <span style="color:red;">*</span></td><td class="center"><input required name="productSellPrice" type="number" step=".01" value="{{$product->productSellPrice}}"></td>
                     </tr>                   
                     <tr>
                         <td colspan="2">@if ($errors->any())

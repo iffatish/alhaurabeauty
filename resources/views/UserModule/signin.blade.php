@@ -152,10 +152,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="input-title"><label>Email</label><br><br><input required name="email" type="email"></td>
+                        <td class="input-title"><label>Email <span style="color:red;">*</span></label><br><br><input required name="email" type="email"></td>
                     </tr>
                     <tr>
-                        <td class="input-title"><label>Password</label><br><br><input required name="password" type="password" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
+                        <td class="input-title"><label>Password <span style="color:red;">*</span></label><br><br><input required name="password" type="password" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
                     </tr>
                     <tr>
                         <td class="center"><input type="submit" value="Login"><br><br>Don’t have an account? <a href="{{route('registration')}}"><b>Register now!</b></a><br><br></td>

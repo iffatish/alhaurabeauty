@@ -239,13 +239,13 @@
                         <th>Add Product</th><th></th>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Product Name</td><td width="40%" class="center"><input required name="productName" type="text" onchange="validateProduct()"></td>
+                        <td width="30%" class="input-title">Product Name <span style="color:red;">*</span></td><td width="40%" class="center"><input required name="productName" type="text" onchange="validateProduct()"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Product Image</td><td class="center"><input required name="productImage" type="file" accept="image/png, image/gif, image/jpeg"></td>
+                        <td class="input-title">Product Image <span style="color:red;">*</span></td><td class="center"><input required name="productImage" type="file" accept="image/png, image/gif, image/jpeg"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Product Sell Price</td><td class="center"><input required name="productSellPrice" type="number" step=".01"></td>
+                        <td class="input-title">Product Sell Price <span style="color:red;">*</span></td><td class="center"><input required name="productSellPrice" type="number" step=".01"></td>
                     </tr>
                     <tr>
                         <td colspan="2">@if ($errors->any())

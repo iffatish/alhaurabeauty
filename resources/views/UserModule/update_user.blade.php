@@ -217,16 +217,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="input-title" style="padding-top: 1.25rem;">Name</td><td class="user-details" style="padding-top: 1.25rem;"><input required name="userName" type="text" value="{{$user->userName}}"></td>
+                        <td class="input-title" style="padding-top: 1.25rem;">Name *</td><td class="user-details" style="padding-top: 1.25rem;"><input required name="userName" type="text" value="{{$user->userName}}"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Phone Number</td><td class="user-details"><input required name="userPhoneNum" type="number" value="{{$user->userPhoneNum}}"></td>
+                        <td class="input-title">Phone Number *</td><td class="user-details"><input required name="userPhoneNum" type="number" value="{{$user->userPhoneNum}}"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Address</td><td class="user-details"><input required name="userAddress" type="text" value="{{$user->userAddress}}"></td>
+                        <td class="input-title">Address *</td><td class="user-details"><input required name="userAddress" type="text" value="{{$user->userAddress}}"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Job Position</td>
+                        <td class="input-title">Job Position *</td>
                         <td class="user-details">
                             <select name="userPosition" required>
                                 <option value="">Choose your position</option>
@@ -242,13 +242,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="input-title">Email</td><td class="user-details"><input required name="email" type="email" value="{{$user->email}}"></td>
+                        <td class="input-title">Email *</td><td class="user-details"><input required name="email" type="email" value="{{$user->email}}"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Password</td><td class="user-details"><input required name="password" type="password" value="{{$user->password}}" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
+                        <td class="input-title">Password *</td><td class="user-details"><input required name="password" type="password" value="{{$user->password}}" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Confirm Password</td><td class="user-details"><input required name="password_confirmation" type="password" id="id_confirm_password"><i class="fa fa-eye" id="toggleConfirmPassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
+                        <td class="input-title">Confirm Password *</td><td class="user-details"><input required name="password_confirmation" type="password" id="id_confirm_password"><i class="fa fa-eye" id="toggleConfirmPassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
                     </tr>
                     <tr>
                         <td class="input-title"></td><td style="padding-bottom:2.5rem;"class="center back"><button class="save" type="submit" form="form_update" value="Save"><i class='fa fa-save'></i>&nbsp;&nbsp;Save</button><br><br><a href="{{route('user.account')}}">Cancel</a></td>

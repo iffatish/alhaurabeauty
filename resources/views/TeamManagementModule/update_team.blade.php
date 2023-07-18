@@ -267,10 +267,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="input-title">Team Name</td><td class="team-details" ><input required name="teamName" type="text" value="{{$team->teamName}}"></td>
+                        <td class="input-title">Team Name *</td><td class="team-details" ><input required name="teamName" type="text" value="{{$team->teamName}}"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Team Description</td><td class="team-details"><textarea id="w3review"  name="teamDesc" rows="4" cols="50">{{$team->teamDesc}}</textarea></td>
+                        <td class="input-title">Team Description *</td><td class="team-details"><textarea id="w3review"  name="teamDesc" rows="4" cols="50">{{$team->teamDesc}}</textarea></td>
                     </tr>
                     <tr>
                         <td class="input-title"></td><td style="padding-bottom:2.5rem;"class="center back"><button class="save" type="submit" form="form_update" value="Save"><i class='fa fa-save'></i>&nbsp;&nbsp;Save</button></td>

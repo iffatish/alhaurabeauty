@@ -284,7 +284,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="input-title">Team Member Name</td>
+                        <td class="input-title">Team Member Name *</td>
                         <td class="team-details" >
                             <select class="form-control" name="teamMemberId" id="select-employee">
                                 

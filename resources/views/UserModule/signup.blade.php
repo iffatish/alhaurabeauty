@@ -132,16 +132,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Name</td><td width="40%"><input required name="userName" type="text"></td>
+                        <td width="30%" class="input-title">Name <span style="color:red;">*</span></td><td width="40%"><input required name="userName" type="text"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Phone Number</td><td><input required name="userPhoneNum" type="number"></td>
+                        <td class="input-title">Phone Number <span style="color:red;">*</span></td><td><input required name="userPhoneNum" type="number"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Address</td><td><input required name="userAddress" type="text"></td>
+                        <td class="input-title">Address <span style="color:red;">*</span></td><td><input required name="userAddress" type="text"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Job Position</td>
+                        <td class="input-title">Job Position <span style="color:red;">*</span></td>
                         <td>
                             <select name="userPosition" style="width:18.75rem;" required>
                                 <option value="">Choose your position</option>
@@ -157,13 +157,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="input-title">Email</td><td><input  required name="email" type="email"></td>
+                        <td class="input-title">Email <span style="color:red;">*</span></td><td><input  required name="email" type="email"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Password</td><td><input required name="password" type="password" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
+                        <td class="input-title">Password <span style="color:red;">*</span></td><td><input required name="password" type="password" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Confirm Password</td><td><input required name="password_confirmation" type="password" id="id_confirm_password"><i class="fa fa-eye" id="toggleConfirmPassword" style="margin-left:0.625rem;cursor: pointer;"></i><br><br><br></td>
+                        <td class="input-title">Confirm Password <span style="color:red;">*</span></td><td><input required name="password_confirmation" type="password" id="id_confirm_password"><i class="fa fa-eye" id="toggleConfirmPassword" style="margin-left:0.625rem;cursor: pointer;"></i><br><br><br></td>
                     </tr>
                 </form>
             </table>
