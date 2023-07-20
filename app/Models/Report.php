@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//Model for report. To save report information.
 class Report extends Model
 {
     use HasFactory;
@@ -25,6 +26,7 @@ class Report extends Model
     ];
     public $timestamps = false;
 
+    //A funtion to get employee information from employee table
     public function getEmployee() {
 
         return $this->belongsTo(User::class, 'employeeId', 'id');

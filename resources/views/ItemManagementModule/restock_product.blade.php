@@ -1,3 +1,4 @@
+<!-- Add item restock information page. A page that allows user to add item restock information. -->
 <!DOCTYPE html>
 <html>
     <head>

@@ -1,3 +1,4 @@
+<!--View yearly sales report page. A page that will display the yearly sales report of the current user. -->
 <!DOCTYPE html>
 <html>
     <head>

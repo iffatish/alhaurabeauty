@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//Model for position discount. To save restock discount for each position.
 class PositionDiscount extends Model
 {
     use HasFactory;

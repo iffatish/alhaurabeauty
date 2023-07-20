@@ -13,9 +13,11 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
+//A controller that will handle all the functions related to user module.
 class UserController extends Controller
 {
 
+    // A function that will direct user to home page if user is logged in. Else, it will direct user to login page.
     function home()
     {
         if(Auth::check())
@@ -27,16 +29,20 @@ class UserController extends Controller
         return view('UserModule.signin');
     }
 
+    //A funtion that will direct user to sign in page.
     function index()
     {
         return view('UserModule.signin');
     }
 
+    // Afunction that will direct user to sign up page.
     function registration()
     {
         return view('UserModule.signup');
     }
 
+
+    //A function that will validate the registration form and create a new user account if all input are valid. Else, it will direct user to sign up page.
     function validate_registration(Request $request)
     {
         $request->validate([
@@ -72,6 +78,7 @@ class UserController extends Controller
         return redirect('login')->with('success','Successful registration!');
     }
 
+    //A function that will validate the login form and direct user to home page if all input are valid. Else, it will direct user to login page.
     function validate_login(Request $request)
     {
         $request->validate([
@@ -102,6 +109,7 @@ class UserController extends Controller
 
     }
 
+    //A function that will direct user to home page if user is logged in. Else, it will direct user to login page.
     function dashboard()
     {
         if(Auth::check())
@@ -113,6 +121,7 @@ class UserController extends Controller
         return redirect('login');
     }
 
+    //A function that will log out the user and direct user to login page.
     function logout()
     {
         Session::flush();
@@ -122,6 +131,7 @@ class UserController extends Controller
         return redirect('login');
     }
 
+    //A function that will direct user to view user account page if user is logged in. Else, it will direct user to login page.
     function viewUser()
     {
 
@@ -134,6 +144,7 @@ class UserController extends Controller
         return redirect('login');
     }
 
+    //A function that will direct user to update user account page if user is logged in. Else, it will direct user to login page.
     function viewUpdateUser()
     {
 
@@ -146,6 +157,7 @@ class UserController extends Controller
         return redirect('login');
     }
 
+    //A function that will validate the update user account form and update user account if all input are valid. If there is any input is invalid, it will direct user to update user account page.
     function updateUser(Request $request)
     {
         if(Auth::check())
@@ -174,6 +186,7 @@ class UserController extends Controller
         return redirect('login');
     }
 
+    //A function that will delete user account. If the user is a team leader of a team, the team will be deleted as well. If the user is a team member of a team, the user will be removed from the team.
     public function deactivateAccount(Request $request)
     {
         if(Auth::check())

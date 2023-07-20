@@ -1,3 +1,4 @@
+<!-- Add order page. A page that enables user to add new order information-->
 <!DOCTYPE html>
 <html>
     <head>

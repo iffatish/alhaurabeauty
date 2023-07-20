@@ -1,3 +1,4 @@
+<!--View monthly sales report page. A page that will display the monthly sales report of the current user. -->
 <!DOCTYPE html>
 <html>
     <head>

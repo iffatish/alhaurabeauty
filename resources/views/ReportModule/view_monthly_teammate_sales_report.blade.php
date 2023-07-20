@@ -1,3 +1,4 @@
+<!--View teammate's monthly sales report page. A page that allows team leader to view the monthly sales report of selected teammate. -->
 <!DOCTYPE html>
 <html>
     <head>

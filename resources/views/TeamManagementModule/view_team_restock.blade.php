@@ -1,3 +1,4 @@
+<!--View team restock information page. A page that will display all restock information added by the team members. -->
 <!DOCTYPE html>
 <html>
     <head>

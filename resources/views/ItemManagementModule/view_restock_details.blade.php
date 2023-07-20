@@ -1,3 +1,4 @@
+<!-- View restock details page. A page that will display details of the selected restock information from the view restock list page. -->
 <!DOCTYPE html>
 <html>
     <head>

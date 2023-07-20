@@ -1,3 +1,4 @@
+<!-- Update position discount page. A page that enables HQ user to update restock discount for each position. -->
 <!DOCTYPE html>
 <html>
     <head>

@@ -1,3 +1,4 @@
+<!--View product discount page. A page that allows HQ user to view product discount with its activation status. -->
 <!DOCTYPE html>
 <html>
     <head>

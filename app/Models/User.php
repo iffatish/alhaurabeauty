@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+//Model for employee. To save registered employee information.
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

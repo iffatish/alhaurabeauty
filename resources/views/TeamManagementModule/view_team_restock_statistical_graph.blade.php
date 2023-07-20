@@ -1,3 +1,4 @@
+<!-- View team restock statistical graph page. A page that will display a statistical graph of total restock price of each team member-->
 <!DOCTYPE html>
 <html>
     <head>

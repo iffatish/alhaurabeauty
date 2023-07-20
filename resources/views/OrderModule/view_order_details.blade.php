@@ -1,3 +1,4 @@
+<!-- View order details page. A page that will display details of selected order from the view order list page.-->
 <!DOCTYPE html>
 <html>
     <head>

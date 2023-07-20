@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//Model for order. To save order information.
 class OrderInformation extends Model
 {
     use HasFactory;

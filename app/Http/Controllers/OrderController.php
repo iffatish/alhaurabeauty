@@ -10,8 +10,10 @@ use App\Models\OrderInformation;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
+//A controller that handles all the functions related to order module
 class OrderController extends Controller
 {
+    //A function that will navigate user to a page that displays a list of orders added by the user.
     public function viewOrderList()
     {
         if(Auth::check())
@@ -24,6 +26,7 @@ class OrderController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that allows user to add a new order information.
     public function viewAddOrder()
     {
         if(Auth::check())
@@ -37,6 +40,7 @@ class OrderController extends Controller
         return redirect('login');
     }
 
+    //A function that will add the order information into database if all input are valid.
     public function addOrder(Request $request)
     {
         if(Auth::check())
@@ -110,6 +114,7 @@ class OrderController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that displays details of order selected from the view order list page.
     public function viewOrderDetails(Request $request)
     {
         if(Auth::check())
@@ -141,6 +146,7 @@ class OrderController extends Controller
     }
     //AJAX
 
+    //A function that will validate the quantity of product ordered entered by the user. If quantity of the product ordered is not enough in the user's stock, error will be displayed.
     public function validateQuantityStock(Request $request) {
        
         $id = $request->id_;

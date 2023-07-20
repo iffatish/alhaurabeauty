@@ -1,3 +1,4 @@
+<!-- Add team member page. A page that allows the team leader to add a new member in the team.-->
 <!DOCTYPE html>
 <html>
     <head>

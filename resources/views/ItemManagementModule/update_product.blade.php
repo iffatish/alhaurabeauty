@@ -1,3 +1,4 @@
+<!-- Update product page. A page for HQ user to update a product details. -->
 <!DOCTYPE html>
 <html>
     <head>

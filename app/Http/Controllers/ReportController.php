@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+//A controller that handles all the functions related to report module
 class ReportController extends Controller
 {
     /*A function that will automatically executes daily at 00:00
@@ -34,6 +35,7 @@ class ReportController extends Controller
         }
     }
 
+    //A function that will automatically executes monthly at 00:00 on the first day of the month to create monthly sales report for every registered user
     public function createMonthlySalesReport(Request $request)
     {
         $users = User::get();
@@ -50,6 +52,7 @@ class ReportController extends Controller
         }
     }
 
+    //A function that will automatically executes yearly at 00:00 on the first day of the year to create yearly sales report for every registered user
     public function createYearlySalesReport(Request $request)
     {
         $users = User::get();
@@ -66,6 +69,7 @@ class ReportController extends Controller
         }
     }
 
+    //A function that will automatically update the daily sales report whenever the current user add new order information on that day
     public function editDailySalesReport(User $user)
     {
         $current_date = Carbon::now()->format('d-m-Y');
@@ -254,6 +258,7 @@ class ReportController extends Controller
         }
     }
 
+    //A function that will automatically update the monthly sales report whenever the current user add new order information on that day
     public function editMonthlySalesReport(User $user)
     {   
         $current_date = Carbon::now()->format('d-m-Y');
@@ -352,6 +357,7 @@ class ReportController extends Controller
         }
     }
 
+    //A function that will automatically update the yearly sales report whenever the current user add new order information on that day
     public function editYearlySalesReport(User $user)
     {
         $current_date = Carbon::now()->format('d-m-Y');
@@ -445,6 +451,7 @@ class ReportController extends Controller
         }    
     }
 
+    //A function that will display the daily sales report of the current user
     public function viewSalesReport(Request $request)
     {
         if(Auth::check())
@@ -460,6 +467,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will display the monthly sales report of the current user
     public function viewMonthlySalesReport(Request $request)
     {
         if(Auth::check())
@@ -480,6 +488,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will display the motnhly sales report of the current user based on the month and year selected
     public function updateMonthlySalesReport(Request $request)
     {
         if(Auth::check())
@@ -501,6 +510,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will display the yearly sales report of the current user
     public function viewYearlySalesReport(Request $request)
     {
         if(Auth::check())
@@ -518,6 +528,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will display the yearly sales report of the current user based on the year selected
     public function updateYearlySalesReport(Request $request)
     {
         if(Auth::check())
@@ -533,6 +544,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow team leader to view the daily sales report of the selected teammate
     public function viewTeammateSalesReport(Request $request)
     {
         if(Auth::check())
@@ -551,6 +563,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow team leader to view the monthly sales report of the selected teammate
     public function viewMonthlyTeammateSalesReport(Request $request)
     {
         if(Auth::check())
@@ -577,6 +590,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow team leader to view the monthly sales report of the selected teammate based on the month and year selected
     public function updateMonthlyTeammateSalesReport(Request $request)
     {
         if(Auth::check())
@@ -601,6 +615,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow team leader to view the yearly sales report of the selected teammate
     public function viewYearlyTeammateSalesReport(Request $request)
     {
         if(Auth::check())
@@ -623,6 +638,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow team leader to view the yearly sales report of the selected teammate based on the year selected
     public function updateYearlyTeammateSalesReport(Request $request)
     {
         if(Auth::check())
@@ -641,6 +657,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow HQ user to view sales report of every team
     public function viewTeamSalesReport(Request $request)
     {
         if(Auth::check())
@@ -689,6 +706,7 @@ class ReportController extends Controller
         return redirect('login');
     }
 
+    //A function that will create a daily sales report for the new registered user
     public function createDailySalesReportNewUser(User $user)
     {
         $current_date = Carbon::now()->format('d-m-Y');
@@ -864,6 +882,7 @@ class ReportController extends Controller
             }
     }
 
+    //A function that will create a monthly sales report for the new registered user
     public function createMonthlySalesReportNewUser(User $user)
     {   
         $current_date = Carbon::now()->format('d-m-Y');
@@ -961,6 +980,7 @@ class ReportController extends Controller
         }
     }
 
+    //A function that will create a yearly sales report for the new registered user
     public function createYearlySalesReportNewUser(User $user)
     {
         $current_date = Carbon::now()->format('d-m-Y');

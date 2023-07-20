@@ -1,3 +1,4 @@
+<!--View team sales report page. A page that allows HQ user to view sales report of every team. -->
 <!DOCTYPE html>
 <html>
     <head>

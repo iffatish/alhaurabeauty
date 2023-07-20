@@ -1,3 +1,4 @@
+<!--View teammate's yearly sales report page. A page that allows team leader to view the yearly sales report of selected teammate. -->
 <!DOCTYPE html>
 <html>
     <head>

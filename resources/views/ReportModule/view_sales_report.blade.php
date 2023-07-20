@@ -1,3 +1,4 @@
+<!--View daily sales report page. A page that will display the daily sales report of the current user. -->
 <!DOCTYPE html>
 <html>
     <head>

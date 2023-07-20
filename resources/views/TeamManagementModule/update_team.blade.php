@@ -1,3 +1,4 @@
+<!--Update team page. A page that allows the team leader to update details of the team. -->
 <!DOCTYPE html>
 <html>
     <head>

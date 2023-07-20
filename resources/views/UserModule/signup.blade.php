@@ -1,3 +1,4 @@
+<!-- sign up page. A page for user to register a new account -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -117,7 +118,8 @@
                 @csrf
                     <tr>
                         <th colspan="2"><b>Registration</b></th>
-                        <td rowspan="9" style="vertical-align:middle;" class="register-button"><input type="submit" value="Register"><br><br><a href="{{route('login')}}">Return to login</a></td>
+                        <td rowspan="9" style="vertical-align:middle;" class="register-button"><input type="submit" value="Register">
+                        <br><br><a href="{{route('login')}}">Return to login</a></td>
                     </tr>
                     <tr>
                         <td style="padding:0 0.625rem;" colspan="2">@if ($errors->any())
@@ -132,10 +134,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="30%" class="input-title">Name <span style="color:red;">*</span></td><td width="40%"><input required name="userName" type="text"></td>
+                        <td width="30%" class="input-title">Name <span style="color:red;">*</span></td>
+                        <td width="40%"><input required name="userName" type="text"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Phone Number <span style="color:red;">*</span></td><td><input required name="userPhoneNum" type="number"></td>
+                        <td class="input-title">Phone Number <span style="color:red;">*</span></td>
+                        <td><input required name="userPhoneNum" type="number"></td>
                     </tr>
                     <tr>
                         <td class="input-title">Address <span style="color:red;">*</span></td><td><input required name="userAddress" type="text"></td>
@@ -160,10 +164,14 @@
                         <td class="input-title">Email <span style="color:red;">*</span></td><td><input  required name="email" type="email"></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Password <span style="color:red;">*</span></td><td><input required name="password" type="password" id="id_password"><i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
+                        <td class="input-title">Password <span style="color:red;">*</span></td>
+                        <td><input required name="password" type="password" id="id_password">
+                        <i class="fa fa-eye" id="togglePassword" style="margin-left:0.625rem;cursor: pointer;"></i></td>
                     </tr>
                     <tr>
-                        <td class="input-title">Confirm Password <span style="color:red;">*</span></td><td><input required name="password_confirmation" type="password" id="id_confirm_password"><i class="fa fa-eye" id="toggleConfirmPassword" style="margin-left:0.625rem;cursor: pointer;"></i><br><br><br></td>
+                        <td class="input-title">Confirm Password <span style="color:red;">*</span></td>
+                        <td><input required name="password_confirmation" type="password" id="id_confirm_password">
+                        <i class="fa fa-eye" id="toggleConfirmPassword" style="margin-left:0.625rem;cursor: pointer;"></i><br><br><br></td>
                     </tr>
                 </form>
             </table>

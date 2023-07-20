@@ -1,3 +1,4 @@
+<!--View restock list page. A page that will display a list of restock information added by the current user-->
 <!DOCTYPE html>
 <html>
     <head>

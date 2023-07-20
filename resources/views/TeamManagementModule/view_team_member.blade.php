@@ -1,3 +1,4 @@
+<!--View team member page. A page that displays a list of team members. -->
 <!DOCTYPE html>
 <html>
     <head>

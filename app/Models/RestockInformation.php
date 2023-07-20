@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//Model for restock information. To save restock information.
 class RestockInformation extends Model
 {
     use HasFactory;
@@ -22,6 +23,7 @@ class RestockInformation extends Model
     ];
     public $timestamps = false;
 
+    //A funtion to get employee information from employee table
     public function getEmployee() {
 
         return $this->belongsTo(User::class, 'employeeId', 'id');

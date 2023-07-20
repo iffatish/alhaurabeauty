@@ -1,3 +1,4 @@
+<!-- Update product discount page. A page that enables HQ user to add, edit, delete, and activate a product discount.-->
 <!DOCTYPE html>
 <html>
     <head>

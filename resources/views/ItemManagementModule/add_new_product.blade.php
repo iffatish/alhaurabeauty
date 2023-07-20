@@ -1,3 +1,4 @@
+<!-- Add new product page. A page for HQ user to insert new product -->
 <!DOCTYPE html>
 <html>
     <head>

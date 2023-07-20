@@ -1,3 +1,4 @@
+<!--View order list page. A page that will display a list of orders added by the current user. -->
 <!DOCTYPE html>
 <html>
     <head>

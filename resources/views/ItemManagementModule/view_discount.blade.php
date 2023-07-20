@@ -1,3 +1,4 @@
+<!-- View position discount page. A page that allows HQ user to view restock discount for each position. -->
 <!DOCTYPE html>
 <html>
     <head>

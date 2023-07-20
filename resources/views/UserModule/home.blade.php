@@ -1,3 +1,4 @@
+<!-- Home page -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -171,7 +172,5 @@
                 x.style.display = "none";
             }
         </script>
-
-
     </body>
 </html>

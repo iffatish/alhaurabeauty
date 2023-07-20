@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 
+//A controller to handle all the functions related to item management module
 class ItemController extends Controller
 {
     //A function to display all active products with the current stock quantity of the logged in user
@@ -777,6 +778,7 @@ class ItemController extends Controller
         return redirect('login');
     }
 
+    //A function to validate product name when user add new product. If product name already exist, it will return false. Else, new product will be added into database.
     public function validateProduct(Request $request)
     {
         

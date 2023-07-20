@@ -1,3 +1,4 @@
+<!--View team list page. A page that will display a list of teams joined by the current user.-->
 <!DOCTYPE html>
 <html>
     <head>

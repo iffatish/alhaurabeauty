@@ -1,3 +1,4 @@
+<!-- view product page. A page that will display all products inserted by HQ. HQ user also can choose to edit or delete any product from this page. -->
 <!DOCTYPE html>
 <html>
     <head>

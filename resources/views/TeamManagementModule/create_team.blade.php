@@ -1,3 +1,4 @@
+<!--Create team page. A page that allows user with position other than HQ and dropship to create a new team. -->
 <!DOCTYPE html>
 <html>
     <head>

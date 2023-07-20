@@ -13,8 +13,10 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+//A controller that handles all the functions related to team management module
 class TeamController extends Controller
 {
+    //A function that will navigate user to a page that will display a list of teams joined by the user.
     public function viewTeamList()
     {
         if(Auth::check())
@@ -41,6 +43,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page to create a new team.
     public function viewCreateTeam()
     {
         if(Auth::check())
@@ -52,6 +55,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will save new team into database if all input are valid.
     public function createTeam(Request $request)
     {
         if(Auth::check())
@@ -94,6 +98,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that will display the details of the team selected from the list of teams joined by the user.
     public function viewTeamDetails(Request $request)
     {
         if(Auth::check())
@@ -115,6 +120,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that will display a list of team members.
     public function viewTeamMember(Request $request)
     {
         if(Auth::check())
@@ -143,6 +149,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that enables team leader to update the team information.
     public function viewUpdateTeam(Request $request)
     {
         if(Auth::check())
@@ -155,6 +162,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will update the team information if all input are valid.
     function updateTeam(Request $request)
     {
         if(Auth::check())
@@ -184,6 +192,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that enables the user to add a new member in the team. (Team leader only)
     public function viewAddTeamMember(Request $request)
     {
         if(Auth::check())
@@ -196,6 +205,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will add a new member in the team and save the data in the database.
     function addTeamMember(Request $request)
     {
         if(Auth::check())
@@ -247,6 +257,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that displays restock information added by every team members.
     public function viewTeamRestock(Request $request)
     {
         if(Auth::check())
@@ -296,6 +307,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will navigate user to a page that will display a statistical graph of total restock price of each team member.
     public function viewTeamRestockGraph(Request $request)
     {
         if(Auth::check())
@@ -332,6 +344,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function to update the statistical graph of total restock price of each team member based on the selected month and year.
     public function updateChart(Request $request) {
 
         if(Auth::check())
@@ -372,6 +385,7 @@ class TeamController extends Controller
         return redirect('login');                                                                        
     }
 
+    //A function that will allow team leader to remove a member from the team.
     public function removeTeamMember(Request $request)
     {
         if(Auth::check())
@@ -430,6 +444,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that allows user to leave a team. If the user is a team leader, the team will be deleted.Else, the user will be removed from the team.
     public function leaveTeam(Request $request)
     {
         if(Auth::check())
@@ -494,6 +509,7 @@ class TeamController extends Controller
         return redirect('login');
     }
 
+    //A function that will allow team leader to delete a team.
     public function deleteTeam(Request $request)
     {
         if(Auth::check())
@@ -524,7 +540,7 @@ class TeamController extends Controller
     }
 
     //AJAX
-
+    //A function that will search for a user based on the input.
     public function searchEmployee(Request $request) {
        
         $input = $request->all();

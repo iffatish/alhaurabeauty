@@ -1,3 +1,4 @@
+<!--View teammate's daily sales report page. A page that allows team leader to view the daily sales report of selected teammate. -->
 <!DOCTYPE html>
 <html>
     <head>

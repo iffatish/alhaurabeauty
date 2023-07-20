@@ -1,3 +1,4 @@
+<!--View team details page. A page that will display details of the team selected from the list of teams joined by the user.  -->
 <!DOCTYPE html>
 <html>
     <head>

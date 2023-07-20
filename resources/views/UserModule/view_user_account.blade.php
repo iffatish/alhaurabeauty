@@ -1,3 +1,4 @@
+<!-- View user account page. A page that display account details of user -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -217,7 +218,8 @@
         <div class="content">
             <table width="100%">
                 <tr>
-                    <td class="input-title" style="padding-top: 4.375rem;">Name</td><td class="user-details" style="padding-top: 4.375rem;">{{$user->userName}}</td>
+                    <td class="input-title" style="padding-top: 4.375rem;">Name</td>
+                    <td class="user-details" style="padding-top: 4.375rem;">{{$user->userName}}</td>
                 </tr>
                 <tr>
                     <td class="input-title">Phone Number</td><td class="user-details">{{$user->userPhoneNum}}</td>
@@ -235,7 +237,8 @@
                     <td class="input-title">Password</td><td class="user-details">{{$user->password}}</td>
                 </tr>
                 <tr>
-                    <td class="input-title"></td><td class="center" style="padding-bottom: 3.125rem;"><a href="{{route('update_user')}}"><button class="update">Update</button></a></td>
+                    <td class="input-title"></td><td class="center" style="padding-bottom: 3.125rem;"><a href="{{route('update_user')}}">
+                        <button class="update">Update</button></a></td>
                 </tr>
             </table>
         </div>
